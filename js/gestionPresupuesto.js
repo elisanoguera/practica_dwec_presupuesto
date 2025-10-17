@@ -22,9 +22,42 @@ function mostrarPresupuesto() {
     return "Tu presupuesto actual es de " + presupuesto + " €";
 }
 
-function CrearGasto(descripcion, valor) {
+function listarGastos() {
+    return gastos;
+}
+
+function anyadirGasto(gasto) {
+    gasto.id = idGasto;
+    idGasto++;
+    gastos.push(gasto);
+    
+}
+
+function borrarGasto(id) {
+    for(let i = 0; i < gastos.length; i++){
+        if(gastos[i].id === id){
+            gastos.splice(i, 1);
+        }
+}
+
+function calcularTotalGastos(){
+    let totalGastos = 0;
+    for(let i = 0; i < gastos.length; i++){
+        totalGastos += gastos[i].valor;
+    }
+    return totalGastos;
+}
+
+function calcularBalance() {
+    let total= calcularTotalGastos();
+    let Balance = presupuesto - total;
+    return Balance;
+}
+
+function CrearGasto(descripcion, valor, fecha, etiquetas) {
     // TODO
     this.descripcion = descripcion;
+
     if(valor >= 0){
         this.valor = valor;
     }
@@ -35,17 +68,30 @@ function CrearGasto(descripcion, valor) {
     this.mostrarGasto = function() {
         return("Gasto correspondiente a " + descripcion + " con valor " + valor + " €");
     };
+
     this.actualizarDescripcion = function(descripcionActualizada) {
         this.descripcion = descripcionActualizada;
     };
+    
     this.actualizarValor = function(valorActualizado) {
         if(valorActualizado >= 0){
             this.valor = valorActualizado;
-        }
-        else{
+        }else{
             this.valor = this.valor;
         }
     };
+
+    if(etiquetas == null){
+        this.etiquetas = [];
+    }else{
+        this.etiquetas = etiquetas;
+    }
+
+    if(fecha == null || isNan(Date.parse(fecha))){
+        this.fecha = new Date().getTime();
+    }else{
+        this.fecha = new Date(fecha).getTime();
+    }
 }
 
 
