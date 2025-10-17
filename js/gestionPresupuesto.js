@@ -38,6 +38,7 @@ function borrarGasto(id) {
         if(gastos[i].id === id){
             gastos.splice(i, 1);
         }
+    }
 }
 
 function calcularTotalGastos(){
@@ -65,8 +66,21 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
         this.valor = 0;
     };
 
+    if(etiquetas == null){
+        this.etiquetas = [];
+    }else{
+        this.etiquetas = etiquetas;
+    }
+
+    if(fecha == null || isNan(Date.parse(fecha))){
+        this.fecha = new Date().getTime();
+    }else{
+        this.fecha = new Date(fecha).getTime();
+    }
+
+
     this.mostrarGasto = function() {
-        return("Gasto correspondiente a " + descripcion + " con valor " + valor + " €");
+        return("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €");
     };
 
     this.actualizarDescripcion = function(descripcionActualizada) {
@@ -81,16 +95,52 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
         }
     };
 
-    if(etiquetas == null){
-        this.etiquetas = [];
-    }else{
-        this.etiquetas = etiquetas;
+    this.mostrarGastoCompleto = function() {
+        let texto = "";
+
+        for(let i = 0; i < this.etiquetas.length; i++){
+            texto += this.etiquetas[i] + "\n";
+        }
+        
+        return("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €." + "\n" +
+        "Fecha: " + new Date(this.fecha).toLocaleString() + "." + "\n" +
+        "Etiquetas: " + texto + "." );  
+    };
+
+    this.actualizarFecha = function(fechaActualizada) {
+        if(fechaActualizada != null && !isNaN(Date.parse(fechaActualizada))){
+         this.fecha = new Date(fechaActualizada).getTime();
+        }
     }
 
-    if(fecha == null || isNan(Date.parse(fecha))){
-        this.fecha = new Date().getTime();
-    }else{
-        this.fecha = new Date(fecha).getTime();
+    this.anyadirEtiquetas = function(...Nuevaetiqueta) {
+        
+        for(let i=0; i < Nuevaetiqueta.length; i++){
+            let etiqueta = Nuevaetiqueta[i];
+            let existe = false;
+
+            for(let j=0; j < this.etiquetas.length; j++){
+                if(this.etiquetas[j] === etiqueta){
+                    existe = true;
+                }
+            }
+            if(!existe){
+                this.etiquetas.push(etiqueta);
+            }
+        }
+    }
+
+    this.borrarEtiquetas = function(...Nuevaetiqueta) {
+        
+        for(let i=0; i < Nuevaetiqueta.length; i++){
+            let etiqueta = Nuevaetiqueta[i];
+
+            for(let j=this.etiquetas.length-1; j >=0;  j--){
+                if(this.etiquetas[j] === etiqueta){
+                    this.etiquetas.splice(j, 1);
+                }
+            }
+        }
     }
 }
 
