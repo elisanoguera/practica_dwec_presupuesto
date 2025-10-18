@@ -55,7 +55,7 @@ function calcularBalance() {
     return Balance;
 }
 
-function CrearGasto(descripcion, valor, fecha, etiquetas) {
+function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     // TODO
     this.descripcion = descripcion;
 
@@ -66,18 +66,17 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
         this.valor = 0;
     };
 
-    if(etiquetas == null){
-        this.etiquetas = [];
-    }else{
-        this.etiquetas = etiquetas;
-    }
-
-    if(fecha == null || isNan(Date.parse(fecha))){
+    if(fecha == null || isNaN(Date.parse(fecha))){
         this.fecha = new Date().getTime();
     }else{
         this.fecha = new Date(fecha).getTime();
     }
 
+    if (etiquetas == null) {
+    this.etiquetas = [];
+    } else if (Array.isArray(etiquetas)) {
+    this.etiquetas = etiquetas;
+    }
 
     this.mostrarGasto = function() {
         return("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €");
@@ -97,14 +96,13 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
 
     this.mostrarGastoCompleto = function() {
         let texto = "";
-
         for(let i = 0; i < this.etiquetas.length; i++){
-            texto += this.etiquetas[i] + "\n";
+            texto += "- " + this.etiquetas[i]+ "\n";
         }
-        
+
         return("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €." + "\n" +
-        "Fecha: " + new Date(this.fecha).toLocaleString() + "." + "\n" +
-        "Etiquetas: " + texto + "." );  
+        "Fecha: " + new Date(this.fecha).toLocaleString() + "\n" +
+        "Etiquetas:\n" + texto);  
     };
 
     this.actualizarFecha = function(fechaActualizada) {
@@ -142,6 +140,7 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
             }
         }
     }
+
 }
 
 
