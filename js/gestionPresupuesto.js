@@ -16,3 +16,7 @@ function actualizarPresupuesto()
             presupuesto=valor;
             return presupuesto;
     }
+    function mostrarPresupuesto() {
+    
+    return "Tu presupesto actual es de ${presupuesto} €";
+}
