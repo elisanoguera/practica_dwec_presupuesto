@@ -20,3 +20,16 @@ function actualizarPresupuesto()
     
     return "Tu presupesto actual es de ${presupuesto} €";
 }
+function CrearGasto(descripcion,valor)
+{
+    
+
+    if(typeof valor!== "number"|| valor<0)
+    {
+        valor=0;
+
+    }
+    //propriedades
+this.descripcion=descripcion;
+this.valor=valor;
+}
