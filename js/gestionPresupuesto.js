@@ -32,4 +32,21 @@ function CrearGasto(descripcion,valor)
     //propriedades
 this.descripcion=descripcion;
 this.valor=valor;
+
+//metodos
+this.mostrarGastos=function()
+{
+    return "Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €";
+}
+this.actualizarDescription=function(newDescripcion)
+{
+    this.descripcion=nuevaDescripcion
+    return this.descripcion;
+}
+this.actualizarValor=function(newValor)
+{
+    if (typeof newValor=="number" && newvalor>=0)
+    this.valor=newvalor;
+    return this.valor;
+}
 }
