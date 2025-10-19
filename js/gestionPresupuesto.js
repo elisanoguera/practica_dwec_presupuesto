@@ -7,7 +7,7 @@ function actualizarPresupuesto(valor) {
     if (valor >= 0) {
         presupuesto = valor;
         return presupuesto;
-    } else if (valor == undefined) {
+    } if (valor == undefined) {
         return presupuesto;
     } else {
         alert("Error. El presupuesto no puede ser negativo");
@@ -16,7 +16,8 @@ function actualizarPresupuesto(valor) {
 }
 
 function mostrarPresupuesto() {
-    // TODO
+    console.log(`Tu presupuesto actual es de ${presupuesto} €`);
+    return presupuesto;
 }
 
 function CrearGasto() {
