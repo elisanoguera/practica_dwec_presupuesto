@@ -51,6 +51,9 @@ this.actualizarValor=function(newValor)
 }
 }
 
+let gastos= []; // para mi no se puede usar new list[] como en c#
+let idGastos=0;
+
 function listarGastos()
 {}
 function anyadirGasto()
