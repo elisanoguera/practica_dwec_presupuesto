@@ -44,25 +44,25 @@ this.etiquetas=[],
 //this.fecha=Date.now();//NO SE DEBE PONER AQUI PORQUE ÉCRASE LO QUE HE HECHO ANTES
 
 //metodos
-this.mostrarGasto=function()
-{
-    return "Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €";
-}
-this.actualizarDescripcion=function(newDescripcion)
-{
-    this.descripcion=nuevaDescripcion
-    return this.descripcion;
-}
-this.actualizarValor=function(neuevoValor)
-{
-    if (typeof neuvoValor=="number" && neuevovalor>=0)
-    this.valor=neuvovalor;
-    return this.valor;
-}
-this.anyadirEtiquetas=function(newetiqueta)
-{
-    this.etiquetas.push(newtiqueta);// no se puede poner this.etiquetas.add(newtiqueta) estoy mezclando con c#
-}
+    this.mostrarGasto=function()
+    {
+        return "Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €";
+    }
+    this.actualizarDescripcion=function(neuvaDescripcion)
+    {
+        this.descripcion=nuevaDescripcion
+        return this.descripcion;
+    }
+    this.actualizarValor=function(nuevoValor)
+    {
+        if (typeof neuvoValor=="number" && neuevovalor>=0)
+        this.valor=neuvovalor;
+        return this.valor;
+    }
+    this.anyadirEtiquetas=function(...neuvastiqueta)
+    {
+        this.etiquetas.push(newtiqueta);// no se puede poner this.etiquetas.add(newtiqueta) estoy mezclando con c#
+    }
 
 }
 
@@ -78,13 +78,13 @@ function anyadirGasto(gasto)
 {
     gasto.id=idGasto;//aniadir el id al gasto
     idGasto++;
-    gastos.push(gasto)
+    gastos.push(gasto);
 }
 function borrarGasto(id)
 {gasto.delete;
     idGasto--;
 }
-function calcularTotalGastos()
+function calcularTotalGastos()//en cours
 {}
 function calcularBalance()
 {}
