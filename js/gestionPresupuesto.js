@@ -18,11 +18,11 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-function CrearGasto(valor) {
-    this.descripcion = "Descripción del gasto en formato cadena";
+function CrearGasto(descripcion, valor) {
+    this.descripcion = descripcion;
     this.valor = (valor >= 0) ? valor : 0;  // En caso de que el valor introducido no sea un núḿero no negativo, se asigna el valor 0.
     this.mostrarGasto = function () {
-        alert(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`);
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     };
     this.actualizarDescripcion = function (nuevaDescripcion) {
         this.descripcion = nuevaDescripcion;
