@@ -11,13 +11,13 @@ function actualizarPresupuesto(nuevoPresupuesto) {
         presupuesto = nuevoPresupuesto;
         return presupuesto;
     } else {
-        console.error('Error: El presupuesto debe ser un número no negativo');
+        console.log("Error: El presupuesto debe ser un número no negativo");
         return -1;
     }
 }
 
 function CrearGasto(descripcion, valor, fecha) {
-    
+
     if (typeof valor != 'number' || valor < 0) {
         valor = 0;
     }
@@ -31,19 +31,72 @@ function CrearGasto(descripcion, valor, fecha) {
     this.valor = valor;
     this.fecha = timestamp;
     this.etiquetas = [];
-    
+
+    for (var i = 3; i < arguments.length; i++) {
+        this.etiquetas.push(arguments[i]);
+    }
+
+    this.mostrarGasto = function() {
+        return 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €';
+    };
+
+    this.mostrarGastoCompleto = function() {
+        var texto = 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €.\n';
+        texto += 'Fecha: ' + new Date(this.fecha).toLocaleString() + '\n';
+        texto += 'Etiquetas:\n';
+        for (var i = 0; i < this.etiquetas.length; i++) {
+            texto += '- ' + this.etiquetas[i] + '\n';
+        }
+        return texto;
+    };
+
     this.actualizarDescripcion = function(nuevaDescripcion) {
         this.descripcion = nuevaDescripcion || '';
     };
-    
+
     this.actualizarValor = function(nuevoValor) {
-        if (typeof nuevoValor === 'number' && nuevoValor >= 0) {
+        if (typeof nuevoValor == 'number' && nuevoValor >= 0) {
             this.valor = nuevoValor;
+        }
+    };
+
+    this.actualizarFecha = function(nuevaFecha) {
+        var timestamp = Date.parse(nuevaFecha);
+        if (!isNaN(timestamp)) {
+            this.fecha = timestamp;
+        }
+    };
+
+    this.anyadirEtiquetas = function() {
+        for (var i = 0; i < arguments.length; i++) {
+            var etiqueta = arguments[i];
+            var existe = false;
+            for (var j = 0; j < this.etiquetas.length; j++) {
+                if (this.etiquetas[j] == etiqueta) {
+                    existe = true;
+                    break;
+                }
+            }
+            if (!existe) {
+                this.etiquetas.push(etiqueta);
+            }
+        }
+    };
+
+    this.borrarEtiquetas = function() {
+        for (var i = 0; i < arguments.length; i++) {
+            var etiqueta = arguments[i];
+            for (var j = 0; j < this.etiquetas.length; j++) {
+                if (this.etiquetas[j] == etiqueta) {
+                    this.etiquetas.splice(j, 1);
+                    break;
+                }
+            }
         }
     };
 }
 
-
+//Funciones acordes a la práctica 2
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
@@ -79,15 +132,6 @@ function calcularTotalGastos() {
 function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
-
-//Funciones acordes a la práctica 2
-function listarGastos() {}
-function anyadirGasto() {}
-function borrarGasto() {}
-function calcularTotalGastos() {}
-function calcularBalance() {}
-
-
 
 export { actualizarPresupuesto, mostrarPresupuesto, CrearGasto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance };
 
