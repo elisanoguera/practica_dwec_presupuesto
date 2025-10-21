@@ -1,0 +1,11 @@
+name: Reactivar Actions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  wakeup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test reactivation
+        run: echo "✅ GitHub Actions están activadas correctamente."
