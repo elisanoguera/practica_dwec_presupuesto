@@ -1,7 +1,7 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 
 // TODO: Variable global
-let presupesto=0;
+let presupuesto=0;
 
 function actualizarPresupuesto()
     {
@@ -18,48 +18,72 @@ function actualizarPresupuesto()
     }
     function mostrarPresupuesto() {
     
-    return "Tu presupesto actual es de ${presupuesto} €";
+    return "Tu presupuesto actual es de ${presupuesto} €";
 }
-function CrearGasto(descripcion,valor)
+function CrearGasto(descripcion,valor,fecha, ...etiquetas)
 {
     
 
-    if(typeof valor!== "number"|| valor<0)
+    if(typeof valor!== "number"|| valor<0)//validar el valor introducido
     {
         valor=0;
-
+    }
+    let fechaok=Date.parse(fecha);
+    if( isNaN(fechaok))
+    {
+        this.fecha=Date.now();//define en timestamp
+    }
+    else 
+        {
+        this.fecha=fechaok;
     }
     //propriedades
 this.descripcion=descripcion;
 this.valor=valor;
+this.etiquetas=[],
+//this.fecha=Date.now();//NO SE DEBE PONER AQUI PORQUE ÉCRASE LO QUE HE HECHO ANTES
 
 //metodos
-this.mostrarGastos=function()
+this.mostrarGasto=function()
 {
     return "Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €";
 }
-this.actualizarDescription=function(newDescripcion)
+this.actualizarDescripcion=function(newDescripcion)
 {
     this.descripcion=nuevaDescripcion
     return this.descripcion;
 }
-this.actualizarValor=function(newValor)
+this.actualizarValor=function(neuevoValor)
 {
-    if (typeof newValor=="number" && newvalor>=0)
-    this.valor=newvalor;
+    if (typeof neuvoValor=="number" && neuevovalor>=0)
+    this.valor=neuvovalor;
     return this.valor;
 }
+this.anyadirEtiquetas=function(newetiqueta)
+{
+    this.etiquetas.push(newtiqueta);// no se puede poner this.etiquetas.add(newtiqueta) estoy mezclando con c#
+}
+
 }
 
 let gastos= []; // para mi no se puede usar new list[] como en c#
 let idGastos=0;
 
 function listarGastos()
-{}
-function anyadirGasto()
-{}
-function borrarGasto()
-{}
+{
+    return gastos;
+}
+
+function anyadirGasto(gasto)
+{
+    gasto.id=idGasto;//aniadir el id al gasto
+    idGasto++;
+    gastos.push(gasto)
+}
+function borrarGasto(id)
+{gasto.delete;
+    idGasto--;
+}
 function calcularTotalGastos()
 {}
 function calcularBalance()
