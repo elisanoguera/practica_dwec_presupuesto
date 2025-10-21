@@ -9,6 +9,7 @@ function actualizarPresupuesto(valor) {
         presupuesto = valor;
         return presupuesto;
     } else {
+        console.log("Error. No es un número válido.")
         return -1;
     }
 }
