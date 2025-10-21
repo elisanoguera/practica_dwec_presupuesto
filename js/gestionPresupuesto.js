@@ -82,6 +82,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         return("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €");
     };
 
+
     this.actualizarDescripcion = function(descripcionActualizada) {
         this.descripcion = descripcionActualizada;
     };
@@ -142,7 +143,6 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     }
 
 }
-
 
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
