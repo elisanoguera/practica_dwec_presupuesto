@@ -16,10 +16,6 @@ function actualizarPresupuesto(nuevoPresupuesto) {
     }
 }
 
-function mostrarPresupuesto() {
-    return `Tu presupuesto actual es de ${presupuesto} €`;
-}
-
 function CrearGasto(descripcion, valor) {
 
     if (typeof valor !== 'number' || valor < 0) {
@@ -44,7 +40,43 @@ function CrearGasto(descripcion, valor) {
     };
 }
 
-//Comienzo práctica 2
+function mostrarPresupuesto() {
+    return `Tu presupuesto actual es de ${presupuesto} €`;
+}
+
+
+function listarGastos() {
+    return gastos;
+}
+
+function anyadirGasto(gasto) {
+    gasto.id = idGasto;
+    idGasto++;
+    gastos.push(gasto);
+}
+
+function borrarGasto(id) {
+    for (let i = 0; i < gastos.length; i++) {
+        if (gastos[i].id === id) {
+            gastos.splice(i, 1);
+            return;
+        }
+    }
+}
+
+function calcularTotalGastos() {
+    let total = 0;
+    for (let i = 0; i < gastos.length; i++) {
+        total += gastos[i].valor;
+    }
+    return total;
+}
+
+function calcularBalance() {
+    return presupuesto - calcularTotalGastos();
+}
+
+//Funciones acordes a la práctica 2
 function listarGastos() {}
 function anyadirGasto() {}
 function borrarGasto() {}
