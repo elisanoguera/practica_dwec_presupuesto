@@ -16,18 +16,21 @@ function actualizarPresupuesto(nuevoPresupuesto) {
     }
 }
 
-function CrearGasto(descripcion, valor) {
-
-    if (typeof valor !== 'number' || valor < 0) {
+function CrearGasto(descripcion, valor, fecha) {
+    
+    if (typeof valor != 'number' || valor < 0) {
         valor = 0;
     }
-    
+
+    var timestamp = Date.parse(fecha);
+    if (isNaN(timestamp)) {
+        timestamp = Date.now();
+    }
+
     this.descripcion = descripcion || '';
     this.valor = valor;
-    
-    this.mostrarGasto = function() {
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
-    };
+    this.fecha = timestamp;
+    this.etiquetas = [];
     
     this.actualizarDescripcion = function(nuevaDescripcion) {
         this.descripcion = nuevaDescripcion || '';
@@ -39,6 +42,7 @@ function CrearGasto(descripcion, valor) {
         }
     };
 }
+
 
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
