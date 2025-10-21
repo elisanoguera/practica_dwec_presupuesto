@@ -1,6 +1,8 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 
 let presupuesto = 0;
+let gastos = [];
+let idGasto = 0;
 
 // TODO: Variable global
 
@@ -41,6 +43,17 @@ function CrearGasto(descripcion, valor) {
         }
     };
 }
+
+//Comienzo práctica 2
+function listarGastos() {}
+function anyadirGasto() {}
+function borrarGasto() {}
+function calcularTotalGastos() {}
+function calcularBalance() {}
+
+
+
+export { actualizarPresupuesto, mostrarPresupuesto, CrearGasto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance };
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
