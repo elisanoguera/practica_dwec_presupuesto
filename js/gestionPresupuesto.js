@@ -18,7 +18,33 @@ function mostrarPresupuesto() {
 	return texto;
 }
 
-function CrearGasto() {}
+function CrearGasto(descripcion, valor) {
+	// PROPIEDADES ----------------------------------
+	this.descripcion = descripcion;
+
+	// Debemos validar que es un número no negativo
+	if (Number.isFinite(valor) && valor >= 0) {
+		this.valor = valor;
+	} else {
+		this.valor = 0;
+	}
+
+	// MÉTODOS ---------------------------------------
+	this.mostrarGasto = function () {
+		let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+		return texto;
+	};
+
+	this.actualizarDescripcion = function (texto) {
+		this.descripcion = texto;
+	};
+
+	this.actualizarValor = function (newValor) {
+		if (Number.isFinite(newValor) && newValor >= 0) {
+			this.valor = newValor;
+		}
+	};
+}
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
