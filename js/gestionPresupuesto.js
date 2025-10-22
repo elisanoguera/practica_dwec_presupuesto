@@ -84,7 +84,7 @@ function borrarGasto(id)
 {gasto.delete;
     idGasto--;
 }
-function calcularTotalGastos()//en cours
+function calcularTotalGastos()//en cours a teminar
 {}
 function calcularBalance()
 {}
