@@ -36,6 +36,7 @@ function CrearGasto(descripcion, valor) {
         }   
 
 }
+}
 
 //objeto gasto
 let gasto1 = new CrearGasto('Compra semanal', 50);
