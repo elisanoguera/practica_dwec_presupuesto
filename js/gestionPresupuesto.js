@@ -38,7 +38,7 @@ function calcularBalance() {}
 
 // Función Constructora del objeto Gasto
 // Pasamos los parámetros a partir del tercero como un array a las etiquetas
-function CrearGasto(descripcion, valor, ...etiquetas) {
+function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 	// PROPIEDADES ----------------------------------
 	this.descripcion = descripcion;
 
@@ -49,8 +49,21 @@ function CrearGasto(descripcion, valor, ...etiquetas) {
 		this.valor = 0;
 	}
 
-	// Obtenemos la fecha de creación del objeto al ejecutar el constructor y se guarda en Timestamp
-	this.fecha = new Date().getTime();
+	// Analizamos si entra por parámetro una fecha correcta, en caso contrario se guarda la fecha de creación del objeto
+	if (fecha) {
+		// Creamos un objeto Date con el parámetro fecha y lo convertimos a timestamp. Será NaN si es incorrecto
+		const fechaParametro = new Date(fecha).getTime();
+
+		if (Number.isNaN(fechaParametro)) {
+			// En caso de que sea NaN, guardamos la fecha de creación del gasto
+			this.fecha = new Date().getTime();
+		} else {
+			// Si no es NaN, significa que es correcta y la asignamos
+			this.fecha = fechaParametro;
+		}
+	} else {
+		this.fecha = new Date().getTime();
+	}
 
 	// Controlamos que ocurre si no se pasa ninguna etiqueta.
 	if (etiquetas.length > 0) {
@@ -63,7 +76,7 @@ function CrearGasto(descripcion, valor, ...etiquetas) {
 	this.mostrarGastoCompleto = function () {
 		let texto = `Gasto correspondiente a ${this.descripcion} con valor ${
 			this.valor
-		} €\nFecha: ${new Date(this.fecha).toLocaleString(
+		} €.\nFecha: ${new Date(this.fecha).toLocaleString(
 			"es-ES"
 		)}\nEtiquetas:\n${this.listarEtiquetas()}`;
 		return texto;
@@ -76,6 +89,16 @@ function CrearGasto(descripcion, valor, ...etiquetas) {
 	this.actualizarValor = function (newValor) {
 		if (Number.isFinite(newValor) && newValor >= 0) {
 			this.valor = newValor;
+		}
+	};
+
+	this.actualizarFecha = function (newFecha) {
+		let parseFecha = Date.parse(newFecha);
+		// Devuelve directamente un timestamp. Devuelve NaN si el string no es válido.
+
+		// Comprueba si se convierte correctamente.
+		if (!Number.isNaN(parseFecha)) {
+			this.fecha = parseFecha;
 		}
 	};
 
@@ -94,14 +117,6 @@ function CrearGasto(descripcion, valor, ...etiquetas) {
 		return texto;
 	};
 }
-
-let gasto1 = new CrearGasto(
-	"Compra Mercadona",
-	20.36,
-	"compra",
-	"alimentación"
-);
-console.log(gasto1.mostrarGastoCompleto());
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
