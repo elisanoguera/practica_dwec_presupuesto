@@ -1,7 +1,13 @@
-// TODO: Crear las funciones, objetos y variables indicadas en el enunciado
-
+// Variables Globales ----------------------------------------------------------------------------
 let presupuesto = 0;
 
+// gastos - Almacenará el listado de gastos que vaya introduciendo el usuario.
+let gastos = [];
+
+// idGasto - Se utiliza para almacenar el identificador actual de cada gasto que se vaya añadiendo.
+let idGasto = 0;
+
+// Funciones --------------------------------------------------------------------------------------
 function actualizarPresupuesto(valor) {
 	// Debe cumplir dos condiciones: que sea número y que sea mayor o igual que 0
 	// Number.isFinite(valor) comprueba si el parámetro que pasamos es un número además de otras comprobaciones como NaN e infinito.
