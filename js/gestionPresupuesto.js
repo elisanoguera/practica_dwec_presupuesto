@@ -4,31 +4,40 @@
 let presupuesto = 0;
 
 
-function actualizarPresupuesto() {
-    // TODO
+function actualizarPresupuesto(presupuesto) {
+    this.presupuesto = presupuesto;
+    if (typeof presupuesto === 'number' && presupuesto >= 0 && !isNaN(presupuesto)) {
+        return this.presupuesto;
+    } else {
+        return -1;"El presupuesto debe ser un número válido mayor o igual a 0";
+    }
 }
 
 function mostrarPresupuesto() {
-    // TODO
+    return this.presupuesto;
 }
 
 function CrearGasto(descripcion, valor) {
     this.descripcion = String(descripcion);
 
     // Si el tipo de dato valor es de tipo numero y es mayor o igual a 0 y no es null
+    this.valor = valor;
         if (typeof valor === 'number' && valor >= 0 && !isNaN(valor)) {
             this.valor = valor;
         } else {
             this.valor = 0;
         };
-    // Métodos
+    
+        // Métodos
     this.mostrarGasto = function() {
         return 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €';
     }
-    // La descripcion sienpre sera una cadena 
+    
+    // La descripcion siempre sera una cadena 
     this.actualizarDescripcion = function(newDescripcion) {
         this.descripcion = String(newDescripcion);
     }
+    
     // Actualiza el valor del gasto si el nuevo valor es un número válido y no es un numero negativo
     this.actualizarValor = function(newValor) {
         if (typeof newValor === 'number' && newValor >= 0 && !isNaN(newValor)) {
@@ -37,6 +46,7 @@ function CrearGasto(descripcion, valor) {
 
 }
 }
+
 
 //objeto gasto
 let gasto1 = new CrearGasto('Compra semanal', 50);
