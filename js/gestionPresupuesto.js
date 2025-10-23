@@ -4,17 +4,19 @@
 let presupuesto = 0;
 
 
-function actualizarPresupuesto(presupuesto) {
-    this.presupuesto = presupuesto;
-    if (typeof presupuesto === 'number' && presupuesto >= 0 && !isNaN(presupuesto)) {
-        return this.presupuesto;
+function actualizarPresupuesto(presupuestoActualizado) {
+
+    if (typeof presupuestoActualizado === 'number' && presupuestoActualizado >= 0 && !isNaN(presupuestoActualizado)) {
+        presupuesto = presupuestoActualizado;
+        return presupuesto;
     } else {
-        return -1;"El presupuesto debe ser un número válido mayor o igual a 0";
+        console.error("El presupuesto debe ser un número válido mayor o igual a 0");
+        return -1;
     }
 }
 
 function mostrarPresupuesto() {
-    return this.presupuesto;
+    return 'Tu presupuesto actual es de ' + presupuesto + ' €';
 }
 
 function CrearGasto(descripcion, valor) {
