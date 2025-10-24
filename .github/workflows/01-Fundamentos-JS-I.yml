@@ -3,10 +3,10 @@ name: 01 - Fundamentos de JS I - Tests
 on:
   push:
     # Ejecutar la acción al hacer un push a la rama "master"
-    branches: [ main, mi-solucion-lcc2025 ]
+    branches: [ main]
   pull_request:
     # Ejecutar la acción al hacer una pull request a la rama "master"
-    branches: [ main, mi-solucion-lcc2025 ]
+    branches: [ main]
 
 jobs:
   build:
