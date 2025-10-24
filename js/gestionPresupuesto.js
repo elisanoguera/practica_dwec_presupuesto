@@ -90,17 +90,21 @@ function filtrarGastos(filtrado) {
                 coincide = false;
             }
         }
-        if (filtrado.etiquetasTiene != null) {
+        if (filtrado.etiquetasTiene != null && filtrado.etiquetasTiene.length > 0) {
             let encontrado = filtrado.etiquetasTiene.find(function(etiquetaFiltrado) {
-                return gastoIndividual.etiquetas.find(function(etiquetaGasto)   {
-                    return etiquetaGasto === etiquetaFiltrado;
-
+                return (gastoIndividual.etiquetas || []).find(function(etiquetaGasto) {
+                    return etiquetaGasto.toLowerCase() === etiquetaFiltrado.toLowerCase();
                 });
-            })
+            });
+
             if (!encontrado) {
                 coincide = false;
+                console.log("Excluido por etiquetas:", gastoIndividual.etiquetas);
             }
         }
+
+        console.log("Coincide:", coincide);
+        
         return coincide;
     });
 
@@ -110,7 +114,7 @@ function agruparGastos() {
 
 }
 
-function CrearGasto(descripcion, valor, fecha, obtenerPeriodoAgrupacion, ...etiquetas) {
+function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.descripcion = descripcion;
 
     if(valor >= 0){
