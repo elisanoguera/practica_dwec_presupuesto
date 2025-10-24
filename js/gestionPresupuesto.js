@@ -107,6 +107,15 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 		}
 	};
 
+	this.anyadirEtiquetas = function (...newEtiquetas) {
+		// Mediante función flecha. Mediante parámetro REST y forEach se controla la ejecución de arrays vacíos sin error.
+		newEtiquetas.forEach((etiqueta) => {
+			if (!this.etiquetas.includes(etiqueta)) {
+				this.etiquetas.push(etiqueta);
+			}
+		});
+	};
+
 	// Método que genera la lista de etiquetas asociadas al gasto
 	this.listarEtiquetas = function () {
 		let texto = "";
