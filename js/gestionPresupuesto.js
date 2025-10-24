@@ -90,6 +90,17 @@ function filtrarGastos(filtrado) {
                 coincide = false;
             }
         }
+        if (filtrado.etiquetasTiene != null) {
+            let encontrado = filtrado.etiquetasTiene.find(function(etiquetaFiltrado) {
+                return gastoIndividual.etiquetas.find(function(etiquetaGasto)   {
+                    return etiquetaGasto === etiquetaFiltrado;
+
+                });
+            })
+            if (!encontrado) {
+                coincide = false;
+            }
+        }
         return coincide;
     });
 
