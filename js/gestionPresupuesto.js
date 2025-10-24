@@ -56,7 +56,11 @@ function calcularTotalGastos() {
 	return totalGastos;
 }
 
-function calcularBalance() {}
+function calcularBalance() {
+	let balance = presupuesto - calcularTotalGastos();
+
+	return balance;
+}
 
 // Función Constructora del objeto Gasto
 // Pasamos los parámetros a partir del tercero como un array a las etiquetas
