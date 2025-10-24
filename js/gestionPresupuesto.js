@@ -28,11 +28,33 @@ function listarGastos() {
 	return gastos;
 }
 
-function anyadirGasto() {}
+function anyadirGasto(gasto) {
+	// Añadimos la propiedad idGasto
+	gasto.id = idGasto;
 
-function borrarGasto() {}
+	// Incrementa el idGasto
+	idGasto++;
 
-function calcularTotalGastos() {}
+	// Agregar el gasto al array de gastos
+	gastos.push(gasto);
+}
+
+function borrarGasto(id) {
+	// Buscamos el índice cuyo id pasamos como parámetro
+	const indiceGasto = gastos.findIndex((gasto) => gasto.id == id);
+
+	if (indiceGasto != -1) {
+		gastos.splice(indiceGasto, 1);
+	}
+}
+
+function calcularTotalGastos() {
+	let totalGastos = 0;
+
+	gastos.forEach((gasto) => (totalGastos += gasto.valor));
+
+	return totalGastos;
+}
 
 function calcularBalance() {}
 
