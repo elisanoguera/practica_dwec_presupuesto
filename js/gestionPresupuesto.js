@@ -116,6 +116,16 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 		});
 	};
 
+	this.borrarEtiquetas = function (...eliminarEtiquetas) {
+		eliminarEtiquetas.forEach((etiqueta) => {
+			const index = this.etiquetas.indexOf(etiqueta);
+
+			if (index != -1) {
+				this.etiquetas.splice(index, 1);
+			}
+		});
+	};
+
 	// Método que genera la lista de etiquetas asociadas al gasto
 	this.listarEtiquetas = function () {
 		let texto = "";
