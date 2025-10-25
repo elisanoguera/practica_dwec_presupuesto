@@ -130,6 +130,7 @@ function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
         return acumulacionTotal;
 }
 
+
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.descripcion = descripcion;
 
