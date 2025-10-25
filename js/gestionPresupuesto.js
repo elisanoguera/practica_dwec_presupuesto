@@ -53,27 +53,48 @@ function CrearGasto(descripcion, valor) {
 
 // Funciones vacias de momento
 function listarGastos() {
-
+    return gastos;
 }
 
 
-function anyadirGasto() {
-
+function anyadirGasto(gasto) {
+// Añadir ID al gasto, modifico el OBJETO que me pasan
+    gasto.id = idGasto;
+    
+    // Incrementar el contador para el próximo gasto, modifica la variable GLOBAL
+    idGasto = idGasto + 1;
+    
+    
+    //Añadir el gasto al array, modifica el array GLOBAL
+    gastos.push(gasto);
 }
 
 
-function borrarGasto() {
+function borrarGasto(id) {
+// Buscar la posición del gasto con ese id
+// indice es una variable donde guardamos la posición del gasto a borrar.
+    const indice = gastos.findIndex(function(gasto) {
+    return gasto.id === id;
+    });
 
+  // Si el gasto existe (findIndex no devuelve -1), lo eliminamos
+    if (indice !== -1) {
+    gastos.splice(indice, 1);
+    }
 }   
 
 
 function calcularTotalGastos() {
-
+let total = 0;
+    for (let i = 0; i < gastos.length; i++) {
+        total = total + gastos[i].valor;
+    }
+    return total;
 }
 
 
 function calcularBalance() {
-
+return presupuesto - calcularTotalGastos();
 }
 
 
