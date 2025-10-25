@@ -2,7 +2,8 @@
 
 // TODO: Variable global
 let presupuesto = 0;
-
+let gastos = []; //Es un array vacío [] que ira almacenando todos los objetos de gasto que cree más adelante
+let idGasto = 0; // Se ira incrementando cada vez que cree un nuevo gasto, para asignarle un identificador único
 
 
 function actualizarPresupuesto(presupuestoActualizado) {
@@ -50,6 +51,14 @@ function CrearGasto(descripcion, valor) {
 }
 }
 
+// Funciones vacias de momento
+function listarGastos() {
+
+}
+
+
+
+
 
 //objeto gasto
 let gasto1 = new CrearGasto('Compra semanal', 50);
@@ -63,5 +72,10 @@ gasto1.valor; // 50
 export   {
     mostrarPresupuesto,
     actualizarPresupuesto,
-    CrearGasto
+    CrearGasto,
+    listarGastos,
+    anyadirGasto,
+    borrarGasto,
+    calcularTotalGastos,
+    calcularBalance
 }
