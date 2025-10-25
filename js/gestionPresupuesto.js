@@ -109,9 +109,25 @@ function filtrarGastos(filtrado) {
     });
 
 }
-function agruparGastos() {
-        
 
+
+function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
+
+        let gastosFiltrados = filtrarGastos({fechaDesde: fechaDesde, fechaHasta: fechaHasta, etiquetasTiene: etiquetas});
+        
+        let acumulacionTotal= gastosFiltrados.reduce(function(acumulador, gastoActual) {
+
+            let agrupacion = gastoActual.obtenerPeriodoAgrupacion(periodo);
+
+            if (!acumulador[agrupacion]) {
+                acumulador[agrupacion] = 0;
+            }
+            acumulador[agrupacion] += gastoActual.valor;
+
+            return acumulador;
+        }
+        , {} );
+        return acumulacionTotal;
 }
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
