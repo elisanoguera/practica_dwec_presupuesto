@@ -4,6 +4,7 @@
 let presupuesto = 0;
 
 
+
 function actualizarPresupuesto(presupuestoActualizado) {
 
     if (typeof presupuestoActualizado === 'number' && presupuestoActualizado >= 0 && !isNaN(presupuestoActualizado)) {
