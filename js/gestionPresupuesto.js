@@ -57,6 +57,25 @@ function listarGastos() {
 }
 
 
+function anyadirGasto() {
+
+}
+
+
+function borrarGasto() {
+
+}   
+
+
+function calcularTotalGastos() {
+
+}
+
+
+function calcularBalance() {
+
+}
+
 
 
 
