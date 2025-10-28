@@ -32,6 +32,16 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         } else {
             this.valor = 0;
         };
+
+    // Fecha
+    let fech = Date.parse(fecha);
+    if (!isNaN(fech)){
+        this.fecha = fech;
+    } else {
+        this.fecha = Date.parse(new Date());
+    };
+
+    // Etiquetas
     
 
 // Métodos
@@ -61,14 +71,27 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         }
     }
 
-    // Actualizar etiquetas
+    // Añadir etiquetas: recorro el listado de etiquetas pasadas como parametro, si no existe en el array etiquetas lo añado.
+    // Uso indexof para comprobar si existe la etiqueta en el array
     this.anyadirEtiquetas = function (...nuevasEtiquetas){ 
         for(let etiq of nuevasEtiquetas){
+            if(this.etiquetas.indexOf(etiq) === -1)
             this.etiquetas.push(etiq);
         }
     }
 
-    
+    // Borrar etiqueta
+    this.borrarEtiquetas = function(...etiqe){
+    let newEtiquetas = [];
+        for(let eti of this.etiquetas){
+            if(etiqe.indexOf(eti) === -1){
+                newEtiquetas.push(eti);
+            }
+        }
+        this.etiquetas = newEtiquetas;
+    }
+
+
         
     // Mostrará la suma de todos los gastos, devuelve texto multilinea
     // Creamos el objeto fecha con new Date pasandole como parametro fecha, El formato de la fecha con toLocaleString
