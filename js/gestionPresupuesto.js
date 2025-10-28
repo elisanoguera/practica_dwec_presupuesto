@@ -139,6 +139,29 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 		}
 	};
 
+	this.obtenerPeriodoAgrupacion = function (periodo) {
+		// Pasamos la fecha que está en timestamp a DateTime
+		const fechaGasto = new Date(this.fecha);
+		let fechaPeriodo;
+
+		// Obtenemos por separado los componentes de año, mes y día de dicha fecha.
+		let anyo = fechaGasto.getFullYear().toString();
+
+		// .padStart(2, "0") aplicado a un string hace que tenga length de 2 y añada al principio (Start) tantos caracteres "0" como necesite para llegar al length, así aseguramos el formato "09" por ejemplo.
+		let mes = (fechaGasto.getMonth() + 1).toString().padStart(2, "0");
+		let dia = fechaGasto.getDate().toString().padStart(2, "0");
+
+		// Construimos según el parámetro el string deseado
+		switch (periodo) {
+			case "anyo":
+				return `${anyo}`;
+			case "mes":
+				return `${anyo}-${mes}`;
+			case "dia":
+				return `${anyo}-${mes}-${dia}`;
+		}
+	};
+
 	this.anyadirEtiquetas = function (...newEtiquetas) {
 		// Mediante función flecha. Mediante parámetro REST y forEach se controla la ejecución de arrays vacíos sin error.
 		newEtiquetas.forEach((etiqueta) => {
@@ -185,7 +208,7 @@ export {
 	borrarGasto,
 	calcularTotalGastos,
 	calcularBalance,
-	filtarGastos,
+	filtrarGastos,
 	agruparGastos,
 	CrearGasto,
 };
