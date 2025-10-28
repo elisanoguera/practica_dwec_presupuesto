@@ -21,7 +21,8 @@ function mostrarPresupuesto() {
     return 'Tu presupuesto actual es de ' + presupuesto + ' €';
 }
 
-function CrearGasto(descripcion, valor) {
+function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
+// Propiedades
     this.descripcion = String(descripcion);
 
     // Si el tipo de dato valor es de tipo numero y es mayor o igual a 0 y no es null
@@ -32,7 +33,8 @@ function CrearGasto(descripcion, valor) {
             this.valor = 0;
         };
     
-        // Métodos
+
+// Métodos
     this.mostrarGasto = function() {
         return 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €';
     }
@@ -46,9 +48,44 @@ function CrearGasto(descripcion, valor) {
     this.actualizarValor = function(newValor) {
         if (typeof newValor === 'number' && newValor >= 0 && !isNaN(newValor)) {
             this.valor = newValor;
-        }   
+        } 
+    }
 
-}
+    // Actualizar fecha
+    // Recibe fecha en formato texto y la convierte a formato timestamp con Date.parse
+    this.actualizarFecha = function (fecha){
+        let fechaNueva = Date.parse (fecha);
+    // Si la fecha es valida (no es NaN) se actualiza la propiedad fecha
+        if (!isNaN(fechaNueva)){
+            this.fecha = fechaNueva;
+        }
+    }
+
+    // Actualizar etiquetas
+    this.anyadirEtiquetas = function (...nuevasEtiquetas){ 
+        for(let etiq of nuevasEtiquetas){
+            this.etiquetas.push(etiq);
+        }
+    }
+
+    
+        
+    // Mostrará la suma de todos los gastos, devuelve texto multilinea
+    // Creamos el objeto fecha con new Date pasandole como parametro fecha, El formato de la fecha con toLocaleString
+    // Recorremos el array etiquetas para mostrarlas en lineas separadas
+    this.mostrarGastoCompleto = function() {
+        let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+    
+                    Fecha: ${new Date (this.fecha).toLocaleString()}
+   
+                    Etiquetas:\n`;
+                    for (let etiq of this.etiquetas) {
+                        texto += `- ${etiq}\n`;
+                    }
+                    return texto;
+    }
+
+
 }
 
 // Funciones vacias de momento
@@ -58,36 +95,33 @@ function listarGastos() {
 
 
 function anyadirGasto(gasto) {
-// Añadir ID al gasto, modifico el OBJETO que me pasan
-    gasto.id = idGasto;
-    
-    // Incrementar el contador para el próximo gasto, modifica la variable GLOBAL
-    idGasto = idGasto + 1;
-    
-    
-    //Añadir el gasto al array, modifica el array GLOBAL
+// Incrementar el contador para el próximo gasto, modifica la variable GLOBAL idGasto, esto lo gestiona la aplicación no el usuario
+    gasto.id = idGasto++;
     gastos.push(gasto);
 }
 
 
-function borrarGasto(id) {
-// Buscar la posición del gasto con ese id
-// indice es una variable donde guardamos la posición del gasto a borrar.
-    const indice = gastos.findIndex(function(gasto) {
-    return gasto.id === id;
-    });
 
-  // Si el gasto existe (findIndex no devuelve -1), lo eliminamos
+function borrarGasto(id) {
+    let indice = -1;
+    
+    for (let i = 0; i < gastos.length; i++) {
+        if (gastos[i].id === id) {
+            indice = i;
+        }
+    }
+    
     if (indice !== -1) {
-    gastos.splice(indice, 1);
+        gastos.splice(indice, 1);
     }
 }   
 
 
 function calcularTotalGastos() {
 let total = 0;
-    for (let i = 0; i < gastos.length; i++) {
-        total = total + gastos[i].valor;
+    for (let gas of gastos) {
+        // for (let i = 0; i < gastos.length; i++) {
+        total = total + gas.valor;
     }
     return total;
 }
