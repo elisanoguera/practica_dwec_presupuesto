@@ -41,24 +41,24 @@ function CrearGasto(descripcion,valor,fecha, ...etiquetas)
     //propriedades
 this.descripcion=descripcion;
 this.valor=valor;
-this.etiquetas=[],
+this.etiquetas=[];
 //this.fecha=Date.now();//NO SE DEBE PONER AQUI PORQUE ÉCRASE LO QUE HE HECHO ANTES
 
 //metodos
     this.mostrarGasto=function()
     {
-        return "Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €";
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     }
-    this.actualizarDescripcion=function(neuvaDescripcion)
+    this.actualizarDescripcion=function(nuevaDescripcion)
     {
         this.descripcion=nuevaDescripcion
-        return this.descripcion;
+        //return this.descripcion;
     }
     this.actualizarValor=function(nuevoValor)
     {
-        if (typeof neuvoValor=="number" && neuevovalor>=0)
-        this.valor=neuvovalor;
-        return this.valor;
+        if (typeof nuevoValor=="number" && nuevoValor>=0)
+        this.valor=nuevoValor;
+        //return this.valor;
     }
     this.anyadirEtiquetas=function(...neuvastiqueta)
     {
