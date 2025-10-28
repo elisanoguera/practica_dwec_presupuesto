@@ -62,6 +62,12 @@ function calcularBalance() {
 	return balance;
 }
 
+// filtrarGastos -
+function filtrarGastos() {}
+
+// agruparGastos -
+function agruparGastos() {}
+
 // Función Constructora del objeto Gasto
 // Pasamos los parámetros a partir del tercero como un array a las etiquetas
 function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
@@ -179,5 +185,7 @@ export {
 	borrarGasto,
 	calcularTotalGastos,
 	calcularBalance,
+	filtarGastos,
+	agruparGastos,
 	CrearGasto,
 };
