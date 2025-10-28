@@ -39,7 +39,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
 
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\n` +
             `Fecha: ${fechaLocalizada}\n` +
-            `Etiquetas:\n${textoEtiquetas}`;
+            `Etiquetas:\n${textoEtiquetas}\n`;
     }
     this.actualizarFecha = function (nuevaFecha) {
         let fechaCorrecta = Date.parse(nuevaFecha);
