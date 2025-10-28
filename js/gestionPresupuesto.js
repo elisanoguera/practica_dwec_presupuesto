@@ -7,7 +7,7 @@ function actualizarPresupuesto(presup)
     {
         // TODO
         //let introducir=prompt("intro el coste") el enunciado no lo pide
-        let valor=Number(precup);
+        let valor=Number(presup);
         if(isNaN(valor)||valor<0)
             {
                 console.log("error");
