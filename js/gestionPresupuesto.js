@@ -46,7 +46,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     // Etiquetas
     // Creo un array vacio y utilizo esta función que ya comprueba que no haya etiquetas repetidas
     this.etiquetas = [];
-    this.anyadirEtiquetas(...etiquetas);
+    
 
     
 
@@ -104,18 +104,16 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     // Creamos el objeto fecha con new Date pasandole como parametro fecha, El formato de la fecha con toLocaleString
     // Recorremos el array etiquetas para mostrarlas en lineas separadas
     this.mostrarGastoCompleto = function() {
-        let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
-    
-                    Fecha: ${new Date (this.fecha).toLocaleString()}
-   
-                    Etiquetas:\n`;
-                    for (let etiq of this.etiquetas) {
-                        texto += `- ${etiq}\n`;
-                    }
-                    return texto;
+        let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\n\n`;
+            texto += `Fecha: ${new Date(this.fecha).toLocaleString()}\n\n`;
+            texto += `Etiquetas:\n`;
+        for (let etiq of this.etiquetas) {
+            texto += `- ${etiq}\n`;
+        }
+        return texto;
     }
 
-
+    this.anyadirEtiquetas(...etiquetas);
 }
 
 // Funciones vacias de momento
