@@ -104,11 +104,11 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     // Creamos el objeto fecha con new Date pasandole como parametro fecha, El formato de la fecha con toLocaleString
     // Recorremos el array etiquetas para mostrarlas en lineas separadas
     this.mostrarGastoCompleto = function() {
-        let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\n\n`;
-            texto += `Fecha: ${new Date(this.fecha).toLocaleString()}\n\n`;
-            texto += `Etiquetas:\n`;
+        let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\n;
+        Fecha: ${new Date(this.fecha).toLocaleString()}\n;
+        Etiquetas:\n`;
         for (let etiq of this.etiquetas) {
-            texto += `- ${etiq}\n`;
+        texto += `- ${etiq}\n`;
         }
         return texto;
     }
