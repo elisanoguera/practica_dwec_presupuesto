@@ -34,6 +34,8 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         };
 
     // Fecha
+    // Parse me devuelve un número si el formato de fecha es valido, si no es valido devuelve NaN osea false
+    // Si la fecha no es valida se asigna la fecha actual
     let fech = Date.parse(fecha);
     if (!isNaN(fech)){
         this.fecha = fech;
@@ -42,6 +44,10 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     };
 
     // Etiquetas
+    // Creo un array vacio y utilizo esta función que ya comprueba que no haya etiquetas repetidas
+    this.etiquetas = [];
+    this.anyadirEtiquetas(...etiquetas);
+
     
 
 // Métodos
@@ -70,6 +76,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
             this.fecha = fechaNueva;
         }
     }
+
 
     // Añadir etiquetas: recorro el listado de etiquetas pasadas como parametro, si no existe en el array etiquetas lo añado.
     // Uso indexof para comprobar si existe la etiqueta en el array
