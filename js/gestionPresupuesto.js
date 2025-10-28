@@ -12,7 +12,7 @@ function actualizarPresupuesto(valor) {
         presupuesto = valor;
         return presupuesto;
     } else {
-        console.log("Error. No es un número válido.")
+        console.log("Error. No es un número válido.");
         return -1;
     }
 }
@@ -24,46 +24,86 @@ function mostrarPresupuesto() {
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.descripcion = descripcion;
     this.valor = (valor >= 0) ? valor : 0;  // En caso de que el valor introducido no sea un núḿero no negativo, se asigna el valor 0.
-    this.fecha = function (fecha) {
-        try {
-            (fecha == "") ? Date.now() : Date.parse(fecha);
-            return fecha;
-        } catch (error) {
-            return Date.now();
-        }
-    }
-    this.etiquetas = etiquetas;
-    
+    this.fecha = (isNaN(Date.parse(fecha))) ? new Date().getTime() : Date.parse(fecha);
+    this.etiquetas = (etiquetas.length > 0) ? etiquetas : [];
+
     this.mostrarGasto = function () {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
-    };
+    }
+
     this.actualizarDescripcion = function (nuevaDescripcion) {
         this.descripcion = nuevaDescripcion;
-    };
+    }
+
     this.actualizarValor = function (nuevoValor) {
         if (nuevoValor >= 0) {
             this.valor = nuevoValor;
         }
-    };
+    }
+
+    this.mostrarGastoCompleto = function () {
+        let texto =
+            `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+Fecha: ${new Date(this.fecha).toLocaleString()}
+Etiquetas:\n`;
+        for (let etiqueta of this.etiquetas) {
+            texto += `- ${etiqueta}\n`
+        }
+        return texto
+    }
+
+    this.actualizarFecha = function (fecha) {
+        if (!isNaN(Date.parse(fecha))) {    //Si no se puede transformar la fecha a timestamp, devuelve NaN.
+            this.fecha = Date.parse(fecha);
+        }
+    }
+
+    this.anyadirEtiquetas = function (...nuevasEtiquetas) {
+        //Deberá comprobar que no se creen duplicados.
+        for (let etiqueta of nuevasEtiquetas) {
+            if (!this.etiquetas.includes(etiqueta)) {
+                this.etiquetas.push(etiqueta);
+            }
+        }
+    }
+
+    this.borrarEtiquetas = function (...etiquetasBorrar) {
+        for (let etiqueta of etiquetasBorrar) {
+            if (this.etiquetas.indexOf(etiqueta) != -1) {    //Con 'indexOF()' si no se encuentra el valor en el array, devuelve -1.
+                this.etiquetas.splice(this.etiquetas.indexOf(etiqueta), 1);
+            }
+        }
+    }
 }
 
 function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto() {
-
+function anyadirGasto(gasto) {
+    gasto.id = idGasto;
+    idGasto++;
+    gastos.push(gasto);
 }
 
-function borrarGasto() {
-
+function borrarGasto(indice) {
+    let i = gastos.findIndex(gasto => gasto.id == indice);
+    if (i != -1) {
+        gastos.splice(i, 1);
+    }
 }
 
 function calcularTotalGastos() {
+    let total = 0;
+    for (let i = 0; i < gastos.length; i++) {
+        total += gastos[i].valor;
+    }
+    return total;
 }
 
 function calcularBalance() {
-
+    let balance = presupuesto - calcularTotalGastos();
+    return balance;
 }
 
 
