@@ -3,14 +3,15 @@
 // TODO: Variable global
 let presupuesto=0;
 
-function actualizarPresupuesto()
+function actualizarPresupuesto(presup)
     {
         // TODO
-        let introducir=prompt("intro el coste")
-        let valor=Number(introducir)
+        //let introducir=prompt("intro el coste") el enunciado no lo pide
+        let valor=Number(precup);
         if(isNaN(valor)||valor<0)
             {
-                alert("error")
+                console.log("error");
+                //alert("error")
                 return -1;
             }
             presupuesto=valor;
