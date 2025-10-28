@@ -10,8 +10,8 @@ function actualizarPresupuesto(presup)
         let valor=Number(presup);
         if(isNaN(valor)||valor<0)
             {
-                console.log("error");
-                //alert("error")
+                console.log("error  con el presupuesto");
+                //alert("error con el presupuesto")
                 return -1;
             }
             presupuesto=valor;
@@ -19,7 +19,7 @@ function actualizarPresupuesto(presup)
     }
     function mostrarPresupuesto() {
     
-    return "Tu presupuesto actual es de ${presupuesto} €";
+    return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 function CrearGasto(descripcion,valor,fecha, ...etiquetas)
 {
