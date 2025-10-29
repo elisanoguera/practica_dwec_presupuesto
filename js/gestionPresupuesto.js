@@ -118,7 +118,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.anyadirEtiquetas(...etiquetas);
 }
 
-// Funciones vacias de momento
+// Funciones 
 function listarGastos() {
     return gastos;
 }
