@@ -127,7 +127,39 @@ function filtrarGastos(filtro) {
 }
 
 // agruparGastos -
-function agruparGastos() {}
+function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
+	// 1. En primer lugar llamamos a filtrarGastos para obtener el subconjunto que cumple los parámetros
+	/* 1.1. Creamos el objeto que contiene los filtros. Si no se pasan los parámetros, se crean como 	undefined y todos los gastos pasan el filtro.
+	La validación de fechas se realiza en la función filtrarGastos() */
+	const filtro = {
+		etiquetasTiene: etiquetas,
+		fechaDesde: fechaDesde,
+		fechaHasta: fechaHasta,
+	};
+	// 1.2. Obtenemos el array de gastos filtrados
+	const gastosFiltrados = filtrarGastos(filtro);
+
+	// 2. Ejecutamos reduce sobre gastosFiltrados
+	let resultado = gastosFiltrados.reduce(function (acumulador, gasto) {
+		// 2.1. Obtenemos el periodo de agrupación del gasto según el periodo indicado
+		const periodoAgrupacion = gasto.obtenerPeriodoAgrupacion(periodo);
+
+		/* 2.2. Accedemos al objeto acumulador y comprobamos si ese periodo existe. 
+				- Si no existe, se inicializa con el valor del gasto
+				- Si existe, se suma el valor del gasto 
+		*/
+		if (acumulador[periodoAgrupacion]) {
+			acumulador[periodoAgrupacion] += gasto.valor;
+		} else {
+			acumulador[periodoAgrupacion] = gasto.valor;
+		}
+
+		// Al definirlo con function, debemos indicar que devuelve la función.
+		return acumulador;
+	}, {});
+
+	return resultado;
+}
 
 // Función Constructora del objeto Gasto
 // Pasamos los parámetros a partir del tercero como un array a las etiquetas
