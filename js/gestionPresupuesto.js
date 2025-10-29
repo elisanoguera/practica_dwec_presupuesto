@@ -179,10 +179,70 @@ function calcularBalance() {
 return presupuesto - calcularTotalGastos();
 }
 
-function filtrarGastos() {
+
+// Este "filtro" será un objeto con posibles propiedades (fechaDesde, valorMinimo, etc.)
+function filtrarGastos(filtro) {
+    // Usamos filter  Este método devuelve un nuevo array con solo los elementos que cumplen las condiciones.
+    return gastos.filter(function(gasto) {
+        let cumple = true; // asumimos que el gasto cumple con todos los criterios
+
+    // Comprobamos si la fecha del gasto es posterior o igual a esa fecha.
+    if (filtro.fechaDesde) {
+        if (new Date(gasto.fecha) < new Date(filtro.fechaDesde)) {
+        cumple = false;
+        }
+    }
+
+    // Fecha máxima
+    if (filtro.fechaHasta) {
+        if (new Date(gasto.fecha) > new Date(filtro.fechaHasta)) {
+        cumple = false;
+        }
+    }
+
+    // Valor mínimo
+    if (filtro.valorMinimo) {
+        if (gasto.valor < filtro.valorMinimo) {
+        cumple = false;
+        }
+    }
+
+    // Valor máximo
+    if (filtro.valorMaximo) {
+        if (gasto.valor > filtro.valorMaximo) {
+        cumple = false;
+        }
+    }
+
+    // Descripción que contiene (sin distinguir mayúsculas/minúsculas)
+    if (filtro.descripcionContiene) {
+        let texto = filtro.descripcionContiene.toLowerCase();
+        let descripcion = gasto.descripcion.toLowerCase();
+        if (descripcion.indexOf(texto) === -1) {
+            cumple = false;
+        }
+    }
+    if (filtro.etiquetasTiene) {
+      // Queremos que el gasto tenga al menos UNA etiqueta de las indicadas.
+      // Usamos some() para comprobar si alguna etiqueta del gasto coincide.
+        cumple = cumple && gasto.etiquetas.some(eti =>
+        filtro.etiquetasTiene.some(e =>
+            eti.toLowerCase() === e.toLowerCase()
+        )
+        );
+    }
+    // true → el gasto cumple todas las condiciones y se incluye en el nuevo array.
+    // false → el gasto no cumple alguna condición y se descarta.
+    return cumple;
+});
+
 }
 
-function agruparGastos() {
+
+function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
+
+
+
 }
 
 
