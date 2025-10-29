@@ -98,6 +98,24 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         this.etiquetas = newEtiquetas;
     }
 
+    // obtenerPeriodoAgrupacion sirve para agrupar gastos por año, mes o día según el formato de la fecha
+    this.obtenerPeriodoAgrupacion = function(periodo) {
+        let fech = new Date(this.fecha);  // Crear objeto fecha
+        let isoFecha = fech.toISOString();  // Convertir a cadena ISO
+    
+                if (periodo === "anyo") {
+                return isoFecha.slice(0,4); // extrae los 4 primeros caracteres, que corresponden al año
+            }
+                if (periodo === "mes") {
+                return isoFecha.slice(0,7); // extrae los 7 primeros caracteres, da el año y mes, ideal para agrupar por meses
+            }
+                if (periodo === "dia") {
+                return isoFecha.slice(0,10); // extrae los 10 primeros caracteres, da el año, mes y día, ideal para agrupar por día
+            }
+            return isoFecha.slice(0,7); // Si el parámetro periodo no coincide con ninguno de los anteriores,
+                                        // la función devuelve el mes por defecto
+    }
+
 
         
     // Mostrará la suma de todos los gastos, devuelve texto multilinea
