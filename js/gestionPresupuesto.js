@@ -116,7 +116,6 @@ function CrearGasto(descripcion, valor, fecha) {
 };
 }
 
-//Funciones acordes a la práctica 2
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
@@ -153,103 +152,12 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos(); 
 }
 
-// === FUNCIÓN: filtrarGastos ===
 function filtrarGastos(opciones) {
-    var resultado = [];
     
-    for (var i = 0; i < gastos.length; i++) {
-        var gasto = gastos[i];
-        var incluir = true;
-
-        // fechaDesde
-        if (opciones && opciones.fechaDesde) {
-            var fechaDesde = Date.parse(opciones.fechaDesde);
-            if (gasto.fecha < fechaDesde) {
-                incluir = false;
-            }
-        }
-
-        // fechaHasta
-        if (opciones && opciones.fechaHasta) {
-            var fechaHasta = Date.parse(opciones.fechaHasta);
-            if (gasto.fecha > fechaHasta) {
-                incluir = false;
-            }
-        }
-
-        // valorMinimo
-        if (opciones && opciones.valorMinimo !== undefined) {
-            if (gasto.valor < opciones.valorMinimo) {
-                incluir = false;
-            }
-        }
-
-        // valorMaximo
-        if (opciones && opciones.valorMaximo !== undefined) {
-            if (gasto.valor > opciones.valorMaximo) {
-                incluir = false;
-            }
-        }
-
-        // descripcionContiene
-        if (opciones && opciones.descripcionContiene) {
-            var desc = gasto.descripcion.toLowerCase();
-            var busqueda = opciones.descripcionContiene.toLowerCase();
-            if (desc.indexOf(busqueda) === -1) {
-                incluir = false;
-            }
-        }
-
-        // etiquetasTiene
-        if (opciones && opciones.etiquetasTiene && opciones.etiquetasTiene.length > 0) {
-            var tieneEtiqueta = false;
-            if (gasto.etiquetas && gasto.etiquetas.length > 0) {
-                for (var j = 0; j < opciones.etiquetasTiene.length; j++) {
-                    var etiquetaBuscada = opciones.etiquetasTiene[j];
-                    for (var k = 0; k < gasto.etiquetas.length; k++) {
-                        if (gasto.etiquetas[k].toLowerCase() === etiquetaBuscada.toLowerCase()) {
-                            tieneEtiqueta = true;
-                            break;
-                        }
-                    }
-                    if (tieneEtiqueta) break;
-                }
-            }
-            if (!tieneEtiqueta) {
-                incluir = false;
-            }
-        }
-
-        if (incluir) {
-            resultado.push(gasto);
-        }
-    }
-
-    return resultado;
 }
 
-// === FUNCIÓN: agruparGastos ===
+
 function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
-    // Construir objeto de opciones para filtrarGastos
-    var opciones = {};
-    if (fechaDesde) opciones.fechaDesde = fechaDesde;
-    if (fechaHasta) opciones.fechaHasta = fechaHasta;
-    if (etiquetas && etiquetas.length > 0) opciones.etiquetasTiene = etiquetas;
-
-    var gastosFiltrados = filtrarGastos(opciones);
-    var resultado = {};
-
-    for (var i = 0; i < gastosFiltrados.length; i++) {
-        var gasto = gastosFiltrados[i];
-        var clave = gasto.obtenerPeriodoAgrupacion(periodo || 'mes');
-
-        if (!resultado[clave]) {
-            resultado[clave] = 0;
-        }
-        resultado[clave] += gasto.valor;
-    }
-
-    return resultado;
 }
 
 
