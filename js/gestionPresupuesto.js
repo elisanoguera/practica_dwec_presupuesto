@@ -95,26 +95,22 @@ function CrearGasto(descripcion, valor, fecha) {
         }
     };
     this.obtenerPeriodoAgrupacion = function(periodo) {
-    
-    if (!periodo || periodo === 'dia') {
-        var fecha = new Date(this.fecha);
-        var año = fecha.getFullYear();
-        var mes = String(fecha.getMonth() + 1).padStart(2, '0');
-        var dia = String(fecha.getDate()).padStart(2, '0');
-        return año + '-' + mes + '-' + dia;
+    var fecha = new Date(this.fecha);
+    var año = fecha.getFullYear();
+    var mes = fecha.getMonth() + 1;
+    var dia = fecha.getDate();
+
+    if (mes < 10) mes = "0" + mes;
+    if (dia < 10) dia = "0" + dia;
+
+    if (periodo === "mes") {
+        return año + "-" + mes;
     }
-    else if (periodo === 'mes') {
-        var fecha = new Date(this.fecha);
-        var año = fecha.getFullYear();
-        var mes = String(fecha.getMonth() + 1).padStart(2, '0');
-        return año + '-' + mes;
+    if (periodo === "anyo") {
+        return año + "";
     }
-    else if (periodo === 'anyo') {
-        var fecha = new Date(this.fecha);
-        return fecha.getFullYear().toString();
-    }
+    return año + "-" + mes + "-" + dia;
 };
-}
 
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
