@@ -1,11 +1,11 @@
-name: 02 - Fundamentos de JS II - Tests
+name: 04 - Interacción con HTML - Tests
 
 on:
   push:
-    # Ejecutar la acción al hacer un push a la rama "main"
+    # Ejecutar la acción al hacer un push a la rama "master"
     branches: [ main ]
   pull_request:
-    # Ejecutar la acción al hacer una pull request a la rama "main"
+    # Ejecutar la acción al hacer una pull request a la rama "master"
     branches: [ main ]
 
 jobs:
@@ -27,5 +27,5 @@ jobs:
         run: npm ci
       # Ejecución de los tests
       - name: Ejecutar tests
-        run: npm run test2
+        run: npm run test4
 
