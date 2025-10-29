@@ -63,7 +63,68 @@ function calcularBalance() {
 }
 
 // filtrarGastos -
-function filtrarGastos() {}
+function filtrarGastos(filtro) {
+	/* El método filter itera sobre cada elemento del array y lo añade al nuevo array si devuelve true la función que se define en el parámetro */
+	let gastosFiltrados = gastos.filter(function (gasto) {
+		// Establecemos el valor el true para que en caso de recibir un objeto vacío devuelva todos los gastos. Las condiciones del filtro serán que no se cumplan, volviéndolo false.
+		let valido = true;
+
+		// fechaDesde
+		if (Date.parse(filtro.fechaDesde)) {
+			const fechaDesde = Date.parse(filtro.fechaDesde); // Date.parse devuelve timestamp
+			if (gasto.fecha < fechaDesde) {
+				valido = false;
+			}
+		}
+
+		// fechaHasta
+		if (Date.parse(filtro.fechaHasta)) {
+			const fechaHasta = Date.parse(filtro.fechaHasta);
+			if (gasto.fecha > fechaHasta) {
+				valido = false;
+			}
+		}
+
+		// valorMinimo
+		if (gasto.valor < filtro.valorMinimo) {
+			valido = false;
+		}
+
+		// valorMaximo
+		if (gasto.valor > filtro.valorMaximo) {
+			valido = false;
+		}
+
+		// descripcionContiene
+		if (filtro.descripcionContiene) {
+			const gastoDescripcionLower = gasto.descripcion.toLowerCase();
+			if (
+				!gastoDescripcionLower.includes(
+					filtro.descripcionContiene.toLowerCase()
+				)
+			) {
+				valido = false;
+			}
+		}
+
+		// etiquetasTiene
+		if (filtro.etiquetasTiene) {
+			/* Mediante .some() comprobamos cada etiqueta del gasto si está incluida en el array
+			etiquetasTiene. Devolverá true si encuentra al menos una y false si no hay ninguna */
+			const tieneAlgunaEtiqueta = gasto.etiquetas.some((etiqueta) =>
+				filtro.etiquetasTiene.includes(etiqueta)
+			);
+			// Si no contiene ninguna, tieneAlgunaEtiqueta será false.
+			if (!tieneAlgunaEtiqueta) {
+				valido = false;
+			}
+		}
+
+		return valido;
+	});
+
+	return gastosFiltrados;
+}
 
 // agruparGastos -
 function agruparGastos() {}
@@ -147,7 +208,8 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 		// Obtenemos por separado los componentes de año, mes y día de dicha fecha.
 		let anyo = fechaGasto.getFullYear().toString();
 
-		// .padStart(2, "0") aplicado a un string hace que tenga length de 2 y añada al principio (Start) tantos caracteres "0" como necesite para llegar al length, así aseguramos el formato "09" por ejemplo.
+		/* .padStart(2, "0") aplicado a un string hace que tenga length de 2 y añada al principio (Start) tantos caracteres "0" como necesite para llegar al length, así aseguramos el formato "09" por ejemplo.*/
+
 		let mes = (fechaGasto.getMonth() + 1).toString().padStart(2, "0");
 		let dia = fechaGasto.getDate().toString().padStart(2, "0");
 
