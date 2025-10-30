@@ -94,28 +94,29 @@ function CrearGasto(descripcion, valor, fecha) {
             }
         }
     };
+
     this.obtenerPeriodoAgrupacion = function(periodo) {
-    var fecha = new Date(this.fecha);
-    var año = fecha.getFullYear();
-    var mes = fecha.getMonth() + 1;
-    var dia = fecha.getDate();
+        var fecha = new Date(this.fecha);
+        var año = fecha.getFullYear();
+        var mes = fecha.getMonth() + 1;
+        var dia = fecha.getDate();
 
-    if (mes < 10) mes = "0" + mes;
-    if (dia < 10) dia = "0" + dia;
+        if (mes < 10) mes = "0" + mes;
+        if (dia < 10) dia = "0" + dia;
 
-    if (periodo === "mes") {
-        return año + "-" + mes;
-    }
-    if (periodo === "anyo") {
-        return año + "";
-    }
-    return año + "-" + mes + "-" + dia;
-};
+        if (periodo === "mes") {
+            return año + "-" + mes;
+        }
+        if (periodo === "anyo") {
+            return año + "";
+        }
+        return año + "-" + mes + "-" + dia;
+    };
+}
 
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
-
 
 function listarGastos() {
     return gastos;
@@ -157,41 +158,81 @@ function filtrarGastos(opciones) {
 
         if (opciones && opciones.fechaDesde) {
             var fechaDesde = Date.parse(opciones.fechaDesde);
-            if (gasto.fecha < fechaDesde) {
-                incluir = false;
-            }
+            if (gasto.fecha < fechaDesde) incluir = false;
         }
 
         if (opciones && opciones.fechaHasta) {
             var fechaHasta = Date.parse(opciones.fechaHasta);
-            if (gasto.fecha > fechaHasta) {
-                incluir = false;
-            }
+            if (gasto.fecha > fechaHasta) incluir = false;
         }
 
         if (opciones && opciones.valorMinimo !== undefined) {
-            if (gasto.valor < opciones.valorMinimo) {
-                incluir = false;
-            }
+            if (gasto.valor < opciones.valorMinimo) incluir = false;
         }
 
         if (opciones && opciones.valorMaximo !== undefined) {
-            if (gasto.valor > opciones.valorMaximo) {
+            if (gasto.valor > opciones.valorMaximo) incluir = false;
+        }
+
+        if (opciones && opciones.descripcionContiene) {
+            var desc = gasto.descripcion.toLowerCase();
+            var busqueda = opciones.descripcionContiene.toLowerCase();
+            if (desc.indexOf(busqueda) === -1) incluir = false;
+        }
+
+        if (opciones && opciones.etiquetasTiene && opciones.etiquetasTiene.length > 0) {
+            var tieneEtiqueta = false;
+            if (gasto.etiquetas && gasto.etiquetas.length > 0) {
+                for (var j = 0; j < opciones.etiquetasTiene.length; j++) {
+                    var etiquetaBuscada = opciones.etiquetasTiene[j].toLowerCase();
+                    for (var k = 0; k < gasto.etiquetas.length; k++) {
+                        if (gasto.etiquetas[k].toLowerCase() === etiquetaBuscada) {
+                            tieneEtiqueta = true;
+                            break;
+                        }
+                    }
+                    if (tieneEtiqueta) break;
+                }
+            }
+            if (!tieneEtiqueta) {
                 incluir = false;
             }
         }
-    }
-}
 
+        if (incluir) {
+            resultado.push(gasto);
+        }
+    }
+
+    return resultado;
+}
 
 function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
-}
+    var opciones = {};
+    if (fechaDesde) opciones.fechaDesde = fechaDesde;
+    if (fechaHasta) opciones.fechaHasta = fechaHasta;
+    if (etiquetas && etiquetas.length > 0) opciones.etiquetasTiene = etiquetas;
 
+    var gastosFiltrados = filtrarGastos(opciones);
+    var resultado = {};
+
+    for (var i = 0; i < gastosFiltrados.length; i++) {
+        var gasto = gastosFiltrados[i];
+        var clave = gasto.obtenerPeriodoAgrupacion(periodo || 'mes');
+
+        if (!resultado[clave]) {
+            resultado[clave] = 0;
+        }
+        resultado[clave] += gasto.valor;
+    }
+
+    return resultado;
+}
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
-export   {
+export{
     actualizarPresupuesto,
     mostrarPresupuesto, 
     listarGastos,
@@ -202,4 +243,4 @@ export   {
     CrearGasto,
     filtrarGastos, 
     agruparGastos
-}
+};
