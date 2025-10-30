@@ -239,25 +239,29 @@ function filtrarGastos(filtro) {
 }
 
 
-function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = new Date().toISOString().slice(0, 10)) {
-    // 1. FILTRAR gastos según criterios
+function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
+    // FILTRAR gastos según criterios
     let gastosFiltrados = filtrarGastos({
         etiquetasTiene: etiquetas,
         fechaDesde: fechaDesde,
         fechaHasta: fechaHasta
     });
 
-    // 2. AGRUPAR gastos por período
+    // AGRUPAR gastos por período
     return gastosFiltrados.reduce(function(acc, gasto) {
         let per = gasto.obtenerPeriodoAgrupacion(periodo);
         
-        if (acc[per]) {
-            acc[per] = acc[per] + gasto.valor;
-        } else {
-            acc[per] = gasto.valor;
-        }
-        return acc;
-    }, {});
+        // Si ya existe esa clave en el acumulador, sumamos el valor
+    if (acc[per]) {
+      acc[per] = acc[per] + gasto.valor;
+    } else {
+      // Si no existe, la creamos con el valor inicial
+      acc[per] = gasto.valor;
+    }
+
+    // Devolvemos el acumulador (el objeto resultado)
+    return acc;
+  }, {}); // Valor inicial: objeto vacío
 }
 
 
