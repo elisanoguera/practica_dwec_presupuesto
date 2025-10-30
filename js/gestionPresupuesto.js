@@ -239,9 +239,30 @@ function filtrarGastos(filtro) {
 }
 
 
-function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = new Date().toISOString()) {
+  // Filtramos los gastos con los criterios dados
+  const gastosFiltrados = filtrarGastos({
+    etiquetasTiene: etiquetas,
+    fechaDesde,
+    fechaHasta
+  });
+// 2️⃣ Usamos reduce para agrupar los valores por período
+  return gastos_fil.reduce(function (acc, gasto) {
 
+    // Obtenemos el período correspondiente (día, mes o año)
+    let per = gasto.obtenerPeriodoAgrupacion(periodo);
 
+    // Si ya existe esa clave en el acumulador, sumamos el valor
+    if (acc[per]) {
+      acc[per] = acc[per] + gasto.valor;
+    } else {
+      // Si no existe, la creamos con el valor inicial
+      acc[per] = gasto.valor;
+    }
+
+    // Devolvemos el acumulador (el objeto resultado)
+    return acc;
+  }, {}); // Valor inicial: objeto vacío
 
 }
 
