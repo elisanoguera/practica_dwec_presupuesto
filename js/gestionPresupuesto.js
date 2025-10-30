@@ -107,10 +107,10 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
                 return isoFecha.slice(0,4); // extrae los 4 primeros caracteres, que corresponden al año
             }
                 if (periodo === "mes") {
-                return isoFecha.slice(0,7); // extrae los 7 primeros caracteres, da el año y mes, ideal para agrupar por meses
+                return isoFecha.slice(0,7); // extrae los 7 primeros caracteres, da el año y mes, para agrupar por meses
             }
                 if (periodo === "dia") {
-                return isoFecha.slice(0,10); // extrae los 10 primeros caracteres, da el año, mes y día, ideal para agrupar por día
+                return isoFecha.slice(0,10); // extrae los 10 primeros caracteres, da el año, mes y día, para agrupar por día
             }
             return isoFecha.slice(0,7); // Si el parámetro periodo no coincide con ninguno de los anteriores,
                                         // la función devuelve el mes por defecto
@@ -231,36 +231,39 @@ function filtrarGastos(filtro) {
         )
         );
     }
-    // true → el gasto cumple todas las condiciones y se incluye en el nuevo array.
-    // false → el gasto no cumple alguna condición y se descarta.
+    // true el gasto cumple todas las condiciones y se incluye en el nuevo array.
+    // false el gasto no cumple alguna condición y se descarta.
     return cumple;
 });
 
 }
 
 
+// La función va a sumar los valores (valor) de todos los gastos que pertenezcan al mismo mes dia o año
 function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
-    // FILTRAR gastos según criterios
+    // Filtrar gastos según criterios
     let gastosFiltrados = filtrarGastos({
         etiquetasTiene: etiquetas,
         fechaDesde: fechaDesde,
         fechaHasta: fechaHasta
     });
 
-    // AGRUPAR gastos por período
-    return gastosFiltrados.reduce(function(acc, gasto) {
-        let per = gasto.obtenerPeriodoAgrupacion(periodo);
+    // Usamos reduce para agrupar los valores por período
+    return gastosFiltrados.reduce(function(acumulador, gasto) {
+
+    // Obtenemos el período correspondiente (día, mes o año)
+    let per = gasto.obtenerPeriodoAgrupacion(periodo);
         
-        // Si ya existe esa clave en el acumulador, sumamos el valor
-    if (acc[per]) {
-      acc[per] = acc[per] + gasto.valor;
+    // Si ya existe esa clave en el acumulador, sumamos el valor
+    if (acumulador[per]) {
+        acumulador[per] = acumulador[per] + gasto.valor;
     } else {
-      // Si no existe, la creamos con el valor inicial
-      acc[per] = gasto.valor;
+    // Si no existe, la creamos como el valor inicial
+        acumulador[per] = gasto.valor;
     }
 
     // Devolvemos el acumulador (el objeto resultado)
-    return acc;
+    return acumulador;
   }, {}); // Valor inicial: objeto vacío
 }
 
