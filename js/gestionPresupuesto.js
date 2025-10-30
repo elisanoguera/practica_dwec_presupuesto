@@ -239,33 +239,49 @@ function filtrarGastos(filtro) {
 }
 
 
-function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = new Date().toISOString()) {
-  // Filtramos los gastos con los criterios dados
-  const gastosFiltrados = filtrarGastos({
+function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
+  // Si no se indica periodo, será "mes" por defecto
+  if (!periodo) {
+    periodo = "mes";
+  }
+
+  // Si no se indica etiquetas, será un array vacío por defecto
+  if (!etiquetas) {
+    etiquetas = [];
+  }
+
+  // Si no se indica fechaHasta, usamos la fecha actual
+  if (!fechaHasta) {
+    fechaHasta = new Date().toISOString();
+  }
+
+  // 1️⃣ Filtrar los gastos con los criterios dados
+  var gastosFiltrados = filtrarGastos({
     etiquetasTiene: etiquetas,
-    fechaDesde,
-    fechaHasta
+    fechaDesde: fechaDesde,
+    fechaHasta: fechaHasta
   });
-// 2️⃣ Usamos reduce para agrupar los valores por período
-  return gastos_fil.reduce(function (acc, gasto) {
 
-    // Obtenemos el período correspondiente (día, mes o año)
-    let per = gasto.obtenerPeriodoAgrupacion(periodo);
+  // 2️⃣ Agrupar los gastos filtrados por período usando reduce
+  var resultado = gastosFiltrados.reduce(function (acumulador, gasto) {
+    // Obtenemos el periodo (año, mes o día)
+    var periodoActual = gasto.obtenerPeriodoAgrupacion(periodo);
 
-    // Si ya existe esa clave en el acumulador, sumamos el valor
-    if (acc[per]) {
-      acc[per] = acc[per] + gasto.valor;
+    // Si el periodo ya existe en el acumulador, sumamos el valor del gasto
+    if (acumulador[periodoActual]) {
+      acumulador[periodoActual] = acumulador[periodoActual] + gasto.valor;
     } else {
-      // Si no existe, la creamos con el valor inicial
-      acc[per] = gasto.valor;
+      // Si no existe, lo creamos con el valor inicial del gasto
+      acumulador[periodoActual] = gasto.valor;
     }
 
-    // Devolvemos el acumulador (el objeto resultado)
-    return acc;
-  }, {}); // Valor inicial: objeto vacío
+    // Muy importante: devolvemos el acumulador en cada iteración
+    return acumulador;
+  }, {}); // Valor inicial del acumulador: objeto vacío
 
+  // 3️⃣ Devolvemos el objeto final con los gastos agrupados
+  return resultado;
 }
-
 
 
 //objeto gasto
