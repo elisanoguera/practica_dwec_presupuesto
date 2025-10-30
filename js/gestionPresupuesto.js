@@ -239,49 +239,27 @@ function filtrarGastos(filtro) {
 }
 
 
-function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
-  // Si no se indica periodo, será "mes" por defecto
-  if (!periodo) {
-    periodo = "mes";
-  }
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = new Date().toISOString().slice(0, 10)) {
+    // 1. FILTRAR gastos según criterios
+    let gastosFiltrados = filtrarGastos({
+        etiquetasTiene: etiquetas,
+        fechaDesde: fechaDesde,
+        fechaHasta: fechaHasta
+    });
 
-  // Si no se indica etiquetas, será un array vacío por defecto
-  if (!etiquetas) {
-    etiquetas = [];
-  }
-
-  // Si no se indica fechaHasta, usamos la fecha actual
-  if (!fechaHasta) {
-    fechaHasta = new Date().toISOString();
-  }
-
-  // 1️⃣ Filtrar los gastos con los criterios dados
-  var gastosFiltrados = filtrarGastos({
-    etiquetasTiene: etiquetas,
-    fechaDesde: fechaDesde,
-    fechaHasta: fechaHasta
-  });
-
-  // 2️⃣ Agrupar los gastos filtrados por período usando reduce
-  var resultado = gastosFiltrados.reduce(function (acumulador, gasto) {
-    // Obtenemos el periodo (año, mes o día)
-    var periodoActual = gasto.obtenerPeriodoAgrupacion(periodo);
-
-    // Si el periodo ya existe en el acumulador, sumamos el valor del gasto
-    if (acumulador[periodoActual]) {
-      acumulador[periodoActual] = acumulador[periodoActual] + gasto.valor;
-    } else {
-      // Si no existe, lo creamos con el valor inicial del gasto
-      acumulador[periodoActual] = gasto.valor;
-    }
-
-    // Muy importante: devolvemos el acumulador en cada iteración
-    return acumulador;
-  }, {}); // Valor inicial del acumulador: objeto vacío
-
-  // 3️⃣ Devolvemos el objeto final con los gastos agrupados
-  return resultado;
+    // 2. AGRUPAR gastos por período
+    return gastosFiltrados.reduce(function(acc, gasto) {
+        let per = gasto.obtenerPeriodoAgrupacion(periodo);
+        
+        if (acc[per]) {
+            acc[per] = acc[per] + gasto.valor;
+        } else {
+            acc[per] = gasto.valor;
+        }
+        return acc;
+    }, {});
 }
+
 
 
 //objeto gasto
