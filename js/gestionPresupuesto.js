@@ -193,7 +193,7 @@ function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
 export   {
     actualizarPresupuesto,
-    mostrarPresupuesto,
+    mostrarPresupuesto, 
     listarGastos,
     anyadirGasto,
     borrarGasto,
