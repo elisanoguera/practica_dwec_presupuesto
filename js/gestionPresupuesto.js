@@ -5,29 +5,31 @@
 let presupuesto = 0;
 
 function actualizarPresupuesto(valor) {
-    if (typeof valor !== "number" || isNaN(valor) || valor < 0 ){//corregido
-        console.error (`El valor no es válido ${valor}`);
-        return -1;
+    if ( valor < 0 ){//corregido
+        console.log (`El valor no es válido ${valor}`);
+        return -1;   
     }
-    presupuesto = valor;//actualizo
-    return presupuesto;
-
+    else { 
+        presupuesto = valor;//actualizo
+        return presupuesto;
+    }
 }
 
 function mostrarPresupuesto() {
-    return `Tu presupuesto actual es: ${presupuesto} €`;
+    return `Tu presupuesto actual es de ${presupuesto} €`; //corregido el texto
 
 }
 
-function CrearGasto(description, valor) {
-   if (typeof valor !== "number" || valor < 0){
-    valor = 0;//si es negativo es igual a cero
-   }
-   return {
-    description: description,
-    valor: valor
-   }
+function CrearGasto(descripcion, valor) {
+    this.descripcion = descripcion; //almaceno la descripcion
 
+    if ( valor >= 0 ) {
+        this.valor = valor;
+    }
+    else {
+        this.valor = 0; //si es negativo sera cero
+    }
+    
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
