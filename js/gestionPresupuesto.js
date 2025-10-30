@@ -4,8 +4,15 @@
 
 let presupuesto = 0;
 
-function actualizarPresupuesto() {
-    // TODO
+function actualizarPresupuesto(valor) {
+    //TODO
+    if (typeof valor !== "number" || isNaN(valor) || valor < 0 ){//corregido
+        console.error (`El valor no es válido ${valor}`);
+        return -1;
+    }
+    presupuesto = valor;//actualizo
+    return presupuesto;
+
 }
 
 function mostrarPresupuesto() {
