@@ -38,12 +38,12 @@ function CrearGasto(descripcion, valor) {
 
     this.actualizarDescripcion = function(descripcion){
         this.descripcion = descripcion;
-        return this.descripcion;
+        //return this.descripcion;
     };
 
-    this.actualizarValor = function(valor){
-        if (typeof valor == "number" && valor >= 0) 
-            this.valor = valor; 
+    this.actualizarValor = function(nuevoValor){
+        if (typeof nuevoValor == "number" && nuevoValor >= 0) 
+            this.valor = nuevoValor; 
     };
 
     
