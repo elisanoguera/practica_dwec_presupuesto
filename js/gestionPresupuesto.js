@@ -5,7 +5,7 @@
 let presupuesto = 0;
 
 function actualizarPresupuesto(valor) {
-    if ( valor < 0 ){//corregido
+    if ( typeof valor == "number" && valor < 0 ){//corregido
         console.log (`El valor no es válido ${valor}`);
         return -1;   
     }
@@ -20,15 +20,32 @@ function mostrarPresupuesto() {
 
 }
 
+//objeto gasto - propiedades descripcion y valor
 function CrearGasto(descripcion, valor) {
     this.descripcion = descripcion; //almaceno la descripcion
 
-    if ( valor >= 0 ) {
+    if ( typeof valor == "number" && valor >= 0 ) {
         this.valor = valor;
     }
     else {
         this.valor = 0; //si es negativo sera cero
     }
+
+    //metodos
+    this.mostrarGasto = function(){
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+    };
+
+    this.actualizarDescripcion = function(descripcion){
+        this.descripcion = descripcion;
+        return this.descripcion;
+    };
+
+    this.actualizarValor = function(valor){
+        if (typeof valor == "number" && valor >= 0) 
+            this.valor = valor; 
+    };
+
     
 }
 
