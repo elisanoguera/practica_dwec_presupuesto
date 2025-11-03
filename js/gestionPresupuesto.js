@@ -3,6 +3,8 @@
 // TODO: Variable global
 
 let presupuesto = 0;
+gastto = [];
+idGastos = 0;
 
 function actualizarPresupuesto(valor) {
     if ( typeof valor !== "number" || valor < 0 ){//corregido
@@ -57,5 +59,10 @@ function CrearGasto(descripcion, valor) {
 export   {
     mostrarPresupuesto,
     actualizarPresupuesto,
-    CrearGasto
+    CrearGasto,
+    listarGastos,
+    anyadirGasto,
+    borrarGasto,
+    calcularGastosTotales,
+    calcularBalance
 }
