@@ -46,14 +46,14 @@ function calcularBalance () {
 
 
 //objeto gasto - propiedades descripcion y valor
-function CrearGasto(descripcion, valor) {
+function CrearGasto(descripcion, valor, fecha) {
     this.descripcion = descripcion; //almaceno la descripcion
 
-    if ( typeof valor === "number" && valor >= 0 ) {//son tres iguales
+    if ( typeof valor === "number" && valor >= 0 ) {
         this.valor = valor;
     }
     else {
-        this.valor = 0; //si es negativo sera cero
+        this.valor = 0;
     }
 
     //metodos
@@ -72,6 +72,16 @@ function CrearGasto(descripcion, valor) {
             }
     
     };
+
+
+    //fecha 
+        if (typeof fecha === "string" && !NaN(Date.parse(fecha))) {
+            this.fecha = Date.parse(fecha); //si valida se guarda en formato timestamp
+        }
+        else {
+            this.fecha = Date.now(); //si no fecha actual
+        }
+
 
     
 }
