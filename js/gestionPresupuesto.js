@@ -24,29 +24,29 @@ function mostrarPresupuesto() {
 
 //agrego nuevas funciones vacias 
 //funcion q devuelve gastos
-function listarGastos () {
+function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto () {
+function anyadirGasto() {
 
 }
 
-function borrarGasto () {
+function borrarGasto() {
 
 }
 
-function calcularTotalGastos () {
+function calcularTotalGastos() {
 
 }
 
-function calcularBalance () {
+function calcularBalance() {
 
 }
 
 
 //objeto gasto - propiedades descripcion y valor
-function CrearGasto(descripcion, valor, fecha) {
+function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     this.descripcion = descripcion; //almaceno la descripcion
 
     if ( typeof valor === "number" && valor >= 0 ) {
@@ -72,7 +72,6 @@ function CrearGasto(descripcion, valor, fecha) {
             }
     
     };
-
 
     //fecha 
         if (typeof fecha === "string" && !NaN(Date.parse(fecha))) {
