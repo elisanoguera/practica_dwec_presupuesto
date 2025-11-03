@@ -63,7 +63,6 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
 
     this.actualizarDescripcion = function(descripcion){
         this.descripcion = descripcion;
-        //return this.descripcion;
     };
 
     this.actualizarValor = function(nuevoValor){
@@ -80,6 +79,17 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
         else {
             this.fecha = Date.now(); //si no fecha actual
         }
+      
+    //etiquetas
+    this.etiquetas = []; //si no lo indica array vacio
+    this.anyadirEtiquetas = function(...etiquetasNuevas) {
+        etiquetasNuevas.forEach(etq => { //por cada etiqueta nueva hacer que etq compruebe si
+            if (typeof etq === "string" && !this.etiquetas.includes(etq)) { //es un string-cadena y etq no esta incluida en etiquetas
+                this.etiquetas.push(etq); //inserta al final
+            }
+        });
+    
+    };
 
 
     
