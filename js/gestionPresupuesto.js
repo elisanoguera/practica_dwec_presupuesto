@@ -22,6 +22,28 @@ function mostrarPresupuesto() {
 
 }
 
+//agrego nuevas funciones vacias 
+function listarGastos () {
+
+}
+
+function anyadirGasto () {
+
+}
+
+function borrarGasto () {
+
+}
+
+function calcularTotalGastos () {
+
+}
+
+function calcularBalance () {
+
+}
+
+
 //objeto gasto - propiedades descripcion y valor
 function CrearGasto(descripcion, valor) {
     this.descripcion = descripcion; //almaceno la descripcion
@@ -63,6 +85,6 @@ export   {
     listarGastos,
     anyadirGasto,
     borrarGasto,
-    calcularGastosTotales,
+    calcularTotalGastos,
     calcularBalance
 }
