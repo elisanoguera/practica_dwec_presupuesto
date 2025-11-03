@@ -14,7 +14,7 @@ function actualizarPresupuesto(nuevoPresupuesto) {
         console.log("Error: El presupuesto debe ser un número no negativo");
         return -1;
     }
-}
+} 
 
 function CrearGasto(descripcion, valor, fecha) {
 
