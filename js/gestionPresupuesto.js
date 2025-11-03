@@ -133,7 +133,7 @@ function borrarGasto(id) {
         if (gastos[i].id === id) {
             gastos.splice(i, 1);
             return;
-        }
+        } 
     }
 }
 
