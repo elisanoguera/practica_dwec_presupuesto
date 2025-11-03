@@ -73,23 +73,27 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     };
 
     //fecha 
-        if (typeof fecha === "string" && !NaN(Date.parse(fecha))) {
-            this.fecha = Date.parse(fecha); //si valida se guarda en formato timestamp
+        if (typeof fecha === "string" && !isNaN(Date.parse(fecha))) {
+            this.fecha = Date.parse(fecha);     //si valida se guarda en formato timestamp
         }
         else {
-            this.fecha = Date.now(); //si no fecha actual
+            this.fecha = Date.now();            //si no fecha actual
         }
       
     //etiquetas
-    this.etiquetas = []; //si no lo indica array vacio
+    this.etiquetas = [];                        //si no lo indica array vacio
+
     this.anyadirEtiquetas = function(...etiquetasNuevas) {
-        etiquetasNuevas.forEach(etq => { //por cada etiqueta nueva hacer que etq compruebe si
+        etiquetasNuevas.forEach(etq => {        //por cada etiqueta nueva hacer que etq compruebe si
             if (typeof etq === "string" && !this.etiquetas.includes(etq)) { //es un string-cadena y etq no esta incluida en etiquetas
-                this.etiquetas.push(etq); //inserta al final
+                this.etiquetas.push(etq);       //inserta al final
             }
         });
     
     };
+
+    //uso de metodo anyadirEtiquetas
+    this.anyadirEtiquetas(...etiquetas);
 
 
     
