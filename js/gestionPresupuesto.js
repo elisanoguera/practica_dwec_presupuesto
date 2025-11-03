@@ -3,17 +3,16 @@
 // TODO: Variable global
 var presupuesto = 0; 
 
-var presupuesto = 0; 
-
 function actualizarPresupuesto(valor) {
     // TODO
-    if (isNaN(valor) | (valor < 0)) {
-        alert('Error');
-        return -1;
-    } else {
+    if (!(isNaN(valor)) && (valor >= 0)) {
         presupuesto = valor;
-        //Devuelve el valor introducido para comprobar que no hay error
+        //Devuelve presupuesto para confirmar que no hay error
         return presupuesto;
+    } else {
+        //alert daba error y lo cambio por console.log
+        console.log('Error');
+        return -1;
     }
 }
 
@@ -49,12 +48,13 @@ function CrearGasto(valor, descripcion) {
     let gasto = new CrearGasto (prompt('Introduzca valor del gasto:'), 
         prompt('Introduzca descripción del gasto'));
     
-    return gasto
+    return gasto;
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
+
 export   {
     mostrarPresupuesto,
     actualizarPresupuesto,
