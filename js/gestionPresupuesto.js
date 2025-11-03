@@ -3,13 +3,17 @@
 // TODO: Variable global
 var presupuesto = 0; 
 
+var presupuesto = 0; 
+
 function actualizarPresupuesto(valor) {
     // TODO
-    if (valor >= 0) {
-        presupuesto = valor;
-    } else {
-        alert('Error, el número es negativo');
+    if (isNaN(valor) | (valor < 0)) {
+        alert('Error');
         return -1;
+    } else {
+        presupuesto = valor;
+        //Devuelve el valor introducido para comprobar que no hay error
+        return presupuesto;
     }
 }
 
@@ -41,6 +45,11 @@ function CrearGasto(valor, descripcion) {
             this.valor = nuevoValor;
         }
     }
+
+    let gasto = new CrearGasto (prompt('Introduzca valor del gasto:'), 
+        prompt('Introduzca descripción del gasto'));
+    
+    return gasto
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
