@@ -1,3 +1,4 @@
 node_modules/
 *.log
 *.tmp
+js/interaccionHTML.html

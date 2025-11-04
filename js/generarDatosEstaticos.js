@@ -19,8 +19,8 @@ Presupuesto.anyadirGasto(gasto4);
 Presupuesto.anyadirGasto(gasto5);
 Presupuesto.anyadirGasto(gasto6);
 
-Web.mostrarDatoEnId("gastos-totales", Presupuesto.calcularTotalGastos() + " €");
-Web.mostrarDatoEnId("balance-total", Presupuesto.calcularBalance() + " €");
+Web.mostrarDatoEnId("gastos-totales", Presupuesto.calcularTotalGastos().toFixed(2) + " €");
+Web.mostrarDatoEnId("balance-total", Presupuesto.calcularBalance().toFixed(2) + " €");
 
 var listadoCompleto = Presupuesto.listarGastos();
 for (var i = 0; i < listadoCompleto.length; i++) {

@@ -24,7 +24,7 @@ function mostrarGastoWeb(idElemento, gasto) {
 
     var divValor = document.createElement("div");
     divValor.className = "gasto-valor";
-    divValor.textContent = gasto.valor + " €";
+    divValor.textContent = gasto.valor.toFixed(2) + " €";
     divGasto.appendChild(divValor);
 
     var divEtiquetas = document.createElement("div");
@@ -63,7 +63,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 
             var spanValor = document.createElement("span");
             spanValor.className = "agrupacion-dato-valor";
-            spanValor.textContent = agrup[clave] + " €";
+            spanValor.textContent = Number(agrup[clave]).toFixed(2) + ' €';
             divDato.appendChild(spanValor);
 
             divAgrupacion.appendChild(divDato);
