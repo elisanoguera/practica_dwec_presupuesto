@@ -57,6 +57,8 @@ function calcularBalance() {
 }
 
 
+
+
 //objeto gasto - propiedades descripcion y valor
 function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     this.descripcion = descripcion; //almaceno la descripcion
@@ -107,6 +109,23 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     //uso de metodo anyadirEtiquetas
     this.anyadirEtiquetas(...etiquetas);
 
+    //añado gasto completo
+    this.mostrarGastoCompleto = function() {
+        const fechaLocal = new Date(this.fecha).toLocaleString();
+        let textoEtiquetas = "Etiquetas:";     //texto inicial
+
+        if (this.etiquetas.length) {           //compruebo en la cadena de etiquetas
+            textoEtiquetas += "\n" + this.etiquetas.map(etiq => ` - ${etiq}`).join("\n"); //si etiquetas creo una linea
+        }
+        else {
+            textoEtiquetas += "\n (sin etiquetas)";
+        }
+        
+
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.  //del objeto actual
+        Fecha: ${fechaLocal}
+        ${textoEtiquetas}`;
+    };
 
     
 }
