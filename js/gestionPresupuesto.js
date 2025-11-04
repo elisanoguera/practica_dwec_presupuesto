@@ -29,9 +29,7 @@ function listarGastos() {
 
 function anyadirGasto(gasto) {
     gasto.id = idGasto;        //añado id a gastoy su valor sera idGasto
-
     idGasto++;                 //incremento valor
-
     gastos.push(gasto);        //añado a gastos el gasto
 }
 
@@ -46,10 +44,13 @@ function borrarGasto(id) {
 function calcularTotalGastos() {
     let suma = 0;                   //guardo en suma
     for (let gasto of gastos) {     //recorro gastos y coge gasto en cada vuelta
+        if (typeof gasto.valor === "number") {
         suma += gasto.valor;        //agrego el valor del gasto a la suma
+        }
     }
     return suma;
 }
+
 
 function calcularBalance() {
     return presupuesto - calcularTotalGastos();
@@ -70,10 +71,12 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     }
 
     //validacion de fecha
-    if (typeof fecha === "string" && !isNaN(Date.parse(fecha))) {
-    this.fecha = Date.parse(fecha); //si valida se guarda en formato timestamp
+    if (typeof fecha === "number" && !Number.isNaN(fecha)) {
+        this.fecha = fecha; //si valida se guarda en formato timestamp
     }
-    else {
+    else if (typeof fecha === "string" && !Number.isNaN(Date.parse(fecha))) {
+        this.fecha = Date.parse(fecha);
+    } else {
         this.fecha = Date.now(); //si no fecha actual
     }
 
@@ -140,7 +143,7 @@ ${textoEtiquetas}`;
         if (nuevaFecha === undefined) {
             this.fecha = Date.now();
         }
-        else if (typeof nuevaFecha === "string" && !isNaN(Date.parse(nuevaFecha))){
+        else if (typeof nuevaFecha === "string" && !Number.isNaN(Date.parse(nuevaFecha))){
             this.fecha = Date.parse(nuevaFecha);
         }
         else {
