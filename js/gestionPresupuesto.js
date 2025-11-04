@@ -119,7 +119,8 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
         else {
             textoEtiquetas += "\n(sin etiquetas)";
         }
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+
+return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
 Fecha: ${fechaLocal}
 ${textoEtiquetas}`;
     };
@@ -140,15 +141,12 @@ ${textoEtiquetas}`;
 
     //actualizar fecha 
     this.actualizarFecha = function(nuevaFecha){
-        if (nuevaFecha === undefined) {
-            this.fecha = Date.now();
-        }
-        else if (typeof nuevaFecha === "string" && !Number.isNaN(Date.parse(nuevaFecha))){
-            this.fecha = Date.parse(nuevaFecha);
-        }
-        else {
-            this.fecha = Date.now();
-        }
+        if (typeof nuevaFecha === "string") {
+            const fec = Date.parse(nuevaFecha);
+            if (!Number.isNaN(fec)) {
+                this.fecha = fec;
+            }
+          //si no nada 
 
     }
 
