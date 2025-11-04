@@ -36,8 +36,12 @@ function anyadirGasto(gasto) {
     gastos.push(gasto);        //añado a gastos el gasto
 }
 
-function borrarGasto() {
+function borrarGasto(id) {
+    const indice = gastos.findIndex (gasto => gasto.id === id);     //busco si el indice ya ha sido pasado 
 
+    if ( indice !== -1){
+        gastos.splice(indice, 1)        //elimina un gasto de la global gastos
+    }
 }
 
 function calcularTotalGastos() {
