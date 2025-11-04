@@ -222,7 +222,7 @@ function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
 
         if (!resultado[clave]) {
             resultado[clave] = 0;
-        }
+        } 
         resultado[clave] += gasto.valor;
     }
 

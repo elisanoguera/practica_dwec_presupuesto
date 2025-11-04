@@ -1,5 +1,5 @@
 import * as Presupuesto from './gestionPresupuesto.js';
-import * as Web from './gestionPresupuestoWeb.js';
+import * as Web from './gestionPresupuestoWeb.js'; 
 
 Presupuesto.actualizarPresupuesto(1500);
 

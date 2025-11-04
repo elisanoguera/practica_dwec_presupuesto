@@ -25,7 +25,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     var divValor = document.createElement("div");
     divValor.className = "gasto-valor";
     divValor.textContent = gasto.valor.toFixed(2) + " €";
-    divGasto.appendChild(divValor);
+    divGasto.appendChild(divValor); 
 
     var divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
