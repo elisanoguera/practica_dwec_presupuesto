@@ -51,6 +51,17 @@ export function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
     divPrincipal.className = "agrupacion";
 
     let h1 = document.createElement("h1");
+    if(periodo === "anyo"){
+        periodo = "año";
+    }else{
+        if(periodo === "mes"){
+            periodo = "mes";
+        }else{
+            if(periodo === "dia"){
+                periodo = "día";
+            }
+        }
+    }
     h1.textContent = "Gastos agrupados por " + periodo;
     divPrincipal.append(h1);
 
