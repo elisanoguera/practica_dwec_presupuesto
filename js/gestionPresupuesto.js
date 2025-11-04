@@ -60,7 +60,7 @@ function calcularBalance() {
 
 
 //objeto gasto - propiedades descripcion y valor
-function CrearGasto(descripcion, valor, fecha,...etiquetas) {
+function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
     this.descripcion = descripcion; //almaceno la descripcion
 
     if ( typeof valor === "number" && valor >= 0 ) {
@@ -87,13 +87,13 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     };
 
     //fecha 
-        if (typeof fecha === "string" && !isNaN(Date.parse(fecha))) {
-            this.fecha = Date.parse(fecha);     //si valida se guarda en formato timestamp
+    this.actualizarFecha = function(nuevaFecha){
+        if (typeof nuevaFecha === "string" && !isNaN(Date.parse(nuevaFecha))) {
+            this.fecha = Date.parse(nuevaFecha);     //si valida se guarda en formato timestamp
         }
-        else {
-            this.fecha = Date.now();            //si no fecha actual
-        }
-      
+        
+    }
+
     //etiquetas
     this.etiquetas = [];                        //si no lo indica array vacio
 
@@ -118,13 +118,11 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
             textoEtiquetas += "\n" + this.etiquetas.map(etiq => ` - ${etiq}`).join("\n"); //si etiquetas creo una linea
         }
         else {
-            textoEtiquetas += "\n (sin etiquetas)";
+            textoEtiquetas += "\n(sin etiquetas)";
         }
-        
-
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.  //del objeto actual
-        Fecha: ${fechaLocal}
-        ${textoEtiquetas}`;
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+Fecha: ${fechaLocal}
+${textoEtiquetas}`;
     };
 
     
