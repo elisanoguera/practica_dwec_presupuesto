@@ -1,16 +1,12 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 
-let presupuesto = 0;
-let gastos = [];
-let idGasto = 0;
-
 // TODO: Variable global
 
 function actualizarPresupuesto(nuevoPresupuesto) {
     if (typeof nuevoPresupuesto === 'number' && nuevoPresupuesto >= 0) {
         presupuesto = nuevoPresupuesto;
         return presupuesto;
-    } else {
+    } else { 
         console.log("Error: El presupuesto debe ser un número no negativo");
         return -1;
     }
