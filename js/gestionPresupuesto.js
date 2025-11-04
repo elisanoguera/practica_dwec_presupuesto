@@ -146,9 +146,10 @@ ${textoEtiquetas}`;
             if (!Number.isNaN(fec)) {
                 this.fecha = fec;
             }
-          //si no nada 
+           
 
     }
+}
 
     
     //uso de metodo anyadirEtiquetas
