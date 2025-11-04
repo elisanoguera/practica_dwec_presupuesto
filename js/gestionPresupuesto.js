@@ -45,7 +45,11 @@ function borrarGasto(id) {
 }
 
 function calcularTotalGastos() {
-
+    let suma = 0;                   //guardo en suma
+    for (let gasto of gastos) {     //recorro gastos y coge gasto en cada vuelta
+        suma += gasto.valor;        //agrego el valor del gasto a la suma
+    }
+    return suma;
 }
 
 function calcularBalance() {
