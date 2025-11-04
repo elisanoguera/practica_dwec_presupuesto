@@ -59,7 +59,7 @@ function calcularBalance() {
 
 
 
-//objeto gasto - propiedades descripcion y valor
+//funcion constructora
 function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
     this.descripcion = descripcion; //almaceno la descripcion
 
@@ -88,10 +88,16 @@ function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
 
     //fecha 
     this.actualizarFecha = function(nuevaFecha){
-        if (typeof nuevaFecha === "string" && !isNaN(Date.parse(nuevaFecha))) {
-            this.fecha = Date.parse(nuevaFecha);     //si valida se guarda en formato timestamp
+        if (nuevaFecha === undefined) {
+            this.fecha = Date.now();
         }
-        
+        else if (typeof nuevaFecha === "string" && !isNaN(Date.parse(nuevaFecha))){
+            this.fecha = Date.parse(nuevaFecha);
+        }
+        else {
+            this.fecha = Date.now();
+        }
+
     }
 
     //etiquetas
