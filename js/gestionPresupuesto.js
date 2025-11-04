@@ -19,10 +19,9 @@ function actualizarPresupuesto(valor) {
 
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`; //corregido el texto
-
 }
 
-//agrego nuevas funciones vacias 
+
 //funcion q devuelve gastos
 function listarGastos() {
     return gastos;
@@ -114,6 +113,18 @@ function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
 
     //uso de metodo anyadirEtiquetas
     this.anyadirEtiquetas(...etiquetas);
+
+
+    //borrar etiquetas
+    this.borrarEtiquetas = function(...eliminarEtiquetas){
+        eliminarEtiquetas.forEach(etq => {
+            const indice = this.etiquetas.indexOf(etq);
+                if (indice !== -1){
+                    this.etiquetas.splice(indice, 1);
+                }
+            
+        });
+    }
 
     //añado gasto completo
     this.mostrarGastoCompleto = function() {
