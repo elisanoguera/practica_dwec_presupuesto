@@ -4,7 +4,7 @@
 
 let presupuesto = 0;
 let gastos = [];
-let idGastos = 0;
+let idGasto = 0;
 
 function actualizarPresupuesto(valor) {
     if ( typeof valor !== "number" || valor < 0 ){//corregido
@@ -28,8 +28,12 @@ function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto() {
+function anyadirGasto(gasto) {
+    gasto.id = idGasto;        //añado id a gastoy su valor sera idGasto
 
+    idGasto++;                 //incremento valor
+
+    gastos.push(gasto);        //añado a gastos el gasto
 }
 
 function borrarGasto() {
