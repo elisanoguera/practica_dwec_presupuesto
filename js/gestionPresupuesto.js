@@ -59,7 +59,7 @@ function calcularBalance() {
 
 
 //funcion constructora
-function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
+function CrearGasto(descripcion, valor, fecha,...etiquetas) {
     this.descripcion = descripcion; //almaceno la descripcion
 
     if ( typeof valor === "number" && valor >= 0 ) {
@@ -69,23 +69,73 @@ function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
         this.valor = 0;
     }
 
-    //metodos
+    //validacion de fecha
+    if (typeof fecha === "string" && !isNaN(Date.parse(fecha))) {
+    this.fecha = Date.parse(fecha); //si valida se guarda en formato timestamp
+    }
+    else {
+        this.fecha = Date.now(); //si no fecha actual
+    }
+
+
+     //añadir etiquetas
+    this.etiquetas = [];                        //si no lo indica array vacio
+    this.anyadirEtiquetas = function(...etiquetasNuevas) {
+        etiquetasNuevas.forEach(etq => {        //por cada etiqueta nueva hacer que etq compruebe si
+            if (typeof etq === "string" && !this.etiquetas.includes(etq)) { //es un string-cadena y etq no esta incluida en etiquetas
+                this.etiquetas.push(etq);       //inserta al final
+            }
+        });
+    
+    };
+
+     //borrar etiquetas
+    this.borrarEtiquetas = function(...eliminarEtiquetas){
+        eliminarEtiquetas.forEach(etq => {
+            const indice = this.etiquetas.indexOf(etq);
+                if (indice !== -1){
+                    this.etiquetas.splice(indice, 1);
+                }
+            
+        });
+    }
+
+    //mostrar gasto
     this.mostrarGasto = function(){
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     };
 
+    //añado gasto completo
+    this.mostrarGastoCompleto = function() {
+        const fechaLocal = new Date(this.fecha).toLocaleString();
+        let textoEtiquetas = "Etiquetas:";     //texto inicial
+
+        if (this.etiquetas.length) {           //compruebo en la cadena de etiquetas
+            textoEtiquetas += "\n" + this.etiquetas.map(etiq => `- ${etiq}`).join("\n"); //si etiquetas creo una linea
+        }
+        else {
+            textoEtiquetas += "\n(sin etiquetas)";
+        }
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+Fecha: ${fechaLocal}
+${textoEtiquetas}`;
+    };
+
+    
+    //actualizar descripcion
     this.actualizarDescripcion = function(descripcion){
         this.descripcion = descripcion;
     };
 
+    //actualizar valor
     this.actualizarValor = function(nuevoValor){
         if (typeof nuevoValor === "number" && nuevoValor >= 0) {//son tres iguales
                 this.valor = nuevoValor; 
             }
-    
     };
 
-    //fecha 
+
+    //actualizar fecha 
     this.actualizarFecha = function(nuevaFecha){
         if (nuevaFecha === undefined) {
             this.fecha = Date.now();
@@ -99,48 +149,11 @@ function CrearGasto(descripcion, valor, nuevaFecha,...etiquetas) {
 
     }
 
-    //etiquetas
-    this.etiquetas = [];                        //si no lo indica array vacio
-
-    this.anyadirEtiquetas = function(...etiquetasNuevas) {
-        etiquetasNuevas.forEach(etq => {        //por cada etiqueta nueva hacer que etq compruebe si
-            if (typeof etq === "string" && !this.etiquetas.includes(etq)) { //es un string-cadena y etq no esta incluida en etiquetas
-                this.etiquetas.push(etq);       //inserta al final
-            }
-        });
     
-    };
-
     //uso de metodo anyadirEtiquetas
     this.anyadirEtiquetas(...etiquetas);
 
 
-    //borrar etiquetas
-    this.borrarEtiquetas = function(...eliminarEtiquetas){
-        eliminarEtiquetas.forEach(etq => {
-            const indice = this.etiquetas.indexOf(etq);
-                if (indice !== -1){
-                    this.etiquetas.splice(indice, 1);
-                }
-            
-        });
-    }
-
-    //añado gasto completo
-    this.mostrarGastoCompleto = function() {
-        const fechaLocal = new Date(this.fecha).toLocaleString();
-        let textoEtiquetas = "Etiquetas:";     //texto inicial
-
-        if (this.etiquetas.length) {           //compruebo en la cadena de etiquetas
-            textoEtiquetas += "\n" + this.etiquetas.map(etiq => ` - ${etiq}`).join("\n"); //si etiquetas creo una linea
-        }
-        else {
-            textoEtiquetas += "\n(sin etiquetas)";
-        }
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
-Fecha: ${fechaLocal}
-${textoEtiquetas}`;
-    };
 
     
 }
