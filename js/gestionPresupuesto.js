@@ -1,4 +1,7 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
+let presupuesto = 0;
+let gastos = [];
+let idGasto = 0;
 
 // TODO: Variable global
 
@@ -204,7 +207,7 @@ function filtrarGastos(opciones) {
 }
 
 function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
-    var opciones = {};
+    var opciones = {}; 
     if (fechaDesde) opciones.fechaDesde = fechaDesde;
     if (fechaHasta) opciones.fechaHasta = fechaHasta;
     if (etiquetas && etiquetas.length > 0) opciones.etiquetasTiene = etiquetas;
@@ -218,7 +221,7 @@ function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
 
         if (!resultado[clave]) {
             resultado[clave] = 0;
-        }  
+        }   
         resultado[clave] += gasto.valor;
     }
 

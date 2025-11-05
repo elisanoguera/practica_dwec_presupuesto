@@ -12,7 +12,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     var divGasto = document.createElement("div");
     divGasto.className = "gasto";
 
-    var divDescripcion = document.createElement("div");
+    var divDescripcion = document.createElement("div"); 
     divDescripcion.className = "gasto-descripcion";
     divDescripcion.textContent = gasto.descripcion;
     divGasto.appendChild(divDescripcion);
