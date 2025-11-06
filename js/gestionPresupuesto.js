@@ -74,6 +74,35 @@ Etiquetas:\n`;
             }
         }
     }
+
+    this.obtenerPeriodoAgrupacion = function (periodo) {
+
+        if (fecha != undefined) {
+            let fechaGasto = new Date(fecha)
+            let anyo = fechaGasto.getFullYear();
+            let mes = fechaGasto.getMonth() + 1;
+            let dia = fechaGasto.getDate();
+
+            if (mes < 10){
+                mes = "0" + mes;
+            }
+
+             if (dia < 10){
+                dia = "0" + dia;
+            }
+
+            switch (periodo) {
+                case "dia":
+                    return `${anyo}-${mes}-${dia}`;
+                case "mes":
+                    return `${anyo}-${mes}`;
+                case "anyo":
+                    return `${anyo}`;
+                default:
+                    return -1;
+            }
+        }
+    }
 }
 
 function listarGastos() {
