@@ -17,6 +17,41 @@ export function mostrarGastoWeb(idElemento, gasto) {
         let divPrincipal = document.createElement("div");
         divPrincipal.className = "gasto";
         
+        let botonEditar = document.createElement("button");
+        botonEditar.textContent = "Editar";
+
+        let editarGasto ={ gastoActual:gasto, handleEvent:function(editarGst){
+            let nuevaDescripcion = prompt("Edita la Descripción actual:", this.gastoActual.descripcion);
+            if (nuevaDescripcion === null){
+                nuevaDescripcion = this.gastoActual.descripcion;
+            }
+            this.gastoActual.actualizarDescripcion(nuevaDescripcion);
+
+            let nuevoValor = prompt("Edita el Valor actual:", this.gastoActual.valor);
+            if(nuevoValor === null){
+                nuevoValor = this.gastoActual.valor;
+            }
+            let nuevoValorNum = Number(nuevoValor);
+            this.gastoActual.actualizarValor(nuevaValorNum);
+
+            let nuevaFecha = prompt("Edita la Fecha actual en formato internacional (yyyy-mm-dd):", this.gastoActual.fecha);
+            if(nuevaFecha === null){
+                nuevaFecha = this.gastoActual.fecha;
+            }
+            this.gastoActual.actualizarFecha(nuevaFecha);
+
+            let nuevasEtiquetas = prompt("Edita las Etiquetas actuales para el gasto separadas por comas. Por ejemplo: Etiqueta1,Etiquetados,etc...",this.gastoActual.etiquetas);
+            if(nuevasEtiquetas === null){
+                nuevasEtiquetas = this.gastoActual.etiquetas;
+            }
+            let nuevasEtiquetasArray = nuevasEtiquetas.split(",");
+            this.gastoActual.anyadirEtiquetas(nuevasEtiquetasArray);
+
+            repintar();
+        }}
+
+        botonEditar.addEventListener("click", editarGasto);
+        divPrincipal.append(botonEditar);
 
         let divDescripcion = document.createElement("div");
         divDescripcion .className = "gasto-descripcion";
