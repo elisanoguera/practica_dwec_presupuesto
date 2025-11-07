@@ -218,6 +218,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
             }
         }
     }
+    
     this.obtenerPeriodoAgrupacion = function(periodo) {
 
         let fechaGasto = new Date(this.fecha).toISOString();

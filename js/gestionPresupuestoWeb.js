@@ -16,24 +16,6 @@ export function mostrarGastoWeb(idElemento, gasto) {
     } else {
         let divPrincipal = document.createElement("div");
         divPrincipal.className = "gasto";
-        
-        let botonEditar = document.createElement("button");
-        botonEditar.textContent = "Editar";
-        botonEditar.className = "gasto-editar";
-
-        let editarGasto = editarHandle(gasto);
-
-        botonEditar.addEventListener("click", editarGasto);
-        divPrincipal.append(botonEditar);
-
-        let botonBorrar = document.createElement("button");
-        botonBorrar.textContent = "Borrar";
-        botonBorrar.className = "gasto-borrar";
-
-        let borrarGasto = borrarHandle(gasto);
-        
-        botonBorrar.addEventListener("click", borrarGasto);
-        divPrincipal.append(botonBorrar);
 
         let divDescripcion = document.createElement("div");
         divDescripcion.className = "gasto-descripcion";
@@ -57,9 +39,32 @@ export function mostrarGastoWeb(idElemento, gasto) {
             let spanEtiqueta = document.createElement ("span");
             spanEtiqueta.className = "gasto-etiquetas-etiqueta";
             spanEtiqueta.textContent = etiqueta;
+
+            let borrarEtiqueta = borrarEtiquetasHandle(gasto, etiqueta);
+            spanEtiqueta.addEventListener("click", borrarEtiqueta);
+
             divEtiquetas.append(spanEtiqueta);
         }
         divPrincipal.append(divEtiquetas);
+
+        let botonEditar = document.createElement("button");
+        botonEditar.textContent = "Editar";
+        botonEditar.className = "gasto-editar";
+
+        let editarGasto = editarHandle(gasto);
+
+        botonEditar.addEventListener("click", editarGasto);
+        divPrincipal.append(botonEditar);
+
+        let botonBorrar = document.createElement("button");
+        botonBorrar.textContent = "Borrar";
+        botonBorrar.className = "gasto-borrar";
+
+        let borrarGasto = borrarHandle(gasto);
+        
+        botonBorrar.addEventListener("click", borrarGasto);
+        divPrincipal.append(botonBorrar);
+
         elementoSeleccionado.append(divPrincipal);
     }
 }
@@ -179,12 +184,20 @@ function editarHandle(gasto){
 }
 
 function borrarHandle(gasto) {
-    let borrarGasto = {gastoActual: gasto,handleEvent: function() {
+    let borrarGasto = {gastoActual: gasto, handleEvent: function() {
         gestionPresupuesto.borrarGasto(this.gastoActual.idElemento);
         repintar();
     }
     };
     return borrarGasto;
+}
+
+function borrarEtiquetasHandle(gasto,etiqueta){
+    let borrarEtiquetas = {gastoActual:gasto, etiquetaActual:etiqueta, handleEvent: function(){
+        this.gastoActual.borrarEtiquetas(this.etiquetaActual);
+        repintar();
+    }}
+    return borrarEtiquetas;
 }
 
 let botonPresupuesto = document.getElementById("actualizarpresupuesto");
