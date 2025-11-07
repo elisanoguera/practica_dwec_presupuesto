@@ -85,3 +85,50 @@ export function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
 
     elementoSeleccionado.append(divPrincipal);
 }
+
+function repintar(){
+    mostrarDatoEnId("presupuesto",gestionPresupuesto.mostrarPresupuesto());
+    
+    mostrarDatoEnId("gastos-totales",gestionPresupuesto.calcularTotalGastos());
+
+    mostrarDatoEnId("balance-total",gestionPresupuesto.calcularBalance());
+
+    document.getElementById("listado-gastos-completo").innerHTML="";
+    for(let gasto of gestionPresupuesto.listarGastos()){
+        mostrarGastoWeb("listado-gastos-completo",gasto);
+    }
+
+}
+
+function actualizarPresupuestoWeb(){
+    let promptUsuario = prompt("Introduzca un valor para el presupuesto");
+    let numeroUsuario = Number(promptUsuario);
+
+    gestionPresupuesto.actualizarPresupuesto(numeroUsuario);
+
+    repintar();
+}
+
+function nuevoGastoWeb(){
+    let promptDescripcion = prompt("Introduzca una Descripción para el gasto");
+    let promptValor = prompt("Introduzca un Valor para el gasto");
+    let promptFecha = prompt("Introduzca una Fecha para el gasto en formato internacional (yyyy-mm-dd)");
+    let promptEtiquetas = prompt("Introduzca la o las Etiquetas para el gasto separadas por comas. Por ejemplo: Etiqueta1,Etiquetados,etc...");
+
+    let numeroValor = Number(promptValor);
+    let arrayEtiquetas = promptEtiquetas.split(",");
+
+    let gastoNuevo = new gestionPresupuesto.CrearGasto(promptDescripcion, numeroValor, promptFecha, arrayEtiquetas);
+
+    gestionPresupuesto.anyadirGasto(gastoNuevo);
+
+    repintar();
+
+}
+
+
+let botonPresupuesto = document.getElementById("actualizarpresupuesto");
+botonPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
+
+let botonGasto = document.getElementById("anyadirgasto");
+botonGasto.addEventListener("click", nuevoGastoWeb);

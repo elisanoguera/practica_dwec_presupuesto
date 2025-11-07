@@ -149,8 +149,10 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
 
     if (etiquetas == null) {
     this.etiquetas = [];
-    } else if (Array.isArray(etiquetas)) {
-    this.etiquetas = etiquetas;
+    } else if (etiquetas.length === 1 && Array.isArray(etiquetas[0])){
+         this.etiquetas = etiquetas[0];
+    }else {
+        this.etiquetas = etiquetas;
     }
 
     this.mostrarGasto = function() {
