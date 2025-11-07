@@ -49,7 +49,7 @@ function mostrarGastoWeb(idElemento, gasto) {
         for (let i = 0; i < gasto.etiquetas.length; i++) {
             let spanEtiqueta = document.createElement("span");
             spanEtiqueta.className = "gasto-etiquetas-etiqueta";
-            spanEtiqueta.textContent = gasto.etiquetas[i];
+            spanEtiqueta.textContent = gasto.etiquetas[i] + "";
             divEtiquetas.appendChild(spanEtiqueta);
         }
     }
