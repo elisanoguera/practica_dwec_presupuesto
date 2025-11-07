@@ -64,54 +64,55 @@ function mostrarGastoWeb(idElemento, gasto) {
     elementoContenedor.appendChild(divGasto);
 }
 
-function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
-    // Busca el elemento contenedor
-    let elementoContenedor = document.getElementById(idElemento);
-    
-    //Verifico que el elemento existe
-    if (!elementoContenedor) {
-        console.error(`Elemento con id "${idElemento}" no encontrado`);
-        return;
-    }
-    
-    //Creo el contenedor principal de agrupación
-    let divAgrupacion = document.createElement("div");
-    divAgrupacion.className = "agrupacion";
-    
-    
-    
-    // Obtener todas las claves (períodos) del objeto agrup
-    let claves = Object.keys(agrup);
-    
-    // Creo un elemento por cada período en la agrupación
-    for (let i = 0; i < claves.length; i++) {
-        let clave = claves[i];
-        let valor = agrup[clave];
-        
-        // Creo un contenedor del dato
-        let divDato = document.createElement("div");
-        divDato.className = "agrupacion-dato";
-        
-        // Crear span para la clave (período)
-        let spanClave = document.createElement("span");
-        spanClave.className = "agrupacion-dato-clave";
-        spanClave.textContent = clave;
-        
-        // Crear span para el valor (total)
-        let spanValor = document.createElement("span");
-        spanValor.className = "agrupacion-dato-valor";
-        spanValor.textContent = valor + " €";
-        
-        // Ensamblar
-        divDato.appendChild(spanClave);
-        divDato.appendChild(spanValor);
-        divAgrupacion.appendChild(divDato);
-    }
-    
-    // Añadido la agrupación completa al contenedor
-    elementoContenedor.appendChild(divAgrupacion);
-}
 
+
+function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
+  // obtener el contenedor donde se mostrará todo
+  let contenedor = document.getElementById(idElemento);
+
+  // creo el <div> principal con clase "agrupacion"
+  let divAgrupacion = document.createElement("div");
+  divAgrupacion.classList.add("agrupacion");
+
+  // traducir el texto del periodo para mostrarlo en el título
+  let textoPeriodo = "";
+  if (periodo === "dia") textoPeriodo = "día";
+  else if (periodo === "mes") textoPeriodo = "mes";
+  else if (periodo === "anyo") textoPeriodo = "año";
+
+  // Crear el título <h1> con el texto traducido
+  let titulo = document.createElement("h1");
+  titulo.textContent = "Gastos agrupados por " + textoPeriodo;
+  divAgrupacion.append(titulo);
+
+  // Recorrer el objeto 'agrup'
+  // Para cada propiedad (clave-valor) del objeto, crearemos un bloque <div>
+  for (let clave in agrup) {
+    // Creamos un div para cada dato agrupado
+    let divDato = document.createElement("div");
+    divDato.classList.add("agrupacion-dato");
+
+    // Creamos el span para la clave (por ejemplo "2021-09")
+    let spanClave = document.createElement("span");
+    spanClave.classList.add("agrupacion-dato-clave");
+    spanClave.textContent = clave + " - ";
+
+    // Creamos el span para el valor (por ejemplo 5)
+    let spanValor = document.createElement("span");
+    spanValor.classList.add("agrupacion-dato-valor");
+    spanValor.textContent = agrup[clave].toFixed(2) + " €";
+
+    // Añadimos ambos <span> dentro del div
+    divDato.append(spanClave);
+    divDato.append(spanValor);
+
+    // Añadimos este divDato dentro del divAgrupacion
+    divAgrupacion.append(divDato);
+  }
+
+  // Pasamos la agrupación completa al contenedor principal
+  contenedor.append(divAgrupacion);
+}
 
 
 
