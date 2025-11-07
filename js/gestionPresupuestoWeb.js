@@ -162,7 +162,7 @@ function editarHandle(gasto){
         nuevoValor = this.gastoActual.valor;
     }
     let nuevoValorNum = Number(nuevoValor);
-    this.gastoActual.actualizarValor(nuevaValorNum);
+    this.gastoActual.actualizarValor(nuevoValorNum);
 
     let nuevaFecha = prompt("Edita la Fecha actual en formato internacional (yyyy-mm-dd):", this.gastoActual.fecha);
     if(nuevaFecha === null){
@@ -185,7 +185,7 @@ function editarHandle(gasto){
 
 function borrarHandle(gasto) {
     let borrarGasto = {gastoActual: gasto, handleEvent: function() {
-        gestionPresupuesto.borrarGasto(this.gastoActual.idElemento);
+        gestionPresupuesto.borrarGasto(this.gastoActual.id);
         repintar();
     }
     };
