@@ -19,43 +19,25 @@ export function mostrarGastoWeb(idElemento, gasto) {
         
         let botonEditar = document.createElement("button");
         botonEditar.textContent = "Editar";
+        botonEditar.className = "gasto-editar";
 
-        let editarGasto ={ gastoActual:gasto, handleEvent:function(editarGst){
-            let nuevaDescripcion = prompt("Edita la Descripción actual:", this.gastoActual.descripcion);
-            if (nuevaDescripcion === null){
-                nuevaDescripcion = this.gastoActual.descripcion;
-            }
-            this.gastoActual.actualizarDescripcion(nuevaDescripcion);
-
-            let nuevoValor = prompt("Edita el Valor actual:", this.gastoActual.valor);
-            if(nuevoValor === null){
-                nuevoValor = this.gastoActual.valor;
-            }
-            let nuevoValorNum = Number(nuevoValor);
-            this.gastoActual.actualizarValor(nuevaValorNum);
-
-            let nuevaFecha = prompt("Edita la Fecha actual en formato internacional (yyyy-mm-dd):", this.gastoActual.fecha);
-            if(nuevaFecha === null){
-                nuevaFecha = this.gastoActual.fecha;
-            }
-            this.gastoActual.actualizarFecha(nuevaFecha);
-
-            let nuevasEtiquetas = prompt("Edita las Etiquetas actuales para el gasto separadas por comas. Por ejemplo: Etiqueta1,Etiquetados,etc...",this.gastoActual.etiquetas);
-            if(nuevasEtiquetas === null){
-                nuevasEtiquetas = this.gastoActual.etiquetas;
-            }
-            let nuevasEtiquetasArray = nuevasEtiquetas.split(",");
-            this.gastoActual.anyadirEtiquetas(nuevasEtiquetasArray);
-
-            repintar();
-        }}
+        let editarGasto = editarHandle(gasto);
 
         botonEditar.addEventListener("click", editarGasto);
         divPrincipal.append(botonEditar);
 
+        let botonBorrar = document.createElement("button");
+        botonBorrar.textContent = "Borrar";
+        botonBorrar.className = "gasto-borrar";
+
+        let borrarGasto = borrarHandle(gasto);
+        
+        botonBorrar.addEventListener("click", borrarGasto);
+        divPrincipal.append(botonBorrar);
+
         let divDescripcion = document.createElement("div");
-        divDescripcion .className = "gasto-descripcion";
-        divDescripcion .textContent = gasto.descripcion;
+        divDescripcion.className = "gasto-descripcion";
+        divDescripcion.textContent = gasto.descripcion;
         divPrincipal.append(divDescripcion);
 
         let divFecha = document.createElement("div");
@@ -161,6 +143,49 @@ function nuevoGastoWeb(){
 
 }
 
+function editarHandle(gasto){
+
+    let editarGasto = {gastoActual:gasto, handleEvent:function(){
+    let nuevaDescripcion = prompt("Edita la Descripción actual:", this.gastoActual.descripcion);
+    if (nuevaDescripcion === null){
+        nuevaDescripcion = this.gastoActual.descripcion;
+    }
+    this.gastoActual.actualizarDescripcion(nuevaDescripcion);
+
+    let nuevoValor = prompt("Edita el Valor actual:", this.gastoActual.valor);
+    if(nuevoValor === null){
+        nuevoValor = this.gastoActual.valor;
+    }
+    let nuevoValorNum = Number(nuevoValor);
+    this.gastoActual.actualizarValor(nuevaValorNum);
+
+    let nuevaFecha = prompt("Edita la Fecha actual en formato internacional (yyyy-mm-dd):", this.gastoActual.fecha);
+    if(nuevaFecha === null){
+        nuevaFecha = this.gastoActual.fecha;
+    }
+    this.gastoActual.actualizarFecha(nuevaFecha);
+
+    let nuevasEtiquetas = prompt("Edita las Etiquetas actuales para el gasto separadas por comas. Por ejemplo: Etiqueta1,Etiquetados,etc...",this.gastoActual.etiquetas);
+    if(nuevasEtiquetas === null){
+        nuevasEtiquetas = this.gastoActual.etiquetas;
+    }
+    let nuevasEtiquetasArray = nuevasEtiquetas.split(",");
+    this.gastoActual.anyadirEtiquetas(nuevasEtiquetasArray);
+
+    repintar();
+    }
+    }
+    return editarGasto;
+}
+
+function borrarHandle(gasto) {
+    let borrarGasto = {gastoActual: gasto,handleEvent: function() {
+        gestionPresupuesto.borrarGasto(this.gastoActual.idElemento);
+        repintar();
+    }
+    };
+    return borrarGasto;
+}
 
 let botonPresupuesto = document.getElementById("actualizarpresupuesto");
 botonPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
