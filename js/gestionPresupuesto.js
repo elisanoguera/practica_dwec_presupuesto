@@ -1,4 +1,6 @@
 let presupuesto = 0;
+let gastos = [];
+let idGasto = 0;
 
 function actualizarPresupuesto(valor) {
 
@@ -7,23 +9,27 @@ function actualizarPresupuesto(valor) {
         return presupuesto;
     } else {
         console.log("El presupuesto no es positivo")
-        return valor = -1;
+        return -1;
     }
 }
 
 function mostrarPresupuesto() {
-    return `Tu presupuesto actual es de ${presupuesto} €`
+    return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.descripcion = descripcion;
     this.valor = (valor >= 0) ? valor : 0;
     let fechaCorrecta = Date.parse(fecha);
-    this.fecha = isNaN(fechaCorrecta) ? Date.now() : fechaCorrecta;
+    if (fechaCorrecta) {
+        this.fecha = fechaCorrecta;
+    } else {
+        this.fecha = Date.parse(new Date());
+    }
     this.etiquetas = (etiquetas.length > 0) ? [...etiquetas] : [];
 
     this.mostrarGasto = function () {
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     }
     this.actualizarDescripcion = function (nuevaDescripcion) {
         this.descripcion = nuevaDescripcion;
@@ -41,8 +47,8 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     }
     this.actualizarFecha = function (nuevaFecha) {
         let fechaCorrecta = Date.parse(nuevaFecha);
-        if (!isNaN(fechaCorrecta)) {
-            this.fecha = fechaCorrecta
+        if (fechaCorrecta) {
+            this.fecha = fechaCorrecta;
         }
     }
     this.anyadirEtiquetas = function (...nuevasEtiquetas) {
@@ -52,15 +58,16 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
             }
         })
     }
+
     this.borrarEtiquetas = function (...etiquetasBorrar) {
         this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasBorrar.includes(etiqueta));
     }
 
     this.obtenerPeriodoAgrupacion = function (periodo) {
-        const fecha = new Date(this.fecha);
-        const anyo = fecha.getFullYear();
-        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-        const dia = String(fecha.getDate()).padStart(2, '0');
+        let fecha = new Date(this.fecha);
+        let anyo = fecha.getFullYear();
+        let mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        let dia = String(fecha.getDate()).padStart(2, '0');
 
         switch (periodo) {
             case 'dia':
@@ -76,9 +83,6 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     }
 
 }
-let gastos = [];
-let idGasto = 0;
-
 
 function listarGastos() {
     return gastos
@@ -106,15 +110,15 @@ function filtrarGastos(filtros = {}) {
     return gastos.filter(gasto => {
 
         if (filtros.fechaDesde !== undefined) {
-            const fechaDesde = Date.parse(filtros.fechaDesde);
-            if (isNaN(fechaDesde)) return false; 
+            let fechaDesde = Date.parse(filtros.fechaDesde);
+            if (isNaN(fechaDesde)) return false;
             if (gasto.fecha < fechaDesde) return false;
         }
         if (filtros.fechaHasta !== undefined) {
-            const fechaHasta = Date.parse(filtros.fechaHasta);
+            let fechaHasta = Date.parse(filtros.fechaHasta);
             if (isNaN(fechaHasta)) return false;
 
-            const fechaHastaFinDia = new Date(fechaHasta);
+            let fechaHastaFinDia = new Date(fechaHasta);
             fechaHastaFinDia.setHours(23, 59, 59, 999);
             if (gasto.fecha > fechaHastaFinDia.getTime()) return false;
         }
@@ -130,14 +134,14 @@ function filtrarGastos(filtros = {}) {
 
 
         if (filtros.descripcionContiene !== undefined) {
-            const texto = filtros.descripcionContiene.toLowerCase();
+            let texto = filtros.descripcionContiene.toLowerCase();
             if (!gasto.descripcion.toLowerCase().includes(texto)) return false;
         }
 
 
         if (filtros.etiquetasTiene !== undefined && Array.isArray(filtros.etiquetasTiene)) {
-            const etiquetasBuscadas = filtros.etiquetasTiene.map(e => e.toLowerCase());
-            const tieneAlguna = gasto.etiquetas.some(etiqueta =>
+            let etiquetasBuscadas = filtros.etiquetasTiene.map(e => e.toLowerCase());
+            let tieneAlguna = gasto.etiquetas.some(etiqueta =>
                 etiquetasBuscadas.includes(etiqueta.toLowerCase())
             );
             if (!tieneAlguna) return false;
@@ -152,20 +156,20 @@ function agruparGastos(
     fechaDesde = undefined,
     fechaHasta = undefined
 ) {
-    const periodosValidos = ["dia", "mes", "anyo"];
+    let periodosValidos = ["dia", "mes", "anyo"];
     if (!periodosValidos.includes(periodo)) {
-        periodo = "mes"; 
+        periodo = "mes";
     }
 
-    const filtros = {};
+    let filtros = {};
     if (fechaDesde !== undefined) filtros.fechaDesde = fechaDesde;
     if (fechaHasta !== undefined) filtros.fechaHasta = fechaHasta;
     if (etiquetas.length > 0) filtros.etiquetasTiene = etiquetas;
 
-    const gastosFiltrados = filtrarGastos(filtros);
+    let gastosFiltrados = filtrarGastos(filtros);
 
     return gastosFiltrados.reduce((acc, gasto) => {
-        const clave = gasto.obtenerPeriodoAgrupacion(periodo);
+        let clave = gasto.obtenerPeriodoAgrupacion(periodo);
 
         if (!(clave in acc)) {
             acc[clave] = 0;
