@@ -1,3 +1,6 @@
+// importa libreria
+import * as gespre from './gestionPresupuesto.js';
+
 // Muestra un valor (texto o número) dentro de un elemento HTML por su id
 function mostrarDatoEnId(idElemento, valor) {
   // Busco en el documento el elemento con ese id
@@ -114,10 +117,37 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
   contenedor.append(divAgrupacion);
 }
 
+function repintar() {
+  // Mostrar el presupuesto total
+  let presupuesto = gespre.mostrarPresupuesto();
+  gespre.mostrarDatoEnId("presupuesto", presupuesto.toFixed(2) + " €");
+
+  // Para calcular y mostrar el total de gastos
+  let totalGastos = gespre.calcularTotalGastos();
+  gespre.mostrarDatoEnId("gastos-totales", totalGastos.toFixed(2) + " €");
+
+  // Para calcular y mostrar el balance actual
+  let balance = gespre.calcularBalance();
+  gespre.mostrarDatoEnId("balance-total", balance.toFixed(2) + " €");
+
+  // limpia el listado completo antes de volver a generarlo
+  let divListado = document.getElementById("listado-gastos-completo");
+  divListado.innerHTML = ""; // <-- Esto borra el contenido HTML actual
+
+  // Para listar todos los gastos actuales
+  let gastos = gespre.listarGastos();
+
+  // muestra cada gasto en el contenedor del listado
+  for (let gasto of gastos) {
+    gespre.mostrarGastoWeb("listado-gastos-completo", gasto);
+  }
+}
+
 
 
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
-    mostrarGastosAgrupadosWeb
+    mostrarGastosAgrupadosWeb,
+    repintar
 }
