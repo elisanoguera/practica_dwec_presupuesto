@@ -132,7 +132,7 @@ function repintar() {
 
   // limpia el listado completo antes de volver a generarlo
   let divListado = document.getElementById("listado-gastos-completo");
-  divListado.innerHTML = ""; // <-- Esto borra el contenido HTML actual
+  divListado.innerHTML = ""; // borra el contenido HTML actual
 
   // Para listar todos los gastos actuales
   let gastos = gespre.listarGastos();
@@ -142,6 +142,33 @@ function repintar() {
     gespre.mostrarGastoWeb("listado-gastos-completo", gasto);
   }
 }
+
+
+// Esta función se encarga de pedir un nuevo presupuesto al usuario
+function actualizarPresupuestoWeb() {
+  // pedir el nuevo valor mediante un prompt
+  let nuevoPresupuesto = prompt("Introduce el nuevo presupuesto: ");
+
+  // si el usuario cancela, salimos 
+  if (nuevoPresupuesto === null) 
+    return ("Escribe un número válido");
+
+  // Convertimos el texto a número
+  nuevoPresupuesto = Number(nuevoPresupuesto);
+
+  // verificamos que sea un número válido
+  if (isNaN(nuevoPresupuesto) || nuevoPresupuesto < 0) {
+    alert("Por favor, introduce un número válido.");
+    return;
+  }
+
+  // actualizamos el valor en el modelo de datos (gestionPresupuesto.js)
+  gp.actualizarPresupuesto(nuevoPresupuesto);
+
+  // repintamos la interfaz para mostrar el nuevo valor
+  repintar();
+}
+
 
 
 
