@@ -15,7 +15,7 @@ function mostrarDatoEnId(idElemento, valor) {
 
 
 
-
+// esta funcion recibe el id del elemento contenedor y un objeto gasto (recordemos que gasto tiene: descripcion, fecha, valor, etiquetas)
 function mostrarGastoWeb(idElemento, gasto) {
     // Busco el elemento contenedor
     let elementoContenedor = document.getElementById(idElemento);
@@ -23,12 +23,12 @@ function mostrarGastoWeb(idElemento, gasto) {
     
     //Creo la estructura HTML del gasto
     let divGasto = document.createElement("div");
-    divGasto.className = "gasto";
+    divGasto.className = "gasto";                       // <div class="gasto">
     
     // Creo elemento para la descripción
     let divDescripcion = document.createElement("div");
     divDescripcion.className = "gasto-descripcion";
-    divDescripcion.textContent = gasto.descripcion;
+    divDescripcion.textContent = gasto.descripcion;     // <div class="gasto-descripcion">compra mercado</div>
     
     // Creo elemento para la fecha
     let divFecha = document.createElement("div");
@@ -40,7 +40,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     divValor.className = "gasto-valor";
     divValor.textContent = gasto.valor + " €";
     
-    // Creo contenedor para etiquetas
+    // Creo contenedor para etiquetas (etiquetas es un array dentro del objeto gasto)
     let divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
     
