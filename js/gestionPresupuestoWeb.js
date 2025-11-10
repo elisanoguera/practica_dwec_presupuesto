@@ -149,12 +149,8 @@ function actualizarPresupuestoWeb() {
   // pedir el nuevo valor mediante un prompt
   let nuevoPresupuesto = prompt("Introduce el nuevo presupuesto: ");
 
-  // si el usuario cancela, salimos 
-  if (nuevoPresupuesto === null) 
-    return ("Escribe un número válido");
-
-  // Convertimos el texto a número
-  nuevoPresupuesto = Number(nuevoPresupuesto);
+// Convertimos el texto a número
+ nuevoPresupuesto = Number(nuevoPresupuesto);
 
   // verificamos que sea un número válido
   if (isNaN(nuevoPresupuesto) || nuevoPresupuesto < 0) {
@@ -162,12 +158,22 @@ function actualizarPresupuestoWeb() {
     return;
   }
 
-  // actualizamos el valor en el modelo de datos (gestionPresupuesto.js)
-  gp.actualizarPresupuesto(nuevoPresupuesto);
+  // actualizamos el valor en el modelo de datos
+  gespre.actualizarPresupuesto(nuevoPresupuesto);
 
   // repintamos la interfaz para mostrar el nuevo valor
   repintar();
 }
+
+// Asociación de eventos
+// Esperamos a que el contenido del DOM esté cargado completamente
+
+  // Obtenemos el botón con id "actualizarpresupuesto" 
+  let botonActualizar = document.getElementById("actualizarpresupuesto");
+
+  // Asignamos la función como manejadora del clic
+  botonActualizar.addEventListener("click", actualizarPresupuestoWeb);
+
 
 
 
@@ -176,5 +182,6 @@ export {
     mostrarDatoEnId,
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
-    repintar
+    repintar,
+    actualizarPresupuestoWeb
 }
