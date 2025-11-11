@@ -168,15 +168,18 @@ function filtrarGastos(datosFiltro) {
             }
             if (!coincide) return resultado = false;
         }
-        
+
         return resultado;
     })
 }
 
+/*
+function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
 
-function agruparGastos() {
+    let gastosFiltrados = filtrarGastos({etiquetasTiene: etiquetas, fechaDesde: fechaDesde, fechaHasta: fechaHasta});
 
 }
+*/
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
