@@ -114,3 +114,88 @@ function repintar() {
         }
     }
 }
+
+function actualizarPresupuestoWeb() {
+    let entrada = prompt("Introduce el nuevo presupuesto:");
+    let valor = Number(entrada);
+    if (!isNaN(valor) && valor >= 0) {
+        gestionPresupuesto.actualizarPresupuesto(valor);
+        repintar();
+    }
+}
+
+function nuevoGastoWeb() {
+    let descripcion = prompt("Descripción:");
+    let valorStr = prompt("Valor:");
+    let fecha = prompt("Fecha (yyyy-mm-dd):", new Date().toISOString().split('T')[0]);
+    let etiquetasStr = prompt("Etiquetas (separadas por comas):", "");
+
+    let valor = Number(valorStr);
+    if (isNaN(valor) || valor < 0) return;
+
+    let etiquetas = [];
+    if (etiquetasStr) {
+        let partes = etiquetasStr.split(",");
+        for (let i = 0; i < partes.length; i++) {
+            let etiqueta = partes[i].trim();
+            if (etiqueta !== "") {
+                etiquetas.push(etiqueta);
+            }
+        }
+    }
+
+    let gasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha);
+    for (let i = 0; i < etiquetas.length; i++) {
+        gasto.anyadirEtiquetas(etiquetas[i]);
+    }
+
+    gestionPresupuesto.anyadirGasto(gasto);
+    repintar();
+}
+
+function EditarHandle(gasto) {
+    this.gasto = gasto;
+}
+EditarHandle.prototype.handleEvent = function() {
+    let descripcion = prompt("Nueva descripción:", this.gasto.descripcion);
+    let valStr = prompt("Nuevo valor:", this.gasto.valor);
+    let fecha = prompt("Nueva fecha (yyyy-mm-dd):", new Date(this.gasto.fecha).toISOString().split('T')[0]);
+    let etiqStr = prompt("Nuevas etiquetas (coma):", this.gasto.etiquetas.join(", "));
+
+    let valor = Number(valStr);
+    if (!isNaN(valor) && valor >= 0) {
+        this.gasto.actualizarValor(valor);
+    }
+    if (descripcion !== null) this.gasto.actualizarDescripcion(descripcion);
+    if (fecha !== null) this.gasto.actualizarFecha(fecha);
+    if (etiqStr !== null) {
+        this.gasto.etiquetas = [];
+        if (etiqStr.trim() !== "") {
+            let partes = etiqStr.split(",");
+            for (let i = 0; i < partes.length; i++) {
+                let etiqueta = partes[i].trim();
+                if (etiqueta !== "") {
+                    this.gasto.anyadirEtiquetas(etiqueta);
+                }
+            }
+        }
+    }
+    repintar();
+};
+
+function BorrarHandle(gasto) {
+    this.gasto = gasto;
+}
+BorrarHandle.prototype.handleEvent = function() {
+    gestionPresupuesto.borrarGasto(this.gasto.id);
+    repintar();
+};
+
+function BorrarEtiquetasHandle(gasto, etiqueta) {
+    this.gasto = gasto;
+    this.etiqueta = etiqueta;
+}
+BorrarEtiquetasHandle.prototype.handleEvent = function() {
+    this.gasto.borrarEtiquetas(this.etiqueta);
+    repintar();
+};
