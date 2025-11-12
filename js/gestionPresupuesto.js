@@ -98,11 +98,7 @@ function filtrarGastos(filtro) {
 		// descripcionContiene
 		if (filtro.descripcionContiene) {
 			const gastoDescripcionLower = gasto.descripcion.toLowerCase();
-			if (
-				!gastoDescripcionLower.includes(
-					filtro.descripcionContiene.toLowerCase()
-				)
-			) {
+			if (!gastoDescripcionLower.includes(filtro.descripcionContiene.toLowerCase())) {
 				valido = false;
 			}
 		}
@@ -111,9 +107,7 @@ function filtrarGastos(filtro) {
 		if (filtro.etiquetasTiene) {
 			/* Mediante .some() comprobamos cada etiqueta del gasto si está incluida en el array
 			etiquetasTiene. Devolverá true si encuentra al menos una y false si no hay ninguna */
-			const tieneAlgunaEtiqueta = gasto.etiquetas.some((etiqueta) =>
-				filtro.etiquetasTiene.includes(etiqueta)
-			);
+			const tieneAlgunaEtiqueta = gasto.etiquetas.some((etiqueta) => filtro.etiquetasTiene.includes(etiqueta));
 			// Si no contiene ninguna, tieneAlgunaEtiqueta será false.
 			if (!tieneAlgunaEtiqueta) {
 				valido = false;
@@ -204,11 +198,7 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 	};
 
 	this.mostrarGastoCompleto = function () {
-		let texto = `Gasto correspondiente a ${this.descripcion} con valor ${
-			this.valor
-		} €.\nFecha: ${new Date(
-			this.fecha
-		).toLocaleString()}\nEtiquetas:\n${this.listarEtiquetas()}`;
+		let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\nFecha: ${new Date(this.fecha).toLocaleString()}\nEtiquetas:\n${this.listarEtiquetas()}`;
 		return texto;
 	};
 
@@ -294,15 +284,4 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
-export {
-	mostrarPresupuesto,
-	actualizarPresupuesto,
-	listarGastos,
-	anyadirGasto,
-	borrarGasto,
-	calcularTotalGastos,
-	calcularBalance,
-	filtrarGastos,
-	agruparGastos,
-	CrearGasto,
-};
+export { mostrarPresupuesto, actualizarPresupuesto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance, filtrarGastos, agruparGastos, CrearGasto };
