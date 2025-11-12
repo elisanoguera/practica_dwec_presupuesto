@@ -99,3 +99,18 @@ export function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 
     contenedor.appendChild(divAgrupacion);
 }
+
+function repintar() {
+    mostrarDatoEnId("presupuesto", gestionPresupuesto.mostrarPresupuesto());
+    mostrarDatoEnId("gastos-totales", gestionPresupuesto.calcularTotalGastos());
+    mostrarDatoEnId("balance-total", gestionPresupuesto.calcularBalance());
+
+    let lista = document.getElementById("listado-gastos-completo");
+    if (lista) {
+        lista.innerHTML = "";
+        for (let i = 0; i < gestionPresupuesto.listarGastos().length; i++) {
+            let gasto = gestionPresupuesto.listarGastos()[i];
+            mostrarGastoWeb("listado-gastos-completo", gasto);
+        }
+    }
+}
