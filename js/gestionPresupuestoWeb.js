@@ -1,80 +1,68 @@
-function mostrarDatoEnId(idElemento, valor) {
-    var elemento = document.getElementById(idElemento);
+import * as gestionPresupuesto from './gestionPresupuesto.js';
+
+export function mostrarDatoEnId(idElemento, valor) {
+    let elemento = document.getElementById(idElemento);
     if (elemento) {
         elemento.textContent = valor;
     }
 }
 
-function mostrarGastoWeb(idElemento, gasto) {
-    var contenedor = document.getElementById(idElemento);
-    if (!contenedor) return;
+export function mostrarGastoWeb(idElementoLista, gasto) {
+    let lista = document.getElementById(idElementoLista);
+    if (!lista) return;
 
-    var divGasto = document.createElement("div");
+    let divGasto = document.createElement("div");
     divGasto.className = "gasto";
 
-    var divDescripcion = document.createElement("div"); 
-    divDescripcion.className = "gasto-descripcion";
-    divDescripcion.textContent = gasto.descripcion;
-    divGasto.appendChild(divDescripcion);
 
-    var divFecha = document.createElement("div");
-    divFecha.className = "gasto-fecha";
-    divFecha.textContent = new Date(gasto.fecha).toLocaleString();
-    divGasto.appendChild(divFecha);
+let descripcion = document.createElement("div");
+    descripcion.className = "gasto-descripcion";
+    descripcion.textContent = gasto.descripcion;
+    divGasto.appendChild(descripcion);
 
-    var divValor = document.createElement("div");
-    divValor.className = "gasto-valor";
-    divValor.textContent = gasto.valor.toFixed(2) + " €";
-    divGasto.appendChild(divValor); 
+let fecha = document.createElement("div");
+    fecha.className = "gasto-fecha";
+    fecha.textContent = new Date(gasto.fecha).toLocaleString();
+    divGasto.appendChild(fecha);
 
-    var divEtiquetas = document.createElement("div");
+    let valor = document.createElement("div");
+    valor.className = "gasto-valor";
+    valor.textContent = gasto.valor.toFixed(2) + " €";
+    divGasto.appendChild(valor);
+
+    let divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
-    for (var i = 0; i < gasto.etiquetas.length; i++) {
-        var spanEtiqueta = document.createElement("span");
-        spanEtiqueta.className = "gasto-etiquetas-etiqueta";
-        spanEtiqueta.textContent = gasto.etiquetas[i];
-        divEtiquetas.appendChild(spanEtiqueta);
+
+    for (let i = 0; i < gasto.etiquetas.length; i++) {
+        let etiqueta = gasto.etiquetas[i];
+        let span = document.createElement("span");
+        span.className = "gasto-etiquetas-etiqueta";
+        span.textContent = etiqueta;
+
+        let manejadorBorrarEtiqueta = new BorrarEtiquetasHandle(gasto, etiqueta);
+        span.addEventListener("click", manejadorBorrarEtiqueta);
+
+        divEtiquetas.appendChild(span);
     }
     divGasto.appendChild(divEtiquetas);
 
-    contenedor.appendChild(divGasto);
+    let btnEditar = document.createElement("button");
+        btnEditar.type = "button";
+        btnEditar.className = "gasto-editar";
+        btnEditar.textContent = "Editar";
+
+    let manejadorEditar = new EditarHandle(gasto);
+        btnEditar.addEventListener("click", manejadorEditar);
+        divGasto.appendChild(btnEditar);
+
+    let btnBorrar = document.createElement("button");
+    btnBorrar.type = "button";
+    btnBorrar.className = "gasto-borrar";
+    btnBorrar.textContent = "Borrar";
+
+    let manejadorBorrar = new BorrarHandle(gasto);
+    btnBorrar.addEventListener("click", manejadorBorrar);
+    divGasto.appendChild(btnBorrar);
+
+    lista.appendChild(divGasto);
 }
-
-function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
-    var contenedor = document.getElementById(idElemento);
-    if (!contenedor) return;
-
-    var divAgrupacion = document.createElement("div");
-    divAgrupacion.className = "agrupacion";
-
-    var h1 = document.createElement("h1");
-    h1.textContent = "Gastos agrupados por " + periodo;
-    divAgrupacion.appendChild(h1);
-
-    for (var clave in agrup) {
-        if (agrup.hasOwnProperty(clave)) {
-            var divDato = document.createElement("div");
-            divDato.className = "agrupacion-dato";
-
-            var spanClave = document.createElement("span");
-            spanClave.className = "agrupacion-dato-clave";
-            spanClave.textContent = clave;
-            divDato.appendChild(spanClave);
-
-            var spanValor = document.createElement("span");
-            spanValor.className = "agrupacion-dato-valor";
-            spanValor.textContent = Number(agrup[clave]).toFixed(2) + ' €';
-            divDato.appendChild(spanValor);
-
-            divAgrupacion.appendChild(divDato);
-        }
-    }
-
-    contenedor.appendChild(divAgrupacion);
-}
-
-export {
-    mostrarDatoEnId,
-    mostrarGastoWeb,
-    mostrarGastosAgrupadosWeb
-};
