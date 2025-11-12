@@ -66,4 +66,4 @@ let fecha = document.createElement("div");
 
     lista.appendChild(divGasto);
 }
-
+ 
