@@ -2,7 +2,7 @@ name: 05 - Eventos en JavaScript - Tests
 
 on:
   push:
-    branches: [ main, practica-1-AdrianOlmedo ]
+    branches: [ main, practica-1-AdrianOlmedo]
     paths:
       - 'js/gestionPresupuestoWeb.js'
       - 'interaccionHTML.html'
