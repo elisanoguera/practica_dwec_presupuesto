@@ -3,11 +3,11 @@
 // TODO: Variable global
 let presupuesto = 0;
 
-function actualizarPresupuesto(presupuestodado) {
-    if (presupuestodado>=0)
+function actualizarPresupuesto(nvoPresupuesto) {
+    if (nvoPresupuesto>=0)
         {
-            presupuesto = presupuestodado;
-            return presupuestodado;
+            presupuesto = nvoPresupuesto;
+            return nvoPresupuesto;
         }else {
             console.log ("Presupuesto no válido");
             return -1;
@@ -18,9 +18,27 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-function CrearGasto() {
-    // TODO
+function CrearGasto(descripcion, valor) {
+    if (valor >= 0) {
+                    this.valor= valor;
+    } else {
+           this.valor=0;
+    }
+    this.descripcion= descripcion;
+
+    this.mostrarGasto = function() {
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+    }   
+    this.actualizarDescripcion = function(nvaDescripcion) {
+        this.descripcion = nvaDescripcion;
+    }   
+    this.actualizarValor = function(nvoValor) {
+        if (nvoValor >= 0) {
+            this.valor = nvoValor;
+        } 
+    }
 }
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
