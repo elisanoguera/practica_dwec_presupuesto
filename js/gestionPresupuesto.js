@@ -123,7 +123,7 @@ function filtrarGastos(filtro) {
 // agruparGastos -
 function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
 	// 1. En primer lugar llamamos a filtrarGastos para obtener el subconjunto que cumple los parámetros
-	/* 1.1. Creamos el objeto que contiene los filtros. Si no se pasan los parámetros, se crean como 	undefined y todos los gastos pasan el filtro.
+	/* 1.1. Creamos el objeto que contiene los filtros. Si no se pasan los parámetros, se crean como undefined y todos los gastos pasan el filtro.
 	La validación de fechas se realiza en la función filtrarGastos() */
 	const filtro = {
 		etiquetasTiene: etiquetas,
