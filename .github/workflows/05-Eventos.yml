@@ -2,7 +2,7 @@ name: 05 - Eventos en JavaScript - Tests
 
 on:
   push:
-    branches: [ main, practica-1-AdrianOlmedo]
+    branches: [ main, practica-1-AdrianOlmedo ]
     paths:
       - 'js/gestionPresupuestoWeb.js'
       - 'interaccionHTML.html'
@@ -13,16 +13,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      
-      - name: Instalar dependencias del proyecto
-        run: npm ci
-      
-      - name: Ejecutar tests
-        run: npm run test5
-
+      - run: npm ci
+      - run: npm run test5

@@ -1,4 +1,3 @@
-// TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
@@ -12,12 +11,12 @@ function actualizarPresupuesto(nuevoPresupuesto) {
     } else { 
         console.log("Error: El presupuesto debe ser un número no negativo");
         return -1;
-    }
+    } 
 } 
 
-function CrearGasto(descripcion, valor, fecha) {
+function crearGasto(descripcion, valor, fecha) {
 
-    if (typeof valor != 'number' || valor < 0) {
+    if (typeof valor !== 'number' || isNaN(valor) || valor < 0) {
         valor = 0;
     }
 
@@ -26,91 +25,102 @@ function CrearGasto(descripcion, valor, fecha) {
         timestamp = Date.now();
     }
 
-    this.descripcion = descripcion || '';
-    this.valor = valor;
-    this.fecha = timestamp;
-    this.etiquetas = [];
+    var gasto = {
+        descripcion: descripcion || '',
+        valor: valor,
+        fecha: timestamp,
+        etiquetas: [],
+        mostrarGasto: function() {
+            return 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €';
+        },
+        mostrarGastoCompleto: function() {
+            var texto = 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €.\n';
+            texto += 'Fecha: ' + new Date(this.fecha).toLocaleString() + '\n';
+            texto += 'Etiquetas:\n';
+            for (var i = 0; i < this.etiquetas.length; i++) {
+                texto += '- ' + this.etiquetas[i] + '\n';
+            }
+            return texto;
+        },
+        actualizarDescripcion: function(nuevaDescripcion) {
+            this.descripcion = nuevaDescripcion || '';
+        },
+        actualizarValor: function(nuevoValor) {
+            if (typeof nuevoValor === 'number' && nuevoValor >= 0) {
+                this.valor = nuevoValor;
+            }
+        },
+        actualizarFecha: function(nuevaFecha) {
+            var nuevoTimestamp = Date.parse(nuevaFecha);
+            if (!isNaN(nuevoTimestamp)) {
+                this.fecha = nuevoTimestamp;
+            }
+        },
+        anyadirEtiquetas: function() {
+            for (var i = 0; i < arguments.length; i++) {
+                var etiqueta = arguments[i];
 
+                if (Array.isArray(etiqueta)) {
+                    this.anyadirEtiquetas.apply(this, etiqueta);
+                    continue;
+                }
+
+                if (etiqueta === undefined || etiqueta === null || etiqueta === '') {
+                    continue;
+                }
+
+                var existe = false;
+                for (var j = 0; j < this.etiquetas.length; j++) {
+                    if (this.etiquetas[j] === etiqueta) {
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe) {
+                    this.etiquetas.push(etiqueta);
+                }
+            }
+        },
+        borrarEtiquetas: function() {
+            for (var i = 0; i < arguments.length; i++) {
+                var etiqueta = arguments[i];
+                for (var j = 0; j < this.etiquetas.length; j++) {
+                    if (this.etiquetas[j] === etiqueta) {
+                        this.etiquetas.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+        },
+        obtenerPeriodoAgrupacion: function(periodo) {
+            var fechaReferencia = new Date(this.fecha);
+            var año = fechaReferencia.getFullYear();
+            var mes = fechaReferencia.getMonth() + 1;
+            var dia = fechaReferencia.getDate();
+
+            if (mes < 10) mes = "0" + mes;
+            if (dia < 10) dia = "0" + dia;
+
+            if (periodo === "mes") {
+                return año + "-" + mes;
+            }
+            if (periodo === "anyo") {
+                return año + "";
+            }
+            return año + "-" + mes + "-" + dia;
+        }
+    };
+
+    var etiquetasIniciales = [];
     for (var i = 3; i < arguments.length; i++) {
-        this.etiquetas.push(arguments[i]);
+        etiquetasIniciales.push(arguments[i]);
     }
 
-    this.mostrarGasto = function() {
-        return 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €';
-    };
+    if (etiquetasIniciales.length > 0) {
+        gasto.anyadirEtiquetas.apply(gasto, etiquetasIniciales);
+    }
 
-    this.mostrarGastoCompleto = function() {
-        var texto = 'Gasto correspondiente a ' + this.descripcion + ' con valor ' + this.valor + ' €.\n';
-        texto += 'Fecha: ' + new Date(this.fecha).toLocaleString() + '\n';
-        texto += 'Etiquetas:\n';
-        for (var i = 0; i < this.etiquetas.length; i++) {
-            texto += '- ' + this.etiquetas[i] + '\n';
-        }
-        return texto;
-    };
-
-    this.actualizarDescripcion = function(nuevaDescripcion) {
-        this.descripcion = nuevaDescripcion || '';
-    };
-
-    this.actualizarValor = function(nuevoValor) {
-        if (typeof nuevoValor == 'number' && nuevoValor >= 0) {
-            this.valor = nuevoValor;
-        }
-    };
-
-    this.actualizarFecha = function(nuevaFecha) {
-        var timestamp = Date.parse(nuevaFecha);
-        if (!isNaN(timestamp)) {
-            this.fecha = timestamp;
-        }
-    };
-
-    this.anyadirEtiquetas = function() {
-        for (var i = 0; i < arguments.length; i++) {
-            var etiqueta = arguments[i];
-            var existe = false;
-            for (var j = 0; j < this.etiquetas.length; j++) {
-                if (this.etiquetas[j] == etiqueta) {
-                    existe = true;
-                    break;
-                }
-            }
-            if (!existe) {
-                this.etiquetas.push(etiqueta);
-            }
-        }
-    };
-
-    this.borrarEtiquetas = function() {
-        for (var i = 0; i < arguments.length; i++) {
-            var etiqueta = arguments[i];
-            for (var j = 0; j < this.etiquetas.length; j++) {
-                if (this.etiquetas[j] == etiqueta) {
-                    this.etiquetas.splice(j, 1);
-                    break;
-                }
-            }
-        }
-    };
-
-    this.obtenerPeriodoAgrupacion = function(periodo) {
-        var fecha = new Date(this.fecha);
-        var año = fecha.getFullYear();
-        var mes = fecha.getMonth() + 1;
-        var dia = fecha.getDate();
-
-        if (mes < 10) mes = "0" + mes;
-        if (dia < 10) dia = "0" + dia;
-
-        if (periodo === "mes") {
-            return año + "-" + mes;
-        }
-        if (periodo === "anyo") {
-            return año + "";
-        }
-        return año + "-" + mes + "-" + dia;
-    };
+    return gasto;
 }
 
 function mostrarPresupuesto() {
@@ -239,7 +249,7 @@ export{
     borrarGasto,
     calcularTotalGastos,
     calcularBalance,
-    CrearGasto,
+    crearGasto,
     filtrarGastos, 
     agruparGastos
 };

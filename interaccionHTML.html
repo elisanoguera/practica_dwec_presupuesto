@@ -8,33 +8,40 @@
 <body>
     <h1>Gestión de Presupuesto</h1>
 
-    <div id="presupuesto">Presupuesto: 0 €</div>
-    <div id="gastos-totales">Total gastos: 0 €</div>
-    <div id="balance-total">Balance: 0 €</div>
+    <div id="aplicacion">
+        <div id="controlesprincipales">
+            <button type="button" id="actualizarpresupuesto">Actualizar presupuesto</button>
+            <button type="button" id="anyadirgasto">Añadir gasto</button>
+        </div>
 
-    <h2>Listado completo de gastos</h2>
-    <div id="listado-gastos-completo"></div>
+        <div id="presupuesto">Presupuesto: 0 €</div>
+        <div id="gastos-totales">Total gastos: 0 €</div>
+        <div id="balance-total">Balance: 0 €</div>
 
-    <h2>Gastos en septiembre 2021</h2>
-    <div id="listado-gastos-filtrado-1"></div>
+        <h2>Listado completo de gastos</h2>
+        <div id="listado-gastos-completo"></div>
 
-    <h2>Gastos > 50€</h2>
-    <div id="listado-gastos-filtrado-2"></div>
+        <h2>Gastos en septiembre 2021</h2>
+        <div id="listado-gastos-filtrado-1"></div>
 
-    <h2>Gastos > 200€ con etiqueta seguros</h2>
-    <div id="listado-gastos-filtrado-3"></div>
+        <h2>Gastos > 50€</h2>
+        <div id="listado-gastos-filtrado-2"></div>
 
-    <h2>Gastos < 50€ con comida o transporte</h2>
-    <div id="listado-gastos-filtrado-4"></div>
+        <h2>Gastos > 200€ con etiqueta seguros</h2>
+        <div id="listado-gastos-filtrado-3"></div>
 
-    <h2>Agrupación por día</h2>
-    <div id="agrupacion-dia"></div> 
+        <h2>Gastos < 50€ con comida o transporte</h2>
+        <div id="listado-gastos-filtrado-4"></div>
 
-    <h2>Agrupación por mes</h2>
-    <div id="agrupacion-mes"></div>
+        <h2>Agrupación por día</h2>
+        <div id="agrupacion-dia"></div> 
 
-    <h2>Agrupación por año</h2>
-    <div id="agrupacion-anyo"></div>
+        <h2>Agrupación por mes</h2>
+        <div id="agrupacion-mes"></div>
+
+        <h2>Agrupación por año</h2>
+        <div id="agrupacion-anyo"></div>
+    </div>
 
     <script type="module" src="./js/generarDatosEstaticos.js"></script>
 </body>
