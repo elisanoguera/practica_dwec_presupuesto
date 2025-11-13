@@ -41,7 +41,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     // Creo elemento para el valor
     let divValor = document.createElement("div");
     divValor.className = "gasto-valor";
-    divValor.textContent = gasto.valor + " €";
+    divValor.textContent = gasto.valor;
     
     // Creo contenedor para etiquetas (etiquetas es un array dentro del objeto gasto)
     let divEtiquetas = document.createElement("div");
@@ -52,7 +52,13 @@ function mostrarGastoWeb(idElemento, gasto) {
         for (let i = 0; i < gasto.etiquetas.length; i++) {
             let spanEtiqueta = document.createElement("span");
             spanEtiqueta.className = "gasto-etiquetas-etiqueta";
-            spanEtiqueta.textContent = gasto.etiquetas[i] + "";
+            spanEtiqueta.textContent = gasto.etiquetas[i];
+              
+            // CREAR MANEJADOR PARA BORRAR ETIQUETA
+            let borrarEtiquetaHandler = new BorrarEtiquetasHandle();
+            borrarEtiquetaHandler.gasto = gasto;
+            borrarEtiquetaHandler.etiqueta = gasto.etiquetas[i]; // La etiqueta actual del bucle
+            spanEtiqueta.addEventListener("click", borrarEtiquetaHandler);
             divEtiquetas.appendChild(spanEtiqueta);
         }
     }
@@ -83,7 +89,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     divGasto.appendChild(divFecha);
     divGasto.appendChild(divValor);
     divGasto.appendChild(divEtiquetas);
-     divGasto.appendChild(botonEditar);
+    divGasto.appendChild(botonEditar);
     divGasto.appendChild(botonBorrar);  
     
     // Añadir el gasto al contenedor
@@ -289,6 +295,21 @@ BorrarHandle.prototype.handleEvent = function (event) {
   }
 }
 
+// Función constructora para borrar etiquetas
+function BorrarEtiquetasHandle() {
+  // Constructor vacío
+}
+BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
+  // Pedir confirmación antes de borrar la etiqueta
+  if (confirm("¿Estás seguro de que quieres borrar la etiqueta: '" + this.etiqueta + "'?")) {
+    // Borrar la etiqueta específica
+    this.gasto.borrarEtiquetas(this.etiqueta);
+    
+    // Repintar la interfaz
+    repintar();
+  }
+};
+
 
 
 export {
@@ -299,5 +320,6 @@ export {
     actualizarPresupuestoWeb,
     nuevoGastoWeb,
     EditarHandle,
-    BorrarHandle
+    BorrarHandle,
+    BorrarEtiquetasHandle
 }
