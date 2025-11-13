@@ -2,28 +2,28 @@
 
 // TODO: Variable global
 
-var presupuesto = 0;
+let presupuesto = 0;
 
-function actualizarPresupuesto(presupuesto) {
+function actualizarPresupuesto(parametro) {
     // TODO
-    var parametro = presupuesto;
 
-    if(parametro < 0){
-        parametro = -1;
-        alert('Error valor no valido');
-        return parametro
+    if(parametro >= 0){
+        presupuesto = parametro;
+        return presupuesto;
+    }
+    else{
+
+        console.log('Error valor no valido');
+        return -1
+        
     }
 
-    return parametro;
+    
 }
 
 function mostrarPresupuesto() {
     // TODO
-    var valor = presupuesto;
-
-    let texto = 'El valor de la variable es ' + valor;
-
-    return texto;
+    return `Tu presupuesto actual es de ${presupuesto} €`;
 
 }
 
@@ -31,45 +31,41 @@ function CrearGasto(descripcion, valor) {
     // TODO
 
     //Comprobamos que el valor introducido sea mayor a 0, por lo que no sera un numero negativo
-    if(valor < 0){
-        valor = 0;
+    if(valor > 0){
+        this.valor = valor;
+    }
+    else{
+        this.valor = 0;
     }
 
-    //Creamos el objeto gasto
-    let gasto = {
-        //Le añadimos las propiedades
-        descripcion: descripcion,
-        valor: valor,
+
+    //Le añadimos las propiedades
+    this.descripcion = descripcion,
 
 
-        //Creamos los metodos
-        //metodo para mostrar el gasto
-        mostrarGasto: function(){
-            alert("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €.")
-        },
-
-        //Metodo para actualizar la descripcion
-        actualizarDescripcion: function(nuevaDescripcion){
-            this.descripcion = nuevaDescripcion;
-        },
-
-        //Metodo para actualizar el valor del objeto
-        actualizarValor: function(nuevoValor){
-            if(nuevoValor < 0){
-              this.valor = nuevoValor;  
-            }
-            else{
-                alert("Valor introducido negativo. Introduzca otro valor");
-            }
-        },
+    //Creamos los metodos
+    //metodo para mostrar el gasto
+    this.mostrarGasto = function(){
+        return "Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €";
     }
 
-    //Devolvemos el objeto gasto
-    return gasto;
+    //Metodo para actualizar la descripcion
+    this.actualizarDescripcion = function(nuevaDescripcion){
+        this.descripcion = nuevaDescripcion;
+    }
 
-    
+    //Metodo para actualizar el valor del objeto
+    this.actualizarValor = function(nuevoValor){
+        if(nuevoValor > 0){
+            this.valor = nuevoValor;  
+        }
+        else{
+            console.log("Valor introducido negativo. Introduzca otro valor");
+        }
+    }   
 
 }
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
