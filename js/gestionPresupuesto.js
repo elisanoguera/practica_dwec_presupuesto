@@ -17,7 +17,7 @@ function actualizarPresupuesto(presupuesto) {
     return parametro;
 }
 
-function mostrarPresupuesto(presupuesto) {
+function mostrarPresupuesto() {
     // TODO
     var valor = presupuesto;
 
@@ -27,10 +27,47 @@ function mostrarPresupuesto(presupuesto) {
 
 }
 
-function CrearGasto() {
+function CrearGasto(descripcion, valor) {
     // TODO
 
-    let gasto = new Object();
+    //Comprobamos que el valor introducido sea mayor a 0, por lo que no sera un numero negativo
+    if(valor < 0){
+        valor = 0;
+    }
+
+    //Creamos el objeto gasto
+    let gasto = {
+        //Le añadimos las propiedades
+        descripcion: descripcion,
+        valor: valor,
+
+
+        //Creamos los metodos
+        //metodo para mostrar el gasto
+        mostrarGasto: function(){
+            alert("Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €.")
+        },
+
+        //Metodo para actualizar la descripcion
+        actualizarDescripcion: function(nuevaDescripcion){
+            this.descripcion = nuevaDescripcion;
+        },
+
+        //Metodo para actualizar el valor del objeto
+        actualizarValor: function(nuevoValor){
+            if(nuevoValor < 0){
+              this.valor = nuevoValor;  
+            }
+            else{
+                alert("Valor introducido negativo. Introduzca otro valor");
+            }
+        },
+    }
+
+    //Devolvemos el objeto gasto
+    return gasto;
+
+    
 
 }
 
