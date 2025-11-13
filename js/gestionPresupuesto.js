@@ -3,6 +3,8 @@
 // TODO: Variable global
 
 let presupuesto = 0;
+let gasto;
+let idgasto = 0;
 
 function actualizarPresupuesto(parametro) {
     // TODO
@@ -66,6 +68,28 @@ function CrearGasto(descripcion, valor) {
 
 }
 
+//Creamos las funciones vacias despues de añadirlas al objeto export
+
+function listarGastos() {
+
+}
+
+function anyadirGasto() {
+
+}
+
+function borrarGasto() {
+
+}
+
+function calcularTotalGastos() {
+
+}
+
+function calcularBalance() {
+    
+}
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
@@ -74,4 +98,9 @@ export   {
     mostrarPresupuesto,
     actualizarPresupuesto,
     CrearGasto
+    listarGastos,
+    anyadirGasto,
+    borrarGasto,
+    calcularTotalGastos,
+    calcularBalance,
 }
