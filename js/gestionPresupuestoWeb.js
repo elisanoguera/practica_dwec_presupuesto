@@ -203,6 +203,70 @@ function nuevoGastoWeb() {
 
 
 
+  // Función constructora EditarHandle
+function EditarHandle(gasto) {
+  // Asignamos la referencia al gasto que se va a editar
+  this.gasto = gasto;
+}
+// Definimos el método que actuará como manejador del evento click
+EditarHandle.prototype.handleEvent = function (event) {
+  // Pedimos los nuevos datos al usuario con los prompts
+  let nuevaDescripcion = prompt("Introduce la nueva descripción:", this.gasto.descripcion);
+  let nuevoValor = prompt("Introduce el nuevo valor:", this.gasto.valor);
+  let nuevaFecha = prompt(
+    "Introduce la nueva fecha (formato yyyy-mm-dd):",
+    new Date(this.gasto.fecha).toISOString().slice(0, 10)
+  );
+  let nuevasEtiquetasTexto = prompt(
+    "Introduce las nuevas etiquetas (separadas por comas):",
+    this.gasto.etiquetas.join(",")
+  );
+
+  // Convertimos el valor a número
+  nuevoValor = Number(nuevoValor);
+
+  // Convertimos las etiquetas a array quitando espacios
+  let nuevasEtiquetas;
+  if (nuevasEtiquetasTexto) {
+      nuevasEtiquetas = nuevasEtiquetasTexto.split(",").map(function(etiqe) {
+          return etiqe.trim();
+      });
+  } else {
+      nuevasEtiquetas = [];
+  }
+
+  // Actualizamos las propiedades del gasto
+  this.gasto.actualizarDescripcion(nuevaDescripcion);
+  this.gasto.actualizarValor(nuevoValor);
+  this.gasto.actualizarFecha(nuevaFecha);
+
+  // Limpiamos y añadimos nuevas etiquetas
+  this.gasto.etiquetas = [];
+  this.gasto.anyadirEtiquetas.apply(this.gasto, nuevasEtiquetas);
+
+  // Repintamos la interfaz
+  repintar();
+};
+
+
+// Función constructora BorrarHandle
+function BorrarHandle(gasto) {
+  // Asignamos la referencia al gasto que se va a borrar
+  this.gasto = gasto;
+}
+// Definimos el método que actuará como manejador del evento click
+BorrarHandle.prototype.handleEvent = function (event) {
+  // Pedimos confirmación al usuario antes de borrar
+  if (confirm("¿Estás seguro de que quieres borrar el gasto: '" + this.gasto.descripcion + "'?")) {
+    // Borramos el gasto usando su id
+    gespre.borrarGasto(this.gasto.id);
+    
+    // Repintamos la interfaz para mostrar la lista actualizada
+    repintar();
+  }
+}
+
+
 
 export {
     mostrarDatoEnId,
@@ -210,5 +274,7 @@ export {
     mostrarGastosAgrupadosWeb,
     repintar,
     actualizarPresupuestoWeb,
-    nuevoGastoWeb
+    nuevoGastoWeb,
+    EditarHandle,
+    BorrarHandle
 }
