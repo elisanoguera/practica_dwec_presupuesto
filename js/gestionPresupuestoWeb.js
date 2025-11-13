@@ -120,15 +120,15 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 function repintar() {
   // Mostrar el presupuesto total
   let presupuesto = gespre.mostrarPresupuesto();
-  gespre.mostrarDatoEnId("presupuesto", presupuesto.toFixed(2) + " €");
+  mostrarDatoEnId("presupuesto", presupuesto);
 
   // Para calcular y mostrar el total de gastos
   let totalGastos = gespre.calcularTotalGastos();
-  gespre.mostrarDatoEnId("gastos-totales", totalGastos.toFixed(2) + " €");
+  mostrarDatoEnId("gastos-totales", totalGastos);
 
   // Para calcular y mostrar el balance actual
   let balance = gespre.calcularBalance();
-  gespre.mostrarDatoEnId("balance-total", balance.toFixed(2) + " €");
+  mostrarDatoEnId("balance-total", balance);
 
   // limpia el listado completo antes de volver a generarlo
   let divListado = document.getElementById("listado-gastos-completo");
@@ -139,7 +139,7 @@ function repintar() {
 
   // muestra cada gasto en el contenedor del listado
   for (let gasto of gastos) {
-    gespre.mostrarGastoWeb("listado-gastos-completo", gasto);
+    mostrarGastoWeb("listado-gastos-completo", gasto);
   }
 }
 
@@ -176,6 +176,32 @@ function actualizarPresupuestoWeb() {
 
 
 
+// Función manejadora para crear un nuevo gasto
+function nuevoGastoWeb() {
+  //Pedir los datos al usuario con prompt
+  let descripcion = prompt("Introduce la descripción del gasto:");
+  let valor = Number(prompt("Introduce el valor del gasto (€):"));
+  let fecha = prompt("Introduce la fecha (formato yyyy-mm-dd):");
+  let etiquetasTexto = prompt("Introduce las etiquetas separadas por comas (ej: casa,comida,ocio):");
+
+  //Convertimos las etiquetas a un array
+  let etiquetas = etiquetasTexto.split(",");
+
+  //  Creamos el gasto con la función de la librería gestionPresupuesto.js
+  let gasto = new gespre.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+
+  //  Lo añadimos al listado de gastos
+  gespre.anyadirGasto(gasto);
+
+  //  Repintamos todo para que se actualice la interfaz
+  repintar();
+}
+
+  // Botón para añadir gasto
+  let botonAnyadir = document.getElementById("anyadirgasto");
+  botonAnyadir.addEventListener("click", nuevoGastoWeb);
+
+
 
 
 export {
@@ -183,5 +209,6 @@ export {
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
     repintar,
-    actualizarPresupuestoWeb
+    actualizarPresupuestoWeb,
+    nuevoGastoWeb
 }

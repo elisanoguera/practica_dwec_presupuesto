@@ -18,7 +18,7 @@ function actualizarPresupuesto(presupuestoActualizado) {
 }
 
 function mostrarPresupuesto() {
-    return 'Tu presupuesto actual es de ' + presupuesto.toFixed(2) + ' €';
+    return 'Tu presupuesto actual es de ' + presupuesto +' €';
 }
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
