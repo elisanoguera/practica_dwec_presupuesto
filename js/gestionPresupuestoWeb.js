@@ -1,12 +1,12 @@
 import { agruparGastos } from "./gestionPresupuesto";
 
-mostrarDatoEnId = function(idElemento, valor){
+function mostrarDatoEnId(idElemento, valor){
     let elemento = document.getElementById(idElemento);
 
     elemento.textContent = valor;
 }
 
-mostrarGastoWeb = function(idElemento, gasto){
+function mostrarGastoWeb(idElemento, gasto){
     // 1. Buscar el elemento donde se añadirá el gasto
   let elemento = document.getElementById(idElemento);
 
@@ -47,7 +47,7 @@ mostrarGastoWeb = function(idElemento, gasto){
   elemento.appendChild(div);
 }
 
-mostrarGastosAgrupadosWeb = function(idElemento, agrup, periodo){
+function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
   let elemento = document.getElementById(idElemento);
   let div = document.createElement("div");
   div.className = "agrupacion";
