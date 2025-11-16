@@ -2,7 +2,7 @@
 
 let presupuesto = 0;
 let gastos = [];
-let idgasto = 0;
+let idGasto = 0;
 
 function actualizarPresupuesto(nvoPresupuesto) {
   if (nvoPresupuesto >= 0) {
@@ -70,6 +70,18 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         });
     };
 
+    // Otra opción, mostrada en clase: Busco en el array de etiquetas que se quieren borrar, si esta, muestra -1, si no está, la agrega al nuevo array. Luego muestra el nuevo array que ya no tendrá las etiquetas que se querían borrar.
+    // this.borrarEtiquetas = function(...etqs) {
+    //     let newetiquetas = [];
+
+    //     for (let e of this.etiquetas) {
+	//     if (etqs.indexOf(e) == -1) {
+    //             newetiquetas.push(e);
+	//     }
+    //     }
+
+    //     this.etiquetas = newetiquetas;
+    // }
 
   //Propiedades:
     if (valor >= 0) {
@@ -92,18 +104,41 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
   this.anyadirEtiquetas(...etiquetas);
 }
 
-
 function listarGastos() {
   return gastos;
 }
 
-function anyadirGasto() {}
+function anyadirGasto(gasto) {
+    gasto.id = idGasto++;
+    gastos.push(gasto);
+}
 
-function borrarGasto() {}
+function borrarGasto(idGasto) {
+    let gasto = null;
+    for (let g of gastos) {
+        if (g.id == idGasto){
+            gasto = g;
+        }
+    }
+    // Busco la posicion que quiero borrar y el numero de elementos con splice
+    if (gasto){
+        let posGasto = gastos.indexOf(gasto);
+        gastos.splice(posGasto,1);
+    }
+}
 
-function calcularTotalGastos() {}
+function calcularTotalGastos() {
+    let total= 0;
+    for (let g of gastos){
+        total += g.valor;
+    }
+    return total;
 
-function calcularBalance() {}
+}
+
+function calcularBalance() {
+    return presupuesto - calcularTotalGastos()
+}
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
