@@ -83,6 +83,19 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     //     this.etiquetas = newetiquetas;
     // }
 
+this.obtenerPeriodoAgrupacion = function(periodo) {
+    let fechaGasto = new Date(this.fecha);
+
+    let anio = fechaGasto.getFullYear();
+    let mes = (fechaGasto.getMonth() + 1).toString().padStart(2, '0'); 
+    let dia = fechaGasto.getDate().toString().padStart(2, '0');
+
+    if (periodo === "dia") return `${anio}-${mes}-${dia}`;
+    if (periodo === "mes") return `${anio}-${mes}`;
+    if (periodo === "anyo") return `${anio}`;
+};
+// padStart es para devolver 2 dígitos
+
   //Propiedades:
     if (valor >= 0) {
     this.valor = valor;
@@ -133,12 +146,54 @@ function calcularTotalGastos() {
         total += g.valor;
     }
     return total;
-
 }
 
 function calcularBalance() {
     return presupuesto - calcularTotalGastos()
 }
+
+function filtrarGastos(filtros) {
+    return gastos.filter(function(gasto) {
+        let cumple = true;
+
+        if (filtros.fechaDesde) {
+            var fechaInicio = Date.parse(filtros.fechaDesde);
+            cumple = cumple && (gasto.fecha >= fechaInicio);
+        }
+
+        if (filtros.fechaHasta) {
+            var fechaFin = Date.parse(filtros.fechaHasta);
+            cumple = cumple && (gasto.fecha <= fechaFin);
+        }
+
+        if (filtros.valorMinimo) {
+            cumple = cumple && (gasto.valor >= filtros.valorMinimo);
+        }
+
+        if (filtros.valorMaximo) {
+            cumple = cumple && (gasto.valor <= filtros.valorMaximo);
+        }
+
+        if (filtros.descripcionContiene) {
+            cumple = cumple && (gasto.descripcion.indexOf(filtros.descripcionContiene) > -1);
+        }
+
+        if (filtros.etiquetasTiene) {
+            let etiquetaCoincide = false;
+            for (let etiquetaFiltro of filtros.etiquetasTiene) {
+                if (gasto.etiquetas.indexOf(etiquetaFiltro) > -1) {
+                    etiquetaCoincide = true;
+                }
+            }
+            cumple = cumple && etiquetaCoincide;
+        }
+
+        return cumple;
+    });
+}
+
+
+function agruparGastos() {}
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
@@ -152,4 +207,6 @@ export {
   borrarGasto,
   calcularTotalGastos,
   calcularBalance,
+  filtrarGastos,
+  agruparGastos,
 };
