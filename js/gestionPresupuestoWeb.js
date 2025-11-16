@@ -1,3 +1,5 @@
+import { agruparGastos } from "./gestionPresupuesto";
+
 mostrarDatoEnId = function(idElemento, valor){
     let elemento = document.getElementById(idElemento);
 
@@ -46,7 +48,32 @@ mostrarGastoWeb = function(idElemento, gasto){
 }
 
 mostrarGastosAgrupadosWeb = function(idElemento, agrup, periodo){
+  let elemento = document.getElementById(idElemento);
+  let div = document.createElement("div");
+  div.className = "agrupacion";
+  div.innerHTML = `<h1>Gastos agrupados por ${periodo}</h1>`;
 
+  agrup = agruparGastos(periodo);
+
+  for (let [clave, valor] of Object.entries(agrup)){
+    let divAgrupacionDato = document.createElement("div");
+    divAgrupacionDato.className = "agrupacion-dato";
+
+    let spanClave = document.createElement("span");
+    spanClave.className = "agrupacion-dato-clave";
+    spanClave.innerHTML = clave;
+    divAgrupacionDato.appendChild(spanClave);
+
+    let spanValor = document.createElement("span");
+    spanValor.className = "agrupacion-dato-valor";
+    spanValor.innerHTML = valor;
+    divAgrupacionDato.appendChild(spanValor);
+
+      //Se añade el dato al div principal "agrupacion"
+    div.appendChild(divAgrupacionDato);
+  }
+  
+  elemento.appendChild(div);
 }
 
 export {
