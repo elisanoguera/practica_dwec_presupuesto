@@ -192,8 +192,31 @@ function filtrarGastos(filtros) {
     });
 }
 
+function agruparGastos(periodo, etiquetas, fechaDesde, fechaHasta) {
 
-function agruparGastos() {}
+    let filtros = {
+        etiquetasTiene: etiquetas,
+        fechaDesde: fechaDesde,
+        fechaHasta: fechaHasta
+    };
+
+    let gastosFiltrados = filtrarGastos(filtros);
+
+    return gastosFiltrados.reduce(function(acumulador, gasto) {
+
+        let periodoGasto = gasto.obtenerPeriodoAgrupacion(periodo);
+
+        if (acumulador[periodoGasto]) {
+            acumulador[periodoGasto] += gasto.valor;
+        } else {
+            acumulador[periodoGasto] = gasto.valor;
+        }
+
+        return acumulador;
+
+    }, {}); // {}, al final → crea el objeto vacío inicial donde se irán sumando los valores de cada período.
+}
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
