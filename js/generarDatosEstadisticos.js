@@ -19,4 +19,9 @@ libreriaGestionPresupuesto.anyadirGasto(gasto5);
 libreriaGestionPresupuesto.anyadirGasto(gasto6);
 
 libreriaGestionPresupuestoWeb.mostrarDatoEnId("gastos-totales", libreriaGestionPresupuesto.calcularTotalGastos());
+
 libreriaGestionPresupuestoWeb.mostrarDatoEnId("balance-total", libreriaGestionPresupuesto.calcularBalance());
+
+for (let gasto of libreriaGestionPresupuesto.listarGastos()){
+    libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-completo", gasto);
+}
