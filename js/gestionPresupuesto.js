@@ -99,6 +99,41 @@ function agruparGastos() {
 
 }
 
+function filtrarGastos(filtros) {
+    if (!filtros || typeof filtros !== object) {
+        return gastos;      //global
+    }
+
+    let fechaMinima = null;
+    if (typeof filtros.fechaDesde === "string" && !isNaN(Date.parse(filtros.fechaDesde))) {
+        fechaMinima = Date.parse(filtros.fechaDesde);
+    }
+
+    let fechaMaxima = null;
+    if (typeof filtros.fechaHasta === "string" && !isNaN(Date.parse(filtros.fechaHasta))) {
+        fechaMaxima = Date.parse(filtros.fechaHasta);
+    }
+
+    const tieneValorMinimo = (typeof filtros.valorMinimo === "number");
+    const tieneValorMaximo = (typeof filtros.valorMaximo === "number");
+
+    let trozo = null;
+    if (typeof filtros.descripcionContiene === "string") {
+        trozo = filtros.descripcionContiene.toLowerCase();
+    }
+
+    let arrayEtiquetas = null;
+    if (Array.isArray(filtros.etiquetasTiene)) {
+        arrayEtiquetas = filtros.etiquetasTiene.map(function(et)
+    {
+        return String(et).toLowerCase();
+    });
+
+    }    
+
+}
+
+
 
 //funcion constructora
 function CrearGasto(descripcion, valor, fecha,...etiquetas) {
