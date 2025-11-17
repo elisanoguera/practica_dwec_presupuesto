@@ -65,6 +65,15 @@ export function mostrarGastoWeb(idElemento, gasto) {
         botonBorrar.addEventListener("click", borrarGasto);
         divPrincipal.append(botonBorrar);
 
+        let botonEditarFormulario = document.createElement("button");
+        botonEditar.textContent = "Editar (formulario)";
+        botonEditar.className = "gasto-editar-formulario";
+
+        let editarGastoFormulario = editarHandleFormulario(gasto);
+
+        botonEditarFormulario.addEventListener("click", editarGastoFormulario);
+        divPrincipal.append(botonEditarFormulario);
+
         elementoSeleccionado.append(divPrincipal);
     }
 }
