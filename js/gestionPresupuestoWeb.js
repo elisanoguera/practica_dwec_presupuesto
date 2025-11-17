@@ -200,8 +200,44 @@ function borrarEtiquetasHandle(gasto,etiqueta){
     return borrarEtiquetas;
 }
 
+function nuevoGastoWebFormulario(){
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    var formulario = plantillaFormulario.querySelector("form");
+    let botonAnyadir = document.getElementById("anyadirgasto-formulario");
+    botonAnyadir.setAttribute("disabled", "");
+    
+    formulario.addEventListener("submit",function(event){
+        event.preventDefault()
+        let formularioActual = event.currentTarget;
+
+        let nuevoGasto = new gestionPresupuesto.CrearGasto(
+            formularioActual.querySelector("input[name=descripcion]").value,
+            Number(formularioActual.querySelector("input[name=valor]").value),
+            formularioActual.querySelector("input[name=fecha]").value,
+            formularioActual.querySelector("input[name=etiquetas]").value
+        )
+    gestionPresupuesto.anyadirGasto(nuevoGasto);
+    repintar();
+    botonAnyadir.removeAttribute("disabled");
+    
+    })
+
+    let borrarFormulario = {handleEvent: function(){
+        formulario.remove();
+        botonAnyadir.removeAttribute("disabled");
+    }}
+
+    formulario.querySelector("button.cancelar").addEventListener("click", borrarFormulario);
+    
+    let controles = document.getElementById("controlesprincipales");
+    controles.appendChild(plantillaFormulario);
+}
+
 let botonPresupuesto = document.getElementById("actualizarpresupuesto");
 botonPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 
 let botonGasto = document.getElementById("anyadirgasto");
 botonGasto.addEventListener("click", nuevoGastoWeb);
+
+let botonGastoForm = document.getElementById("anyadirgasto-formulario");
+botonGastoForm.addEventListener("click", nuevoGastoWebFormulario);
