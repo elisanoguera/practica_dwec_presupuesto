@@ -80,6 +80,16 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
         this.fecha = Date.now(); //si no fecha actual
     }
 
+//funcion filtrarGastos
+function filtrarGastos() {
+
+}
+
+//funcion agruparGastos
+function agruparGastos() {
+
+}
+
 
      //añadir etiquetas
     this.etiquetas = [];                        //si no lo indica array vacio
@@ -171,5 +181,7 @@ export   {
     anyadirGasto,
     borrarGasto,
     calcularTotalGastos,
-    calcularBalance
+    calcularBalance,
+    filtrarGastos,
+    agruparGastos
 }
