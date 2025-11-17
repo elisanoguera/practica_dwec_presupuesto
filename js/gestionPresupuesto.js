@@ -57,6 +57,15 @@ function calcularBalance() {
 }
 
 
+//funcion filtrarGastos
+function filtrarGastos() {
+
+}
+
+//funcion agruparGastos
+function agruparGastos() {
+
+}
 
 
 //funcion constructora
@@ -80,15 +89,6 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
         this.fecha = Date.now(); //si no fecha actual
     }
 
-//funcion filtrarGastos
-function filtrarGastos() {
-
-}
-
-//funcion agruparGastos
-function agruparGastos() {
-
-}
 
 
      //añadir etiquetas
@@ -159,11 +159,29 @@ ${textoEtiquetas}\n`;
            
 
     }
-}
-
+};
     
     //uso de metodo anyadirEtiquetas
     this.anyadirEtiquetas(...etiquetas);
+
+    this.obtenerPeriodoAgrupacion = function(periodo) {
+        const fechaObj = new Date(this.fecha);
+
+        const anyo = String(fechaObj.getFullYear());
+        const mes = String(fechaObj.getMonth() + 1).padStart(2, "0"); //meses empiezan en 0
+        const dia = String(fechaObj.getDate()).padStart(2, "0");       
+
+        if (periodo === "dia") {
+            return `${anyo}-${mes}-${dia}`;
+        }
+        if (periodo === "mes") {
+            return `${anyo}-${mes}`;
+        }
+        if (periodo === "anyo") {
+            return `${anyo}`;
+        }
+        return "";
+    };
 
 
 
