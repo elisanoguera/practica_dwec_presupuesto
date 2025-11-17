@@ -122,8 +122,8 @@ function CrearGasto(descripcion, valor, fecha,...etiquetas) {
 
 return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
 Fecha: ${fechaLocal}
-${textoEtiquetas}`;
-    };
+${textoEtiquetas}\n`;
+};
 
     
     //actualizar descripcion
