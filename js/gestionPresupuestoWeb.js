@@ -1,4 +1,4 @@
-import { agruparGastos } from "./gestionPresupuesto";
+import { agruparGastos } from "./gestionPresupuesto.js";
 
 function mostrarDatoEnId(idElemento, valor){
     let elemento = document.getElementById(idElemento);
