@@ -73,6 +73,15 @@ export function mostrarGastoWeb(idElementoLista, gasto) {
   btnBorrar.addEventListener("click", manejadorBorrar)
   divGasto.appendChild(btnBorrar)
 
+  let btnEditarFormulario = document.createElement("button")
+  btnEditarFormulario.type = "button"
+  btnEditarFormulario.className = "gasto-editar-formulario"
+  btnEditarFormulario.textContent = "Editar (formulario)"
+  let manejadorEditarFormulario = new EditarHandleFormulario()
+  manejadorEditarFormulario.gasto = gasto
+  btnEditarFormulario.addEventListener("click", manejadorEditarFormulario)
+  divGasto.appendChild(btnEditarFormulario)
+
   lista.appendChild(divGasto)
 }
 
@@ -139,6 +148,7 @@ function nuevoGastoWeb() {
   repintar()
 }
 
+
 function EditarHandle() {
 }
 
@@ -188,6 +198,7 @@ EditarHandle.prototype.handleEvent = function(e) {
   repintar()
 }
 
+
 function BorrarHandle() {
 }
 
@@ -202,6 +213,9 @@ function BorrarEtiquetasHandle() {
 BorrarEtiquetasHandle.prototype.handleEvent = function(e) {
   this.gasto.borrarEtiquetas(this.etiqueta)
   repintar()
+}
+
+function CancelarFormularioHandle() {
 }
 
 export function iniciar() {
