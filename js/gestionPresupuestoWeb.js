@@ -1,3 +1,5 @@
+import * as gesPres from "./gestionPresupuesto.js";
+
 
 function mostrarDatoEnId(idElemento, valor) {
  document.querySelector("#" + idElemento).textContent = valor;
@@ -41,7 +43,6 @@ function mostrarGastoWeb(idElemento, gasto) {
   contenedor.appendChild(divGasto);
 }
 
-
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
   const contenedor = document.querySelector("#" + idElemento);
 
@@ -74,6 +75,24 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
   }
 
   contenedor.appendChild(divAgrup);
+}
+
+function repintar() {
+  
+  mostrarDatoEnId("presupuesto", gesPres.mostrarPresupuesto());
+
+  mostrarDatoEnId("gastos-totales", gesPres.calcularTotalGastos());
+
+  mostrarDatoEnId("balance-total", gesPres.calcularBalance());
+
+  //Borrar el contenido de div#listado-gastos-completo, para que el paso siguiente no duplique la información. Puedes utilizar innerHTML para borrar el contenido de dicha capa.
+  document.getElementById("listado-gastos-completo").innerHTML = "";
+
+  // Mostrar el listado completo de gastos en div#listado-gastos-completo (funciones listarGastos y mostrarGastoWeb)
+  let lista = gesPres.listarGastos();
+  for (let gasto of lista) {
+    mostrarGastoWeb(gasto);
+  }
 }
 
 
