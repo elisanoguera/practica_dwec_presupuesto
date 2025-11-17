@@ -38,10 +38,11 @@ function mostrarGastoWeb(idElemento, gasto){
   for (let etiqueta of gasto.etiquetas){
     let spanEtiqueta = document.createElement("span");
     spanEtiqueta.className = "gasto-etiquetas-etiqueta";
-    spanEtiqueta.innerHTML = etiqueta;
+    spanEtiqueta.textContent = etiqueta + " ";
     divEtiquetas.appendChild(spanEtiqueta);
-  }  
+  }
   div.appendChild(divEtiquetas);
+  div.appendChild(document.createElement("br"));
 
     // 7. Insertar todo en el contenedor final
   elemento.appendChild(div);
