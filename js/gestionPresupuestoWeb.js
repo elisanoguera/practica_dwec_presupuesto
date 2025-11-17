@@ -66,8 +66,8 @@ export function mostrarGastoWeb(idElemento, gasto) {
         divPrincipal.append(botonBorrar);
 
         let botonEditarFormulario = document.createElement("button");
-        botonEditar.textContent = "Editar (formulario)";
-        botonEditar.className = "gasto-editar-formulario";
+        botonEditarFormulario.textContent = "Editar (formulario)";
+        botonEditarFormulario.className = "gasto-editar-formulario";
 
         let editarGastoFormulario = editarHandleFormulario(gasto);
 
@@ -240,6 +240,44 @@ function nuevoGastoWebFormulario(){
     
     let controles = document.getElementById("controlesprincipales");
     controles.appendChild(plantillaFormulario);
+}
+function editarHandleFormulario(gasto){
+    return{
+        handleEvent: function(event){
+            let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+            var formulario = plantillaFormulario.querySelector("form");
+
+            let descripcionAEditar = formulario.querySelector("input[name=descripcion]");
+            let valorAEditar = Number(formulario.querySelector("input[name=valor]"));
+            let fechaAEditar = formulario.querySelector("input[name=fecha]");
+            let etiquetasAEditar = formulario.querySelector("input[name=etiquetas]");
+            
+            descripcionAEditar.value = gasto.descripcion;
+            valorAEditar.value = gasto.valor;
+            fechaAEditar.value = gasto.fecha;
+            etiquetasAEditar.value = gasto.etiquetas;
+
+            let botonAnyadir = document.getElementById("anyadirgasto-formulario");
+            botonAnyadir.setAttribute("disabled", "");
+            
+            let actualizarEditado = {handleEvent:(evnt){
+                evnt.preventDefault();
+                
+                let nuevaDescripcion = formulario.querySelector("input[name=descripcion]").value;
+                let nuevoValor = Number(formulario.querySelector("input[name=valor]").value);
+                let nuevaFecha = formulario.querySelector("input[name=fecha]").value;
+                let nuevasEtiquetas = formulario.querySelector("input[name=etiquetas]").value;
+
+                gasto.actualizarDescripcion = nuevaDescripcion;
+                gasto.actualizarValor = nuevoValor;
+                gasto.actualizarFecha = nuevaFecha;
+                gasto.anyadirEtiquetas = nuevasEtiquetas.join(",");
+                
+                repintar();
+            }}
+        }
+        
+    } 
 }
 
 let botonPresupuesto = document.getElementById("actualizarpresupuesto");
