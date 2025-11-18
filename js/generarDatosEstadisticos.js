@@ -43,3 +43,30 @@ let gastosFiltrados = libreriaGestionPresupuesto.filtrarGastos(parametrosFiltro)
 for(let gasto of gastosFiltrados) {
     libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-1", gasto);
 }
+
+//Listado de gastos > 50€
+
+parametrosFiltro = {
+    valorMinimo: 50
+}
+
+gastosFiltrados = libreriaGestionPresupuesto.filtrarGastos(parametrosFiltro);
+
+for(let gasto of gastosFiltrados) {
+    libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-2", gasto);
+}
+
+//Listado de gastos > 200€ con etiqueta "seguros"
+
+parametrosFiltro = {
+    valorMinimo: 200,
+    etiquetasTiene: ["seguros"]
+}
+
+gastosFiltrados = libreriaGestionPresupuesto.filtrarGastos(parametrosFiltro);
+
+for(let gasto of gastosFiltrados) {
+    libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-3", gasto);
+}
+
+
