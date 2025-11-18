@@ -241,44 +241,84 @@ function nuevoGastoWebFormulario(){
     let controles = document.getElementById("controlesprincipales");
     controles.appendChild(plantillaFormulario);
 }
-function editarHandleFormulario(gasto){
-    return{
-        handleEvent: function(event){
-            let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
-            var formulario = plantillaFormulario.querySelector("form");
+function editarHandleFormulario(gasto) {
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    var formulario = plantillaFormulario.querySelector("form");
+    
+    let editarformulario = {
+    handleEvent: function(event) {
 
-            let descripcionAEditar = formulario.querySelector("input[name=descripcion]");
-            let valorAEditar = Number(formulario.querySelector("input[name=valor]"));
-            let fechaAEditar = formulario.querySelector("input[name=fecha]");
-            let etiquetasAEditar = formulario.querySelector("input[name=etiquetas]");
-            
-            descripcionAEditar.value = gasto.descripcion;
-            valorAEditar.value = gasto.valor;
-            fechaAEditar.value = gasto.fecha;
-            etiquetasAEditar.value = gasto.etiquetas;
+        let descripcionAEditar = formulario.querySelector("input[name=descripcion]");
+        let valorAEditar = formulario.querySelector("input[name=valor]");
+        let fechaAEditar = formulario.querySelector("input[name=fecha]");
+        let etiquetasAEditar = formulario.querySelector("input[name=etiquetas]");
 
-            let botonAnyadir = document.getElementById("anyadirgasto-formulario");
-            botonAnyadir.setAttribute("disabled", "");
-            
-            let actualizarEditado = {handleEvent:(evnt){
-                evnt.preventDefault();
-                
-                let nuevaDescripcion = formulario.querySelector("input[name=descripcion]").value;
-                let nuevoValor = Number(formulario.querySelector("input[name=valor]").value);
-                let nuevaFecha = formulario.querySelector("input[name=fecha]").value;
-                let nuevasEtiquetas = formulario.querySelector("input[name=etiquetas]").value;
+      
+        descripcionAEditar.value = gasto.descripcion;
+        valorAEditar.value = gasto.valor;
+        fechaAEditar.value = gasto.fecha;
+        etiquetasAEditar.value = gasto.etiquetas.join(",");
+      }
 
-                gasto.actualizarDescripcion = nuevaDescripcion;
-                gasto.actualizarValor = nuevoValor;
-                gasto.actualizarFecha = nuevaFecha;
-                gasto.anyadirEtiquetas = nuevasEtiquetas.join(",");
-                
-                repintar();
-            }}
+     
+      let botonEditarFormulario = document.querySelector(".gasto-editar-formulario");
+      botonEditarFormulario.setAttribute("disabled", "");
+
+      
+      let editarGasto = {gastoActual: gasto,handleEvent: function(evt) {
+        evt.preventDefault();
+
+        let nuevaDescripcion = formulario.querySelector("input[name=descripcion]").value;
+        if (nuevaDescripcion === ""){
+            nuevaDescripcion = this.gastoActual.descripcion;
         }
-        
-    } 
+        this.gastoActual.actualizarDescripcion(nuevaDescripcion);
+
+        let nuevoValor = formulario.querySelector("input[name=valor]").value;
+        if(nuevoValor === ""){
+            nuevoValor = this.gastoActual.valor;
+        }
+        let nuevoValorNum = Number(nuevoValor);
+        this.gastoActual.actualizarValor(nuevoValorNum);
+
+        let nuevaFecha = formulario.querySelector("input[name=fecha]").value;
+        if(nuevaFecha === ""){
+            nuevaFecha = this.gastoActual.fecha;
+        }
+        this.gastoActual.actualizarFecha(nuevaFecha);
+
+        let nuevasEtiquetas = formulario.querySelector("input[name=etiquetas]").value;
+        if(nuevasEtiquetas === ""){
+            nuevasEtiquetas = this.gastoActual.etiquetas;
+        }
+        let nuevasEtiquetasArray = nuevasEtiquetas.split(",");
+        this.gastoActual.anyadirEtiquetas(nuevasEtiquetasArray);
+        }
+
+
+        formulario.remove();
+        botonEditarFormulario.removeAttribute("disabled");
+
+        repintar();
+        }
+      };
+
+    formulario.addEventListener("submit", editarGasto);
+
+    let borrarFormulario = {handleEvent: function(){
+        formulario.remove();
+        botonEditarFormulario.removeAttribute("disabled");
+    }
+
+    formulario.querySelector("button.cancelar").addEventListener("click", borrarFormulario);
+    
+    let controles = document.getElementById("controlesprincipales");
+    controles.appendChild(plantillaFormulario);
+  };
+
+  return editarformulario;
 }
+
 
 let botonPresupuesto = document.getElementById("actualizarpresupuesto");
 botonPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
