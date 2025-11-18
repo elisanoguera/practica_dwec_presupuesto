@@ -69,4 +69,15 @@ for(let gasto of gastosFiltrados) {
     libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-3", gasto);
 }
 
+//listado de gastos con las etiquetas comida o transporte < 50€
 
+parametrosFiltro = {
+    valorMaximo: 50,
+    etiquetasTiene: ["comida", "transporte"]
+}
+
+gastosFiltrados = libreriaGestionPresupuesto.filtrarGastos(parametrosFiltro);
+
+for(let gasto of gastosFiltrados) {
+    libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-4", gasto);
+}
