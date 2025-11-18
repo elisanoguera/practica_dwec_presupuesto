@@ -94,9 +94,13 @@ Etiquetas:\n`;
             switch (periodo) {
                 case "dia":
                     return `${anyo}-${mes}-${dia}`;
+                case "día":
+                    return `${anyo}-${mes}-${dia}`;
                 case "mes":
                     return `${anyo}-${mes}`;
                 case "anyo":
+                    return `${anyo}`;
+                case "año":
                     return `${anyo}`;
                 default:
                     return -1;

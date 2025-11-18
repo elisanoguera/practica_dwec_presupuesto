@@ -81,3 +81,16 @@ gastosFiltrados = libreriaGestionPresupuesto.filtrarGastos(parametrosFiltro);
 for(let gasto of gastosFiltrados) {
     libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-4", gasto);
 }
+
+
+//Total de gastos agrupados por día
+let gastosAgrupadosDia = libreriaGestionPresupuesto.agruparGastos("día");
+libreriaGestionPresupuestoWeb.mostrarGastosAgrupadosWeb("agrupacion-dia", gastosAgrupadosDia, "día");
+
+//Total de gastos agrupados por mes
+let gastosAgrupadosMes = libreriaGestionPresupuesto.agruparGastos("mes");
+libreriaGestionPresupuestoWeb.mostrarGastosAgrupadosWeb("agrupacion-mes", gastosAgrupadosMes, "mes");
+
+//Total de gastos agrupados por año
+let gastosAgrupadosAnyo = libreriaGestionPresupuesto.agruparGastos("año");
+libreriaGestionPresupuestoWeb.mostrarGastosAgrupadosWeb("agrupacion-anyo", gastosAgrupadosAnyo, "año");
