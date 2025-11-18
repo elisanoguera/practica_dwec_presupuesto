@@ -1,9 +1,11 @@
 import * as libreriaGestionPresupuesto from "./gestionPresupuesto.js";
 import * as libreriaGestionPresupuestoWeb from "./gestionPresupuestoWeb.js";
 
+//Presupuesto
 libreriaGestionPresupuesto.actualizarPresupuesto(1500);
 libreriaGestionPresupuestoWeb.mostrarDatoEnId("presupuesto", libreriaGestionPresupuesto.mostrarPresupuesto());
 
+//Gastos
 let gasto1 = new libreriaGestionPresupuesto.CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida");
 let gasto2 = new libreriaGestionPresupuesto.CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida");
 let gasto3 = new libreriaGestionPresupuesto.CrearGasto("Bonobús", 18.60, "2020-05-26", "transporte");
@@ -20,8 +22,24 @@ libreriaGestionPresupuesto.anyadirGasto(gasto6);
 
 libreriaGestionPresupuestoWeb.mostrarDatoEnId("gastos-totales", libreriaGestionPresupuesto.calcularTotalGastos());
 
+//Balance
 libreriaGestionPresupuestoWeb.mostrarDatoEnId("balance-total", libreriaGestionPresupuesto.calcularBalance());
 
-for (let gasto of libreriaGestionPresupuesto.listarGastos()){
+
+//Listado de gastos
+for(let gasto of libreriaGestionPresupuesto.listarGastos()) {
     libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-completo", gasto);
+}
+
+//Listado de gastos realizados en septiembre de 2021
+
+let parametrosFiltro = {
+    fechaDesde: "2021-09-01",
+    fechaHasta: "2021-09-30"
+}
+
+let gastosFiltrados = libreriaGestionPresupuesto.filtrarGastos(parametrosFiltro);
+
+for(let gasto of gastosFiltrados) {
+    libreriaGestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-filtrado-1", gasto);
 }
