@@ -5,8 +5,8 @@ import eslintPluginCypress from "eslint-plugin-cypress";
 // TODO: Variable global
 
 let presupuesto = 0;
-let gasto = [];
-let idgasto = 0;
+let gastos = [];
+let idGasto = 0;
 
 function actualizarPresupuesto(parametro) {
     // TODO
@@ -31,9 +31,10 @@ function mostrarPresupuesto() {
 
 }
 
-function CrearGasto(descripcion, valor) {
+function CrearGasto(descripcion, valor, fecha, etiquetas) {
     // TODO
 
+    valor = Number(valor);
     //Comprobamos que el valor introducido sea mayor a 0, por lo que no sera un numero negativo
     if(valor > 0){
         this.valor = valor;
@@ -44,7 +45,7 @@ function CrearGasto(descripcion, valor) {
 
 
     //Le añadimos las propiedades
-    this.descripcion = descripcion,
+    this.descripcion = descripcion;
 
     //Creamos los metodos
     //metodo para mostrar el gasto
@@ -69,28 +70,43 @@ function CrearGasto(descripcion, valor) {
     
     //Añadimos los nuevos archivos a la funcion.
     //Parametro para añadir la fecha en la que se ha registrado el gasto
-    this.fecha = Date.now();
+    var t = Date.parse(fecha);
+    if(t === t){
+        this.fecha = t;
+    }
+    else{
+        this.fecha = 0;
+    }
     //Propiedad para añadir varias etiquetas y categorizar un gasto
     this.etiquetas = [];
+
+    if(Array.isArray(etiquetas)){
+        for(var a = 0; a < etiquetas.length; a++){
+            this.etiquetas.push(etiquetas[a]);
+        }
+    }
 
     //Funciones
     this.mostrarGastoCompleto = function() {
 
-        var texto;
+        var texto = "Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €.\n";
 
-        texto = "Gasto correspondiente a " + descripcion + " con valor " + valor + " € \n";
-        texto = texto + "Fecha: " + this.fecha.toLocaleString + "\n";
-        texto = texto + "Etiquetas: ";
+        var fechaGasto = new Date(this.fecha);
+        texto = texto + "Fecha: " + fechaGasto.toLocaleDateString() + "\n";
+
+        texto = texto + "Etiquetas:";
         //Si el numero de etiquecas es 0 indicamos ninguna
         if(this.etiquetas.length === 0){
-            texto = texto + " Ninguna"
+            texto = texto + " Ninguna";
         }
         //recorremos todas las etiquetas y las vamos añadiendo con un salto de linea
         else{
-            this.etiquetas.forEach(etiquetas => {
-                texto = texto + "\n - " + etiquetas; 
-            })
+            for(var i = 0; i < this.etiquetas.length; i++){
+                texto = texto + "\n" + this.etiquetas[i];
+            }
         } 
+
+        return texto;
     }
 
     this.actualizarFecha = function(nuevaFecha){
@@ -112,30 +128,14 @@ function CrearGasto(descripcion, valor) {
                 break;
                 }
             }
-        }
-
-        if(!existe) {
-            this.etiquetas.push(et)
+            if(!existe) {
+            this.etiquetas.push(et);
+            }
         }
 
     }
 
     this.borrarEtiquetas = function(){
-        for(var i = 0; i < arguments.length; i++){
-            var etiquetasBorrar = arguments[i];
-            var nuevaLista = [];
-
-            for(var j = 0; j < this.etiquetas.length; j++){
-                if(this.etiquetas[j] !== etiquetasBorrar){
-                    nuevaLista.push(this.etiquetas[j]);
-                }
-            }
-
-            this.etiquetas = nuevaLista;
-        }
-    }
-
-    this.borrarEtiqueta = function(){
         var nuevasetiquetas = [];
 
         for(var i = 0; i < this.etiquetas.length; i++){
@@ -148,11 +148,13 @@ function CrearGasto(descripcion, valor) {
                     break;
                 }
             }
+
+            if(!borrar){
+            nuevasetiquetas.push(actual);
+            }
         }
 
-        if(!borrar){
-            nuevasetiquetas.push(actual);
-        }
+        this.etiquetas = nuevasetiquetas;
     }
 
 }
@@ -161,22 +163,51 @@ function CrearGasto(descripcion, valor) {
 
 function listarGastos() {
 
-    return gasto;
+    return gastos;
 }
 
-function anyadirGasto() {
+function anyadirGasto(gastos) {
+
+    gastos.id = idGasto;
+    idGasto++;
+    this.gastos.push(gastos.id);
 
 }
 
-function borrarGasto() {
+function borrarGasto(id) {
+
+    //creamos una nueva lista para ir añadiendo los valores que no coincidan con el id
+    var nuevos = [];
+    var i;
+
+    //recorremos la lista
+    for(i = 0; i < gastos.length; i++){
+        //realizamos la comparacion para que el id no sea igual y lo añadimos a la lista nueva
+        if(gastos[i].id !== id){
+            nuevos.push(gastos[i])
+        }
+    }
+
+    //modificamos la lista gastos cambiandola con los valores añadidos que no coincidian con el id
+    gastos = nuevos;
 
 }
 
 function calcularTotalGastos() {
 
+    var total = 0;
+
+    for(var i = 0; i < gastos.length; i++){
+        total = total + gastos[i].valor;
+    }
+
+    return total;
+
 }
 
 function calcularBalance() {
+
+    return presupuesto - calcularTotalGastos;
 
 }
 
