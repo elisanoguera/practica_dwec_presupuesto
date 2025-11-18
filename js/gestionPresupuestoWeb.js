@@ -273,7 +273,7 @@ EditarFormularioSubmitHandle.prototype.handleEvent = function (event) {
 
   form.remove()
   if (this.boton) this.boton.disabled = false
-  repintar()
+  repintar() 
 }
 
 function BorrarHandle() {}
