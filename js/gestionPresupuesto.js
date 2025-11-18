@@ -35,13 +35,11 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
     // TODO
 
     valor = Number(valor);
-    //Comprobamos que el valor introducido sea mayor a 0, por lo que no sera un numero negativo
-    if(valor > 0){
-        this.valor = valor;
-    }
-    else{
-        this.valor = 0;
-    }
+if (isNaN(valor) || valor <= 0) {
+    this.valor = 0;
+} else {
+    this.valor = valor;
+}
 
 
     //Le añadimos las propiedades
@@ -71,18 +69,22 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
     //Añadimos los nuevos archivos a la funcion.
     //Parametro para añadir la fecha en la que se ha registrado el gasto
     var t = Date.parse(fecha);
-    if(t === t){
+    if (!isNaN(t)) {
         this.fecha = t;
-    }
-    else{
-        this.fecha = 0;
+    } else {
+        this.fecha = Date.now(); // usar fecha actual como fallback
     }
     //Propiedad para añadir varias etiquetas y categorizar un gasto
     this.etiquetas = [];
 
-    if(Array.isArray(etiquetas)){
-        for(var a = 0; a < etiquetas.length; a++){
-            this.etiquetas.push(etiquetas[a]);
+    if (Array.isArray(etiquetas)) {
+    for (var i = 0; i < etiquetas.length; i++) {
+        if (etiquetas[i]) this.etiquetas.push(etiquetas[i]);
+    }
+    } else {
+        // Si se pasan varios parámetros como etiquetas, empezando desde el 3er índice
+        for (var i = 3; i < arguments.length; i++) {
+            if (arguments[i]) this.etiquetas.push(arguments[i]);
         }
     }
 
@@ -92,17 +94,15 @@ function CrearGasto(descripcion, valor, fecha, etiquetas) {
         var texto = "Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €.\n";
 
         var fechaGasto = new Date(this.fecha);
-        texto = texto + "Fecha: " + fechaGasto.toLocaleDateString() + "\n";
+        texto = texto + "Fecha: " + fechaGasto.toLocaleString() + "\n";
 
-        texto = texto + "Etiquetas:";
+        texto = texto + "Etiquetas:\n";
         //Si el numero de etiquecas es 0 indicamos ninguna
         if(this.etiquetas.length === 0){
             texto = texto + " Ninguna";
-        }
-        //recorremos todas las etiquetas y las vamos añadiendo con un salto de linea
-        else{
+        }else{
             for(var i = 0; i < this.etiquetas.length; i++){
-                texto = texto + "\n" + this.etiquetas[i];
+                texto += "- " + this.etiquetas[i] + "\n";
             }
         } 
 
