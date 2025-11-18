@@ -3,7 +3,7 @@ name: 06 - Formularios y JavaScript - Tests
 on:
   push:
     # Ejecutar la acción al hacer un push a la rama "master"
-    branches: [ main ]
+    branches: [ main, practica-6-AdrianOlmedo ]
   pull_request:
     # Ejecutar la acción al hacer una pull request a la rama "master"
     branches: [ main ]
