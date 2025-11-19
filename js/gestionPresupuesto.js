@@ -99,6 +99,7 @@ function agruparGastos() {
 
 }
 
+//uso de filter
 function filtrarGastos(filtros) {
     if (!filtros || typeof filtros !== object) {
         return gastos;      //global
@@ -117,11 +118,13 @@ function filtrarGastos(filtros) {
     const tieneValorMinimo = (typeof filtros.valorMinimo === "number");
     const tieneValorMaximo = (typeof filtros.valorMaximo === "number");
 
+    //descripcion no disntingue mayus o minus tolower.case
     let trozo = null;
     if (typeof filtros.descripcionContiene === "string") {
         trozo = filtros.descripcionContiene.toLowerCase();
     }
 
+    //etiquetas no disntingue mayus o minus tolower.case
     let arrayEtiquetas = null;
     if (Array.isArray(filtros.etiquetasTiene)) {
         arrayEtiquetas = filtros.etiquetasTiene.map(function(et)
@@ -129,7 +132,61 @@ function filtrarGastos(filtros) {
         return String(et).toLowerCase();
     });
 
-    }    
+    } 
+    
+    //filtrado con filter
+    return gastos.filter(function(gasto) {
+        if (fechaMinima !== null && gasto.fecha < fechaMinima) {
+            return false;
+        }
+
+        if (fechaMaxima !== null && gasto.fecha > fechaMaxima) {
+            return false;
+        }
+
+        if (tieneValorMinimo !== null && gasto.valor < filtros.valorMinimo) {
+            return false;
+        }
+
+        if (tieneValorMaximo !== null && gasto.valor > filtros.valorMaximo) {
+            return false;
+        }
+
+        if (trozo !==  null) {
+            let desc = "";
+            if (typeof gasto.descripcion === "string") {
+                desc = gasto.descripcion.toLowerCase();
+            }
+            if (desc.indexOf(trozo) === -1) {
+                return false;
+            }
+        }
+
+        //etiquetasTiene debe tener al menos una de las etiquetas y devolver su resultado
+        if (arrayEtiquetas !== null) {
+            let etiquetasGasto = [];        //PRIMERO VACIO
+
+            if (Array.isArray (gasto.etiquetas)) {
+                etiquetasGasto = gasto.etiquetas.map(function(et) {
+                    return String(et).toLowerCase();
+                });
+             }
+
+            let coincideAlguna = false;
+            for (let i = 0; i < arrayEtiquetas.length && !coincideAlguna; i++) {
+                const etq = arrayEtiquetas[i];
+                if (etiquetasGasto.indexOf(etq) !== -1) {
+                    coincideAlguna = true;
+                }
+            }
+            if (!coincideAlguna) {
+                return false;
+            }
+        }
+
+        return true;        //SI PASA LOS FILTROS SE QUEDA
+
+    });
 
 }
 
@@ -231,6 +288,7 @@ ${textoEtiquetas}\n`;
     //uso de metodo anyadirEtiquetas
     this.anyadirEtiquetas(...etiquetas);
 
+    //agrupacion de periodo y fecha de gasto
     this.obtenerPeriodoAgrupacion = function(periodo) {
         const fechaObj = new Date(this.fecha);
 
@@ -248,7 +306,7 @@ ${textoEtiquetas}\n`;
             return `${anyo}`;
         }
         return "";
-    };
+};
 
 
 
