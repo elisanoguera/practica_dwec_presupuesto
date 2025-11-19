@@ -157,6 +157,25 @@ if (isNaN(valor) || valor <= 0) {
         this.etiquetas = nuevasetiquetas;
     }
 
+    this.obtenerPeriodoAgrupacion = function(periodo){
+
+        var fecha = Date.parse(this.fecha);
+        var year = fecha.getFullYear();
+        var month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        var day = fecha.getDay().toString().padStart(2, '0');
+
+        if(periodo === "dia"){
+            return year + "_" + month + "_" + day;
+        }else if(periodo === "mes"){
+            return month + "_" + day;
+        }else if(periodo === "anyo"){
+            return year.toString();
+        }else{
+            return null;
+        }
+
+    }
+
 }
 
 //Creamos las funciones vacias despues de añadirlas al objeto export
@@ -216,12 +235,65 @@ function calcularBalance() {
 
 }
 
-function filtrarGastos(){
+function filtrarGastos(filtros){
+
+    return gastos.filter(function(gasto){
+
+        if(filtros.fechaDesde){
+            var fechaMin = Date.parse(filtros.fechaDesde);
+            if(gasto.fecha < fechaMin){
+                return false;
+            }
+        }
+
+        if(filtros.fechaHasta){
+            var fechaMax = Date.parse(filtros.fechaHasta);
+            if(gasto.fecha > fechaMax){
+                return false;
+            }
+        }
+
+        if(filtros.valorMinimo !== undefined){
+            if(gasto.valor < filtros.valorMinimo){
+                return false;
+            }
+        }
+
+        if(filtros.valorMaximo !== undefined){
+            if(gasto.valor > filtros.valorMaximo){
+                return false;
+            }
+        }
+
+        if(filtros.descripcionContiene){
+            var desc = gasto.descripcion.toLowerCase();
+            var texto = filtros.descripcionContiene.toLowerCase();
+            if(desc.toLowerCase().indexOf(texto.toLowerCase()) === -1){
+                return false;
+            }
+        }
+
+        if (Array.isArray(filtros.etiquetasTiene) && filtros.etiquetasTiene.length > 0) {
+
+            // Convertimos etiquetas a minúsculas para comparar sin distinción
+            var etiquetasFiltro = filtros.etiquetasTiene.map(e => e.toLowerCase());
+            var etiquetasGasto = gasto.etiquetas.map(e => e.toLowerCase());
+
+            // Comprobamos si alguna etiqueta coincide
+            var encontrado = etiquetasGasto.some(e => etiquetasFiltro.includes(e));
+
+            if (!encontrado) { // si el gasto no tiene ninguna de esas etiquetas → fuera
+                return false;
+            }
+        }
+
+        return true;
+    })
 
 }
 
 function agruparGastos(){
-    
+
 }
 
 
