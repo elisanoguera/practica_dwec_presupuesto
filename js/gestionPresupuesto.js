@@ -166,11 +166,12 @@ function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto(gastos) {
+//Error estaba pasando como parametro la variable global gastos.
+function anyadirGasto(gasto) {
 
-    gastos.id = idGasto;
+    gasto.id = idGasto;
     idGasto++;
-    this.gastos.push(gastos.id);
+    gastos.push(gasto);
 
 }
 
@@ -205,9 +206,13 @@ function calcularTotalGastos() {
 
 }
 
+//Estaba intentando restar la funcion calcular total gastos sin añadirlo a una variable, tambien me faltaba el parentesis...=>
+//despues de llamar a la funcion.
 function calcularBalance() {
 
-    return presupuesto - calcularTotalGastos;
+    var total = calcularTotalGastos();
+
+    return presupuesto - total;
 
 }
 
