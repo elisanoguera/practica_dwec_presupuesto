@@ -19,9 +19,13 @@ gesPres.anyadirGasto(g1);
 gesPres.actualizarPresupuesto(1500);
 manipulaDOM.mostrarDatoEnId("presupuesto", gesPres.mostrarPresupuesto());
 //gastos totales
-manipulaDOM.mostrarDatoEnId("gastos-totales", gesPres.calcularTotalGastos());
+let total = gesPres.calcularTotalGastos();
+manipulaDOM.mostrarDatoEnId("gastos-totales", "Total Gastos: " + total.toFixed(2) + " €");
+// manipulaDOM.mostrarDatoEnId("gastos-totales", gesPres.calcularTotalGastos()); o cambié para que me de solo 2 decimales.
 //balance total
-manipulaDOM.mostrarDatoEnId("balance-total", gesPres.calcularBalance());
+let balance = gesPres.calcularBalance();
+manipulaDOM.mostrarDatoEnId("balance-total", "Balance: " + balance.toFixed(2) + " €");
+// manipulaDOM.mostrarDatoEnId("balance-total", gesPres.calcularBalance()); Lo cambié para que me de solo 2 decimales.
 
 //Listado completo de gastos
 for (let g of gesPres.listarGastos()){
