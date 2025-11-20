@@ -90,6 +90,15 @@ function nuevoGastoWebFormulario(e){
 
   let formulario = plantillaFormulario.querySelector("form");
 
+ let btnSubmit = formulario.querySelector('button[type="submit"]');
+    // Al crear uno nuevo, está vacío, así que lo desactivamos de inicio
+    btnSubmit.disabled = true;
+    
+    formulario.addEventListener("input", function() {
+        // Si todos los campos 'required' están llenos, se activa
+        btnSubmit.disabled = !formulario.checkValidity();
+    });
+
   formulario.addEventListener("submit", function(event) {
   event.preventDefault();
 
@@ -246,8 +255,7 @@ function repintar() {
     if (listadoDiv) {
       listadoDiv.innerHTML = ""; 
       
-      
-      let lista = gesPres.listarGastos();
+            let lista = gesPres.listarGastos();
       for (let gasto of lista) {
         mostrarGastoWeb("listado-gastos-completo", gasto);
       }

@@ -55,19 +55,19 @@
       <form>
         <div class="form-control">
             <label for="descripcion">Descripción</label>
-            <input type="text" name="descripcion" id="descripcion">
+            <input type="text" name="descripcion" id="descripcion" required>
         </div>
         <div class="form-control">
             <label for="valor">Valor</label>
-            <input type="number" step="0.01" name="valor" id="valor">
+            <input type="number" step="0.01" name="valor" id="valor" required>
         </div>
         <div class="form-control">
             <label for="fecha">Fecha</label>
-            <input type="date" name="fecha" id="fecha">
+            <input type="date" name="fecha" id="fecha" required>
         </div>
         <div class="form-control">
             <label for="etiquetas">Etiquetas</label>
-            <input type="text" name="etiquetas" id="etiquetas">
+            <input type="text" name="etiquetas" id="etiquetas" required placeholder="Separadas por comas">
         </div>
         <button type="submit">Enviar</button>
         <button class="cancelar" type="button">Cancelar</button>
