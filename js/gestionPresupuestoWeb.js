@@ -46,6 +46,16 @@ const BorrarEtiquetasHandle = {
     }
 };
 
+const CancelarFormularioHandle = {
+    handleEvent: function(e) {
+        this.formulario.remove();
+        if (this.boton) {
+            this.boton.disabled = false;
+        }
+    }
+};
+
+
 function actualizarPresupuestoWeb() {
     let nuevoPres = prompt("Introduzca nuevo presupuesto:");
     
@@ -69,6 +79,45 @@ function nuevoGastoWeb() {
     gesPres.anyadirGasto(newGasto);
     repintar();
 }
+
+function nuevoGastoWebFormulario(e){
+  let botonAnyadir = e.currentTarget;
+  botonAnyadir.disabled = true;
+  //para que no se puedan abrir dos formularios al mismo tiempo
+
+  let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+  //clono el formulario de html
+
+  let formulario = plantillaFormulario.querySelector("form");
+
+  formulario.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  let f = event.currentTarget; //obtengo los datos del formulario
+        
+        let descripcion = f.descripcion.value;
+        let valor = parseFloat(f.valor.value);
+        let fecha = f.fecha.value;
+        let etiquetasTexto = f.etiquetas.value;
+        let etiquetasArray = etiquetasTexto ? etiquetasTexto.split(",") : [];
+
+         let newGasto = new gesPres.CrearGasto(descripcion, valor, fecha, ...etiquetasArray);
+        gesPres.anyadirGasto(newGasto);
+        repintar();
+
+        formulario.remove();
+        document.getElementById("anyadirgasto-formulario").disabled = false;
+    });
+    
+    let botonCancelar = formulario.querySelector(".cancelar");
+    let handleCancelar = Object.create(CancelarFormularioHandle);
+    handleCancelar.formulario = formulario; // Guardamos referencia al form para borrarlo
+    handleCancelar.boton = botonAnyadir;    // Guardamos referencia al botón para activarlo
+    
+    botonCancelar.addEventListener("click", handleCancelar);
+    document.getElementById("controlesprincipales").appendChild(formulario);
+}
+
 
 function mostrarGastoWeb(idElemento, gasto) {
   const contenedor = document.querySelector("#" + idElemento);
@@ -213,6 +262,11 @@ if(btnActPresupuesto) {
 let btnAnyadirGasto = document.getElementById("anyadirgasto");
 if(btnAnyadirGasto) {
     btnAnyadirGasto.addEventListener("click", nuevoGastoWeb, false);
+}
+
+let btnAnyadirForm = document.getElementById("anyadirgasto-formulario");
+if(btnAnyadirForm) {
+    btnAnyadirForm.addEventListener("click", nuevoGastoWebFormulario, false);
 }
 
 
