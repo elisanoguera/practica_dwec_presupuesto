@@ -108,10 +108,10 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 /* repintar - Función que recarga la página cada vez que se carga, modifica o borra un dato */
 function repintar() {
 	// 1. Mostrar el presupuesto
-	mostrarDatoEnId("presupuesto", mostrarPresupuesto());
+	mostrarDatoEnId("presupuesto", gestion.mostrarPresupuesto());
 
 	// 2. Mostrar gastos totales
-	mostrarDatoEnId("gastos-totales", calcularTotalGastos());
+	mostrarDatoEnId("gastos-totales", gestion.calcularTotalGastos());
 
 	// 3. Mostrar balance
 	mostrarDatoEnId("balance-total", gestion.calcularBalance());
@@ -121,11 +121,51 @@ function repintar() {
 	document.getElementById("listado-gastos-completo").replaceChildren();
 
 	// 5. Listado de gastos
-	let gastos = listarGastos();
+	let gastos = gestion.listarGastos();
 	gastos.forEach((gasto) => {
 		mostrarGastoWeb("listado-gastos-completo", gasto);
 	});
 }
+
+/* Manejadores de eventos */
+/* actualizarPresupuestoWeb */
+function actualizarPresupuestoWeb() {
+	// 1. Pedir el nuevo presupuesto y pasarlo a float
+	let nuevoPresupuesto = parseFloat(prompt("Introduzca el nuevo presupuesto:"));
+
+	gestion.actualizarPresupuesto(nuevoPresupuesto);
+
+	repintar();
+}
+
+/* nuevoGastoWeb */
+function nuevoGastoWeb() {
+	// 1. Datos del gasto
+	let descripcion = prompt("Descripción: ");
+	let valor = parseFloat(prompt("Valor: "));
+	let fecha = prompt("Fecha: ", "yyyy-mm-dd");
+	let etiquetas = prompt("Introduzca las etiquetas separadas por ',': ");
+
+	// 2. Pasamos las etiquetas a un array
+	etiquetas = etiquetas.split(",");
+
+	// 3. Crear nuevo gasto
+	/* Al colocar los ... delante de etiquetas, estamos propagando (Spread)
+	los valores que se encuentran dentro del array etiquetas. De este modo se pasan
+	correctamente como parámetros REST. */
+	let nuevoGasto = new gestion.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+
+	// 4. Añadimos el gasto al array de gastos y repintamos
+	gestion.anyadirGasto(nuevoGasto);
+	repintar();
+}
+
+// Asignación de manejadores
+// Botón actualizarpresupuesto
+document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
+
+// Botón anyadirgasto
+document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
 
 // Exportación
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar };
