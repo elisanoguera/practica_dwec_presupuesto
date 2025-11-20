@@ -180,7 +180,7 @@ function filtrarGastos(filtros) {
                 }
             }
             if (!coincideAlguna) {
-                return false;
+                  return false;
             }
         }
 
