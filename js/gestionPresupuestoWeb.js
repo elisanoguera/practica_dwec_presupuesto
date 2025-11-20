@@ -54,11 +54,37 @@ function mostrarGastoWeb(idElemento, gasto) {
 		gastoEtiquetas.textContent = "Sin etiquetas agregadas";
 	}
 
+	// Manejador de etiquetas
+	let etiquetasManejador = Object.create(BorrarEtiquetasHadle);
+	etiquetasManejador.gasto = gasto;
+	gastoEtiquetas.addEventListener("click", etiquetasManejador);
+
+	// Botón editar
+	let botonEditar = document.createElement("button");
+	botonEditar.type = "button";
+	botonEditar.classList.add("gasto-editar");
+	botonEditar.textContent = "Editar";
+	let editarManejador = Object.create(EditarHandle);
+	editarManejador.gasto = gasto;
+	botonEditar.addEventListener("click", editarManejador);
+
+	// Botón borrar
+	let botonBorrar = document.createElement("button");
+	botonBorrar.type = "button";
+	botonBorrar.classList.add("gasto-borrar");
+	botonBorrar.textContent = "Borrar";
+	let borrarManejador = Object.create(BorrarHandle);
+	borrarManejador.gasto = gasto;
+	botonBorrar.addEventListener("click", borrarManejador);
+
 	// 3. Agregamos los elementos generados al contenedor padre
 	divGasto.appendChild(gastoDescripcion);
 	divGasto.appendChild(gastoFecha);
 	divGasto.appendChild(gastoValor);
 	divGasto.appendChild(gastoEtiquetas);
+
+	divGasto.appendChild(botonEditar);
+	divGasto.appendChild(botonBorrar);
 
 	// 4. Por último, lo agregamos al elemento que nos pasan por parámetro
 	elementoGeneral.appendChild(divGasto);
@@ -160,6 +186,46 @@ function nuevoGastoWeb() {
 	repintar();
 }
 
+/* EditarHandle  - Empieza con mayúscula al ser una funcion constructora */
+let EditarHandle = {
+	// Esto es un objeto literal, no una función constructora.
+	handleEvent: function (evento) {
+		// 1. Datos del gasto
+		let descripcion = prompt("Descripción: ");
+		let valor = parseFloat(prompt("Valor: "));
+		let fecha = prompt("Fecha: ", "yyyy-mm-dd");
+		let etiquetas = prompt("Introduzca las etiquetas separadas por ',': ");
+		etiquetas = etiquetas.split(",");
+
+		// 2. Actualización de datos del gasto
+		this.gasto.actualizarDescripcion(descripcion);
+		this.gasto.actualizarValor(valor);
+		this.gasto.actualizarFecha(fecha);
+		this.gasto.anyadirEtiquetas(...etiquetas);
+
+		repintar();
+	},
+};
+
+/* BorrarHandle */ // Esto es un objeto literal, no una función constructora.
+let BorrarHandle = {
+	handleEvent: function (evento) {
+		gestion.borrarGasto(this.gasto.id);
+
+		repintar();
+	},
+};
+
+/* BorrarEtiquetasHandle */
+let BorrarEtiquetasHadle = {
+	handleEvent: function (evento) {
+		// Detectamos la etiqueta pulsada
+		const etiquetaEliminar = evento.target.textContent;
+		this.gasto.borrarEtiquetas(etiquetaEliminar);
+		repintar();
+	},
+};
+
 // Asignación de manejadores
 // Botón actualizarpresupuesto
 document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
@@ -167,5 +233,5 @@ document.getElementById("actualizarpresupuesto").addEventListener("click", actua
 // Botón anyadirgasto
 document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
 
-// Exportación
+/* Exportación */
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar };

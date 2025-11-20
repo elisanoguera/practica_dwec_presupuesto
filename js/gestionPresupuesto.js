@@ -20,7 +20,7 @@ function actualizarPresupuesto(valor) {
 }
 
 function mostrarPresupuesto() {
-	let texto = `Tu presupuesto actual es de ${presupuesto.toFixed(2)} €`;
+	let texto = `Tu presupuesto actual es de ${presupuesto} €`;
 	// .toFixed() devuelve un string con
 	return texto;
 }
