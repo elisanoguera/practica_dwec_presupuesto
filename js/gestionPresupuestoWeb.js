@@ -1,4 +1,7 @@
-// Contiene las utilidades necesarias para mostrar los datos de la aplicación en la página interaccionHTML.html
+// Contiene las utilidades necesarias para mostrar los datos de la aplicación en la página interaccionHTML.html. Interacción con el DOM
+
+/* Importacion por módulos */
+import * as gestion from "./gestionPresupuesto.js"; // gestion es el nombre de módulo
 
 /* mostrarDatoEnId -
     idElemento - id del elemento HTML donde se insertará la estructura generada
@@ -102,5 +105,27 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 	elementoGeneral.appendChild(divAgrupacion);
 }
 
+/* repintar - Función que recarga la página cada vez que se carga, modifica o borra un dato */
+function repintar() {
+	// 1. Mostrar el presupuesto
+	mostrarDatoEnId("presupuesto", mostrarPresupuesto());
+
+	// 2. Mostrar gastos totales
+	mostrarDatoEnId("gastos-totales", calcularTotalGastos());
+
+	// 3. Mostrar balance
+	mostrarDatoEnId("balance-total", gestion.calcularBalance());
+
+	// 4. Borrado de gastos
+	// Al ejecutar .replaceChildren sin parámetros, elimina todos los nodos hijos del elemento
+	document.getElementById("listado-gastos-completo").replaceChildren();
+
+	// 5. Listado de gastos
+	let gastos = listarGastos();
+	gastos.forEach((gasto) => {
+		mostrarGastoWeb("listado-gastos-completo", gasto);
+	});
+}
+
 // Exportación
-export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb };
+export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar };

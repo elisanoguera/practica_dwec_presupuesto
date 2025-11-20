@@ -1,7 +1,7 @@
 // Fichero que contiene un programa de ejemplo para generar un conjunto de gastos y mostrar la información relacionada con estos
 
 // Importación
-import { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb } from "./gestionPresupuestoWeb.js";
+import { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar } from "./gestionPresupuestoWeb.js";
 import { mostrarPresupuesto, actualizarPresupuesto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance, filtrarGastos, agruparGastos, CrearGasto } from "./gestionPresupuesto.js";
 
 // 1. Actualizar presupuesto y mostrarlo
