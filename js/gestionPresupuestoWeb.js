@@ -3,7 +3,7 @@ import * as gesPres from "./gestionPresupuesto.js";
 
 function mostrarDatoEnId(idElemento, valor) {
     let elemento = document.querySelector("#" + idElemento);
-    if (elemento) elemento.textContent = valor;
+    if (elemento) elemento.innerHTML = valor;
 }
 
 //Manejadores:
@@ -151,21 +151,19 @@ function mostrarGastoWeb(idElemento, gasto) {
   const divAgrup = document.createElement("div");
   divAgrup.classList.add("agrupacion");
 
-  let periodoTexto = periodo;
-  if (periodo === "dia") periodoTexto = "día";
-  if (periodo === "anyo") periodoTexto = "año";
-
-  const titulo = document.createElement("h3"); // Cambiado a h3 para que sea mas pequeño
-  titulo.textContent = "Gastos por " + periodoTexto;
-  divAgrup.appendChild(titulo);
-
-  for (let clave in agrup) {
+    for (let clave in agrup) {
     const divDato = document.createElement("div");
     divDato.classList.add("agrupacion-dato");
 
+    // Estilos visuales extra
+    divDato.style.marginBottom = "5px"; 
+    divDato.style.borderBottom = "1px solid #eee";
+
     const spanClave = document.createElement("span");
     spanClave.classList.add("agrupacion-dato-clave");
+    spanClave.style.fontWeight = "bold";
     spanClave.textContent = clave + " : ";
+
 
     const spanValor = document.createElement("span");
     spanValor.classList.add("agrupacion-dato-valor");
@@ -183,11 +181,15 @@ function repintar() {
   
   mostrarDatoEnId("presupuesto", gesPres.mostrarPresupuesto());
   
+    let divPres = document.getElementById("presupuesto");
+  if (divPres) {
+      divPres.style.marginBottom = "20px"; 
+  }
   let totalGastos= gesPres.calcularTotalGastos();
-  mostrarDatoEnId("gastos-totales", "Total Gastos: " + totalGastos.toFixed(2) + " €");
+  mostrarDatoEnId("gastos-totales", "<strong> Total Gastos: </strong> " + totalGastos.toFixed(2) + " €");
 
   let balance = gesPres.calcularBalance();
-  mostrarDatoEnId("balance-total", "Balance: " + balance.toFixed(2) + " €");
+  mostrarDatoEnId("balance-total", "<strong> Balance: </strong>" + balance.toFixed(2) + " €");
 
 
    // Borrar contenido anterior
@@ -218,5 +220,4 @@ export{
     mostrarDatoEnId,
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
-    repintar
-}
+    }
