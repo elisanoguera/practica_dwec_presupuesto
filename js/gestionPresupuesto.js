@@ -68,11 +68,11 @@ if (isNaN(valor) || valor <= 0) {
     
     //Añadimos los nuevos archivos a la funcion.
     //Parametro para añadir la fecha en la que se ha registrado el gasto
-    var t = Date.parse(fecha);
-    if (!isNaN(t)) {
+    var t = new Date(fecha);
+    if (t === t) {
         this.fecha = t;
     } else {
-        this.fecha = Date.now(); // usar fecha actual como fallback
+        this.fecha = new Date(0);
     }
     //Propiedad para añadir varias etiquetas y categorizar un gasto
     this.etiquetas = [];
@@ -159,15 +159,15 @@ if (isNaN(valor) || valor <= 0) {
 
     this.obtenerPeriodoAgrupacion = function(periodo){
 
-        var fecha = Date.parse(this.fecha);
+        var fecha = this.fecha;
         var year = fecha.getFullYear();
         var month = (fecha.getMonth() + 1).toString().padStart(2, '0');
-        var day = fecha.getDay().toString().padStart(2, '0');
+        var day = fecha.getDate().toString().padStart(2, '0');
 
         if(periodo === "dia"){
-            return year + "_" + month + "_" + day;
+            return year + "-" + month + "-" + day;
         }else if(periodo === "mes"){
-            return month + "_" + day;
+            return year + "-" + month;
         }else if(periodo === "anyo"){
             return year.toString();
         }else{
@@ -275,14 +275,12 @@ function filtrarGastos(filtros){
 
         if (Array.isArray(filtros.etiquetasTiene) && filtros.etiquetasTiene.length > 0) {
 
-            // Convertimos etiquetas a minúsculas para comparar sin distinción
             var etiquetasFiltro = filtros.etiquetasTiene.map(e => e.toLowerCase());
             var etiquetasGasto = gasto.etiquetas.map(e => e.toLowerCase());
 
-            // Comprobamos si alguna etiqueta coincide
             var encontrado = etiquetasGasto.some(e => etiquetasFiltro.includes(e));
 
-            if (!encontrado) { // si el gasto no tiene ninguna de esas etiquetas → fuera
+            if (!encontrado) {
                 return false;
             }
         }
@@ -292,7 +290,30 @@ function filtrarGastos(filtros){
 
 }
 
-function agruparGastos(){
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta){
+
+    var filtrados = filtrarGastos({
+        fechaDesde: fechaDesde,
+        fechaHasta: fechaHasta,
+        etiquetasTiene: etiquetas
+    });
+
+    var resultado = filtrados.reduce(function(acc, gasto) {
+
+        var clave = gasto.obtenerPeriodoAgrupacion(periodo);
+
+        if (!acc[clave]) {
+            acc[clave] = 0;
+        }
+
+        acc[clave] += gasto.valor;
+
+        return acc;
+
+    }, {}); 
+
+    
+    return resultado;
 
 }
 
