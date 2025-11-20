@@ -236,16 +236,20 @@ function calcularBalance() {
 }
 
 function filtrarGastos(filtros){
-
+    
+    //devovemos los gastos filtrados ejecutados en la funcion.
     return gastos.filter(function(gasto){
 
+        //Filtamos desde la fecha desde
         if(filtros.fechaDesde){
             var fechaMin = Date.parse(filtros.fechaDesde);
+            //si la fecha del gasto es menor a la fecha minima no se contabiliza
             if(gasto.fecha < fechaMin){
                 return false;
             }
         }
 
+        //si la fecha del gasto es mayor a la fecha maxima no se contabiliza
         if(filtros.fechaHasta){
             var fechaMax = Date.parse(filtros.fechaHasta);
             if(gasto.fecha > fechaMax){
@@ -253,12 +257,14 @@ function filtrarGastos(filtros){
             }
         }
 
+        //Si el gasto es menor al valor minimo no se contabiliza
         if(filtros.valorMinimo !== undefined){
             if(gasto.valor < filtros.valorMinimo){
                 return false;
             }
         }
 
+        //Si el gasto es mayor al valor maximo no se contabiliza
         if(filtros.valorMaximo !== undefined){
             if(gasto.valor > filtros.valorMaximo){
                 return false;
@@ -266,20 +272,26 @@ function filtrarGastos(filtros){
         }
 
         if(filtros.descripcionContiene){
+            //Pasamos las descripciones a minusculas
             var desc = gasto.descripcion.toLowerCase();
             var texto = filtros.descripcionContiene.toLowerCase();
+            //Comprobamos que se contiene la descripcion, sino se devuelve vacio.
             if(desc.toLowerCase().indexOf(texto.toLowerCase()) === -1){
                 return false;
             }
         }
 
+        //Comprobación de que el array contiene etiquetas
         if (Array.isArray(filtros.etiquetasTiene) && filtros.etiquetasTiene.length > 0) {
 
+            //Mapeamos las etiquetas para ver cuales son y pasarlas a minusculas.
             var etiquetasFiltro = filtros.etiquetasTiene.map(e => e.toLowerCase());
             var etiquetasGasto = gasto.etiquetas.map(e => e.toLowerCase());
 
+            //Recorremos las etiquetas para comprobar que esta dentro la que buscamos
             var encontrado = etiquetasGasto.some(e => etiquetasFiltro.includes(e));
 
+            //sino son iguales no se añaden
             if (!encontrado) {
                 return false;
             }
@@ -290,29 +302,36 @@ function filtrarGastos(filtros){
 
 }
 
+//funcion con los cuatro parametros y el periodo mes por defecto
 function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta){
 
+    //creamos filtrados para pasar el filtro
     var filtrados = filtrarGastos({
         fechaDesde: fechaDesde,
         fechaHasta: fechaHasta,
         etiquetasTiene: etiquetas
     });
-
+    
+    //creamos la funcion reduce a traves de la variable resultado
     var resultado = filtrados.reduce(function(acc, gasto) {
 
+        //añadimos los gastos a traves del periodo a la variable vacia clave
         var clave = gasto.obtenerPeriodoAgrupacion(periodo);
 
+        //si el acumulado es diferente de la clave le inciamos 0
         if (!acc[clave]) {
             acc[clave] = 0;
         }
 
+        //Sino le añadimos al acumulador el valor del gasto.
         acc[clave] += gasto.valor;
 
+        //Devolvemos el acumulador a resultado
         return acc;
 
     }, {}); 
 
-    
+    //Por ultimo devolvemos el resultado.
     return resultado;
 
 }
