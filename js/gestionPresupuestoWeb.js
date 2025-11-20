@@ -78,6 +78,7 @@ function nuevoGastoWeb() {
     let newGasto = new gesPres.CrearGasto(d, valorNum, fecha, ...etiquetasArray);
     gesPres.anyadirGasto(newGasto);
     repintar();
+    f.remove();
 }
 
 function nuevoGastoWebFormulario(e){
@@ -174,8 +175,7 @@ function mostrarGastoWeb(idElemento, gasto) {
         divEtiquetas.appendChild(span);
     }
     divGasto.appendChild(divEtiquetas);
-    
-   
+       
     const btnEditar = document.createElement("button");
     btnEditar.type = "button";
     btnEditar.className = "gasto-editar";
@@ -184,7 +184,6 @@ function mostrarGastoWeb(idElemento, gasto) {
     handleEdicion.gasto = gasto;
     btnEditar.addEventListener("click", handleEdicion, false);
     divGasto.appendChild(btnEditar);
-
    
     const btnBorrar = document.createElement("button");
     btnBorrar.type = "button";
@@ -195,7 +194,17 @@ function mostrarGastoWeb(idElemento, gasto) {
     btnBorrar.addEventListener("click", handleBorrado, false);
     divGasto.appendChild(btnBorrar);
 
-    // Añadir al DOM
+    const btnEditarForm = document.createElement("button");
+    btnEditarForm.type = "button";
+    btnEditarForm.className = "gasto-editar-formulario"; 
+    btnEditarForm.textContent = "Editar (formulario)";
+    
+    let handleEdicionForm = Object.create(EditarHandleFormulario);
+    handleEdicionForm.gasto = gasto;
+    
+    btnEditarForm.addEventListener("click", handleEdicionForm, false);
+    divGasto.appendChild(btnEditarForm);
+    
     contenedor.appendChild(divGasto);
 }
   
