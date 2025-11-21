@@ -30,7 +30,7 @@ export function mostrarGastoWeb(idElementoLista, gasto) {
 
   const valor = document.createElement('div')
   valor.className = 'gasto-valor'
-  valor.textContent = gasto.valor.toFixed(2)
+  valor.textContent = gasto.valor.toFixed(2) 
   contenedor.appendChild(valor)
 
   const divEtiquetas = document.createElement('div')
