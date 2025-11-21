@@ -186,6 +186,53 @@ function nuevoGastoWeb() {
 	repintar();
 }
 
+/* confirmarAnyadir */
+function confirmarAnyadir(evento) {
+	//  Evitamos el envío automático
+	evento.preventDefault();
+
+	//  Colección de los elementos del form sin incluir los labels
+	let elementos = evento.currentTarget.elements;
+	let descripcion = elementos.descripcion.value;
+	let valor = parseFloat(elementos.valor.value);
+	let fecha = elementos.fecha.value;
+	let etiquetas = elementos.etiquetas.value.split(",");
+
+	// Creamos el nuevo gasto, añadimos y repintamos
+	let nuevoGasto = new gestion.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+	gestion.anyadirGasto(nuevoGasto);
+
+	// Volver al estado anterior
+	evento.currentTarget.remove();
+	document.getElementById("anyadirgasto-formulario").disabled = false;
+
+	repintar();
+}
+
+/* cancelarAnyadir */
+function cancelarAnyadir(evento) {
+	// El evento se produce en el botón, por lo que debemos eliminar el nodo padre (form)
+	evento.currentTarget.parentNode.remove();
+	document.getElementById("anyadirgasto-formulario").disabled = false;
+	repintar();
+}
+
+/* nuevoGastoWebFormulario */
+function anyadirGasto() {
+	// Desactivamos el propio botón
+	this.disabled = true;
+
+	let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+	let formulario = plantillaFormulario.querySelector("form");
+	let botonCancelar = formulario.querySelector(".cancelar");
+	document.getElementById("controlesprincipales").append(plantillaFormulario);
+
+	formulario.addEventListener("submit", confirmarAnyadir);
+	botonCancelar.addEventListener("click", cancelarAnyadir);
+}
+
+document.getElementById("anyadirgasto-formulario").addEventListener("click", anyadirGasto);
+
 /* EditarHandle  - Empieza con mayúscula al ser una funcion constructora */
 let EditarHandle = {
 	// Esto es un objeto literal, no una función constructora.
