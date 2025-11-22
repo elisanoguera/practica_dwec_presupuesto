@@ -68,6 +68,14 @@ function mostrarGastoWeb(idElemento, gasto) {
 	editarManejador.gasto = gasto;
 	botonEditar.addEventListener("click", editarManejador);
 
+	let botonEditarFormulario = document.createElement("button");
+	botonEditarFormulario.type = "button";
+	botonEditarFormulario.classList.add("gasto-editar-formulario");
+	botonEditarFormulario.textContent = "Editar (formulario)";
+	let editarFormularioManejador = Object.create(EditarHandleFormulario);
+	editarFormularioManejador.gasto = gasto;
+	botonEditarFormulario.addEventListener("click", editarFormularioManejador);
+
 	// Botón borrar
 	let botonBorrar = document.createElement("button");
 	botonBorrar.type = "button";
@@ -85,6 +93,7 @@ function mostrarGastoWeb(idElemento, gasto) {
 
 	divGasto.appendChild(botonEditar);
 	divGasto.appendChild(botonBorrar);
+	divGasto.appendChild(botonEditarFormulario);
 
 	// 4. Por último, lo agregamos al elemento que nos pasan por parámetro
 	elementoGeneral.appendChild(divGasto);
@@ -218,7 +227,7 @@ function cancelarAnyadir(evento) {
 }
 
 /* nuevoGastoWebFormulario */
-function anyadirGasto() {
+function nuevoGastoWebFormulario() {
 	// Desactivamos el propio botón
 	this.disabled = true;
 
@@ -230,8 +239,6 @@ function anyadirGasto() {
 	formulario.addEventListener("submit", confirmarAnyadir);
 	botonCancelar.addEventListener("click", cancelarAnyadir);
 }
-
-document.getElementById("anyadirgasto-formulario").addEventListener("click", anyadirGasto);
 
 /* EditarHandle  - Empieza con mayúscula al ser una funcion constructora */
 let EditarHandle = {
@@ -273,12 +280,75 @@ let BorrarEtiquetasHadle = {
 	},
 };
 
+/* confirmarEditar */
+let ConfirmarEditarHandle = {
+	handleEvent: function (evento) {
+		// Evitar envío automático
+		evento.preventDefault();
+
+		// Modificar los valores guardados en el gasto. No se pone el this ya que vendrá como parámetro cuando asignemos la función manejadora al botón
+		this.gasto.descripcion = evento.currentTarget.elements.descripcion.value;
+		this.gasto.valor = parseFloat(evento.currentTarget.elements.valor.value);
+		this.gasto.fecha = new Date(evento.currentTarget.elements.fecha.value).getTime();
+
+		let etiquetas = evento.currentTarget.elements.etiquetas.value.split(",");
+		this.gasto.etiquetas = etiquetas;
+
+		repintar();
+	},
+};
+
+/* cancelarEditar */
+function cancelarEditar(evento) {
+	evento.currentTarget.parentNode.remove();
+	repintar();
+}
+
+let EditarHandleFormulario = {
+	handleEvent: function (evento) {
+		// Desactivamos el resto de botones del gasto
+		let nodoPadre = evento.currentTarget.parentNode;
+		nodoPadre.querySelector(".gasto-editar").disabled = true;
+		nodoPadre.querySelector(".gasto-borrar").disabled = true;
+		evento.currentTarget.disabled = true;
+
+		// Mostramos el template y guardamos las referencias
+		let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+		let formulario = plantillaFormulario.querySelector("form");
+		let botonCancelar = formulario.querySelector(".cancelar");
+
+		// A la hora de crear el formulario debe rellenar los campos con los datos existentes
+		formulario.elements.descripcion.value = this.gasto.descripcion;
+		formulario.elements.valor.value = this.gasto.valor;
+
+		// Debemos escribir la fecha guardada en formato timestamp en un string aceptado por el campo
+		const fechaGasto = new Date(this.gasto.fecha);
+		const anyo = fechaGasto.getFullYear();
+		const mes = (fechaGasto.getMonth() + 1).toString().padStart(2, "0");
+		const dia = fechaGasto.getDate().toString().padStart(2, "0");
+		formulario.elements.fecha.value = `${anyo}-${mes}-${dia}`;
+
+		formulario.elements.etiquetas.value = this.gasto.etiquetas;
+
+		// Añadimos los objetos manejadores
+		let confirmarEditarHandle = Object.create(ConfirmarEditarHandle);
+		confirmarEditarHandle.gasto = this.gasto;
+		formulario.addEventListener("submit", confirmarEditarHandle);
+		botonCancelar.addEventListener("click", cancelarEditar);
+
+		nodoPadre.append(plantillaFormulario);
+	},
+};
+
 // Asignación de manejadores
 // Botón actualizarpresupuesto
 document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
 
 // Botón anyadirgasto
 document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
+
+// Botón anyadirgasto-formulario
+document.getElementById("anyadirgasto-formulario").addEventListener("click", nuevoGastoWebFormulario);
 
 /* Exportación */
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar };
