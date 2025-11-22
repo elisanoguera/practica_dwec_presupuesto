@@ -152,3 +152,6 @@ button:disabled, button:disabled:hover {
         flex: 1;
     }
 }
+.gasto-valor::after {
+    content: " €";
+}
