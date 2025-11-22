@@ -106,6 +106,19 @@ function repintar(){
   mostrarGastoWeb("listado-gastos-completo", libreriaGestionPresupuesto.listarGastos());
 }
 
+
+function actualizarPresupuestoWeb(){
+  let nuevoPresupuesto = prompt("Introduzca un presupuesto:");
+  nuevoPresupuesto = Number(nuevoPresupuesto);
+  if (nuevoPresupuesto >= 0){
+    libreriaGestionPresupuesto.actualizarPresupuesto(nuevoPresupuesto);
+    repintar();
+  }
+}
+
+let botonActualizarPresupuesto = document.getElementById("actualizarpresupuesto");
+botonActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
+
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
