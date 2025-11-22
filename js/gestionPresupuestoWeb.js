@@ -1,4 +1,4 @@
-import { agruparGastos } from "./gestionPresupuesto.js";
+import * as libreriaGestionPresupuesto from "./gestionPresupuesto.js";
 
 function mostrarDatoEnId(idElemento, valor){
     let elemento = document.getElementById(idElemento);
@@ -85,6 +85,25 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
   }
   
   elemento.appendChild(div);
+}
+
+function repintar(){
+  // Mostrar el presupuesto en div#presupuesto (funciones mostrarPresupuesto y mostrarDatoEnId)
+  libreriaGestionPresupuesto.mostrarPresupuesto();
+  mostrarDatoEnId("presupuesto", libreriaGestionPresupuesto.mostrarPresupuesto());
+  
+  // Mostrar los gastos totales en div#gastos-totales (funciones calcularTotalGastos y mostrarDatoEnId)
+  mostrarDatoEnId("gastos-totales", libreriaGestionPresupuesto.calcularTotalGastos());
+  
+  // Mostrar el balance total en div#balance-total (funciones calcularBalance y mostrarDatoEnId)
+  mostrarDatoEnId("balance-total", libreriaGestionPresupuesto.calcularBalance());
+  
+  // Borrar el contenido de div#listado-gastos-completo, para que el paso siguiente no duplique la información. Puedes utilizar innerHTML para borrar el contenido de dicha capa.
+  let listadoGastosCompleto = document.getElementById("listado-gastos-completo");
+  listadoGastosCompleto.innerHTML = "";
+  
+  // Mostrar el listado completo de gastos en div#listado-gastos-completo (funciones listarGastos y mostrarGastoWeb)
+  mostrarGastoWeb("listado-gastos-completo", libreriaGestionPresupuesto.listarGastos());
 }
 
 export {
