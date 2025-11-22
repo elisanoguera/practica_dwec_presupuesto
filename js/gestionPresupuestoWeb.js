@@ -1,6 +1,5 @@
 import * as gesPres from "./gestionPresupuesto.js";
 
-
 function mostrarDatoEnId(idElemento, valor) {
     let elemento = document.querySelector("#" + idElemento);
     if (elemento) elemento.innerHTML = valor;
@@ -11,24 +10,22 @@ const EditarHandle = {
     handleEvent: function(e) {
         let d = prompt("Descripción:", this.gasto.descripcion);
         let v = prompt("Valor:", this.gasto.valor);      
-        let fechaStr = new Date(this.gasto.fecha).toISOString().substring(0, 10);
+        let fechaStr = "";
+        try {
+            fechaStr = new Date(this.gasto.fecha).toISOString().substring(0, 10);
+        } catch (err) { fechaStr = this.gasto.fecha; }
+        
         let f = prompt("Fecha (yyyy-mm-dd):", fechaStr);
         let et = prompt("Etiquetas (separadas por comas):", this.gasto.etiquetas.join(","));
     
-        // CONVERSIÓN A NÚMERO (FLOAT) porque en el prompt siempre se recibe un string
-        let valorNumerico = parseFloat(v);
-
-        // Actualizamos el objeto gasto 
-        this.gasto.actualizarDescripcion(d);
-        this.gasto.actualizarValor(valorNumerico);
-        this.gasto.actualizarFecha(f);
-        
-        // Convertimos etiquetas de string a array
-        if (et) {
-            this.gasto.anyadirEtiquetas(...et.split(","));
+        if (d !== null && v !== null) {
+            let valorNumerico = parseFloat(v);
+            this.gasto.actualizarDescripcion(d);
+            this.gasto.actualizarValor(valorNumerico);
+            this.gasto.actualizarFecha(f);
+            if (et !== null) this.gasto.etiquetas = et.split(",");
+            repintar();
         }
-
-        repintar();
     }
 };
 
@@ -55,6 +52,68 @@ const CancelarFormularioHandle = {
     }
 };
 
+const GuardarEdicionHandle = {
+    handleEvent: function(e) {
+        e.preventDefault();
+        let f = this.formulario;
+        
+        let descripcion = f.descripcion.value;
+        let valor = parseFloat(f.valor.value);
+        let fecha = f.fecha.value;
+        let etiquetasTexto = f.etiquetas.value;
+        
+        this.gasto.actualizarDescripcion(descripcion);
+        this.gasto.actualizarValor(valor);
+        this.gasto.actualizarFecha(fecha);
+        this.gasto.etiquetas = etiquetasTexto ? etiquetasTexto.split(",") : [];
+
+        repintar();
+        f.remove();
+    }
+};
+
+const EditarHandleFormulario = {
+    handleEvent: function(e) {
+        let botonEditar = e.currentTarget;
+        botonEditar.disabled = true;
+
+        let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+        let formulario = plantillaFormulario.querySelector("form");
+
+        // Rellenamos el formulario con los datos del gasto
+        formulario.descripcion.value = this.gasto.descripcion;
+        formulario.valor.value = this.gasto.valor;
+        try {
+            let fechaObj = new Date(this.gasto.fecha);
+            if (!isNaN(fechaObj.getTime())) {
+                formulario.fecha.value = fechaObj.toISOString().substring(0, 10);
+            } else {
+                formulario.fecha.value = this.gasto.fecha;
+            }
+        } catch(err) { formulario.fecha.value = this.gasto.fecha; }
+        
+        formulario.etiquetas.value = this.gasto.etiquetas.join(",");
+
+        let btnSubmit = formulario.querySelector('button[type="submit"]');
+        btnSubmit.disabled = !formulario.checkValidity();
+        formulario.addEventListener("input", function() {
+            btnSubmit.disabled = !formulario.checkValidity();
+        });
+        
+        let handleGuardar = Object.create(GuardarEdicionHandle);
+        handleGuardar.gasto = this.gasto;
+        handleGuardar.formulario = formulario;
+        formulario.addEventListener("submit", handleGuardar);
+
+        let botonCancelar = formulario.querySelector(".cancelar");
+        let handleCancelar = Object.create(CancelarFormularioHandle);
+        handleCancelar.formulario = formulario;
+        handleCancelar.boton = botonEditar;
+        botonCancelar.addEventListener("click", handleCancelar);
+       
+        e.currentTarget.parentNode.appendChild(formulario);
+    }
+};
 
 function actualizarPresupuestoWeb() {
     let nuevoPres = prompt("Introduzca nuevo presupuesto:");
@@ -74,11 +133,9 @@ function nuevoGastoWeb() {
     let valorNum = parseFloat(v);
     let etiquetasArray = et ? et.split(",") : [];
 
-    // Creao un nuevo gasto y lo añado a la gestión de presupuesto
     let newGasto = new gesPres.CrearGasto(d, valorNum, fecha, ...etiquetasArray);
     gesPres.anyadirGasto(newGasto);
     repintar();
-    f.remove();
 }
 
 function nuevoGastoWebFormulario(e){
@@ -101,22 +158,23 @@ function nuevoGastoWebFormulario(e){
     });
 
   formulario.addEventListener("submit", function(event) {
-  event.preventDefault();
+      event.preventDefault();
 
-  let f = event.currentTarget; //obtengo los datos del formulario
-        
-        let descripcion = f.descripcion.value;
-        let valor = parseFloat(f.valor.value);
-        let fecha = f.fecha.value;
-        let etiquetasTexto = f.etiquetas.value;
-        let etiquetasArray = etiquetasTexto ? etiquetasTexto.split(",") : [];
+      let f = event.currentTarget; //obtengo los datos del formulario
+            
+      let descripcion = f.descripcion.value;
+      let valor = parseFloat(f.valor.value);
+      let fecha = f.fecha.value;
+      let etiquetasTexto = f.etiquetas.value;
+      let etiquetasArray = etiquetasTexto ? etiquetasTexto.split(",") : [];
 
-         let newGasto = new gesPres.CrearGasto(descripcion, valor, fecha, ...etiquetasArray);
-        gesPres.anyadirGasto(newGasto);
-        repintar();
+      let newGasto = new gesPres.CrearGasto(descripcion, valor, fecha, ...etiquetasArray);
+      gesPres.anyadirGasto(newGasto);
+      repintar();
 
-        formulario.remove();
-        document.getElementById("anyadirgasto-formulario").disabled = false;
+      formulario.remove();
+      let btn = document.getElementById("anyadirgasto-formulario");
+      if (btn) btn.disabled = false;
     });
     
     let botonCancelar = formulario.querySelector(".cancelar");
@@ -144,18 +202,19 @@ function mostrarGastoWeb(idElemento, gasto) {
   // fecha
   const divFecha = document.createElement("div");
   divFecha.classList.add("gasto-fecha");
-  let fechaObj = new Date(gasto.fecha);
+  try {
+      let fechaObj = new Date(gasto.fecha);
       if (!isNaN(fechaObj.getTime())) {
-      divFecha.textContent = fechaObj.toISOString().substring(0,10);
-    } else {
-            divFecha.textContent = gasto.fecha;
-          }
-    divGasto.appendChild(divFecha);
+          divFecha.textContent = fechaObj.toISOString().substring(0,10);
+      } else {
+          divFecha.textContent = gasto.fecha;
+      }
+  } catch(e) { divFecha.textContent = gasto.fecha; }
+  divGasto.appendChild(divFecha);
 
   // valor
   const divValor = document.createElement("div");
   divValor.classList.add("gasto-valor");
-  divValor.textContent = gasto.valor;
   divValor.textContent = gasto.valor.toFixed(2); 
   divGasto.appendChild(divValor);
 
@@ -208,7 +267,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     contenedor.appendChild(divGasto);
 }
   
-  function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
+function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
   const contenedor = document.querySelector("#" + idElemento);
   if(!contenedor) return;
 
@@ -218,23 +277,26 @@ function mostrarGastoWeb(idElemento, gasto) {
   const divAgrup = document.createElement("div");
   divAgrup.classList.add("agrupacion");
 
-    for (let clave in agrup) {
+  let periodoTexto = periodo;
+  if (periodo === "dia") periodoTexto = "día";
+  if (periodo === "anyo") periodoTexto = "año";
+
+  const titulo = document.createElement("h1");
+  titulo.textContent = "Gastos agrupados por " + periodoTexto;
+  divAgrup.appendChild(titulo);
+  
+  for (let clave in agrup) {
     const divDato = document.createElement("div");
     divDato.classList.add("agrupacion-dato");
-
-    // Estilos visuales extra
-    divDato.style.marginBottom = "5px"; 
-    divDato.style.borderBottom = "1px solid #eee";
 
     const spanClave = document.createElement("span");
     spanClave.classList.add("agrupacion-dato-clave");
     spanClave.style.fontWeight = "bold";
     spanClave.textContent = clave + " : ";
 
-
     const spanValor = document.createElement("span");
     spanValor.classList.add("agrupacion-dato-valor");
-   spanValor.textContent = agrup[clave].toFixed(2) + " €";
+    spanValor.textContent = agrup[clave].toFixed(2) + " €";
 
     divDato.appendChild(spanClave);
     divDato.appendChild(spanValor);
@@ -248,7 +310,7 @@ function repintar() {
   
   mostrarDatoEnId("presupuesto", gesPres.mostrarPresupuesto());
   
-    let divPres = document.getElementById("presupuesto");
+  let divPres = document.getElementById("presupuesto");
   if (divPres) {
       divPres.style.marginBottom = "20px"; 
   }
@@ -258,8 +320,6 @@ function repintar() {
   let balance = gesPres.calcularBalance();
   mostrarDatoEnId("balance-total", "<strong> Balance: </strong>" + balance.toFixed(2) + " €");
 
-
-   // Borrar contenido anterior
     let listadoDiv = document.getElementById("listado-gastos-completo");
     if (listadoDiv) {
       listadoDiv.innerHTML = ""; 
