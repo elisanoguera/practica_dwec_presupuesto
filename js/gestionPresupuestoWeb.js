@@ -44,7 +44,21 @@ function mostrarGastoWeb(idElemento, gasto){
   div.appendChild(divEtiquetas);
   div.appendChild(document.createElement("br"));
 
-    // 7. Insertar todo en el contenedor final
+  //Botón editar
+    let btnEditar = document.createElement("button");
+    btnEditar.setAttribute("type", "button");
+    btnEditar.className = "gasto-editar";
+    btnEditar.textContent = "Editar";
+    
+    let objEditar = new EditarHandle();
+
+    objEditar.gasto = gasto;
+
+    btnEditar.addEventListener("click", objEditar);
+
+    div.appendChild(btnEditar);
+  
+    //Insertar todo en el contenedor final
   elemento.appendChild(div);
 }
 
