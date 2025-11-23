@@ -103,7 +103,9 @@ function repintar(){
   listadoGastosCompleto.innerHTML = "";
   
   // Mostrar el listado completo de gastos en div#listado-gastos-completo (funciones listarGastos y mostrarGastoWeb)
-  mostrarGastoWeb("listado-gastos-completo", libreriaGestionPresupuesto.listarGastos());
+  for (let gasto of libreriaGestionPresupuesto.listarGastos()){
+    mostrarGastoWeb("listado-gastos-completo", gasto);
+  }
 }
 
 
@@ -119,37 +121,13 @@ function actualizarPresupuestoWeb(){
 let botonActualizarPresupuesto = document.getElementById("actualizarpresupuesto");
 botonActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 
-/*
-Función nuevoGastoWeb y botón anyadirgasto
-
-Esta función se utilizará como manejadora de eventos del botón anyadirgasto del código HTML. 
-Realizará las siguientes tareas:
-
-    Pedir al usuario la información necesaria para crear un nuevo gasto mediante sucesivas preguntas
-     con prompt (por orden: descripción, valor, fecha y etiquetas). Por simplicidad, 
-     de momento no se comprobará la validez de dichos datos. 
-    La fecha vendrá dada en formato internacional (yyyy-mm-dd) y las etiquetas se introducirán en un único
-     cuadro de texto como una lista separada por comas (por ejemplo, etiqueta1,etiqueta2,etiqueta3).
-    Convertir el valor a número (recuerda que prompt siempre devuelve un string).
-    Convertir la cadena de texto de etiquetas devuelta por prompt a un array.
-    Crear un nuevo gasto (función crearGasto). ¡Ojo con la manera de pasar el parámetro ~etiquetas~!
-    Añadir el gasto a la lista (función anyadirGasto).
-    Llamar a la función repintar para que se muestre la lista con el nuevo gasto.
-
-Una vez definida la función, se añadirá como manejadora del evento click del botón anyadirgasto 
-mediante addEventListener. Para ello habrá que obtener el elemento botón correspondiente previamente.
-*/ 
-
 function nuevoGastoWeb(){
   let gastoDescripcion = prompt("Introduzca la DESCRIPCIÓN del gasto:");
-  let gastoValor = prompt("Introduzca el VALOR del gasto:");
+  let gastoValor = Number(prompt("Introduzca el VALOR del gasto:"));
   let gastoFecha = prompt("Introduzca la FECHA del gasto (yyyy-mm-dd):");
-  let gastoEtiquetas = prompt("Introduzca las ETIQUETAS del gasto separadas por coma (etiqueta1,etiqueta2,etiqueta3):");
+  let gastoEtiquetas = prompt("Introduzca las ETIQUETAS del gasto separadas por coma (etiqueta1,etiqueta2,etiqueta3):").split(",");
 
-  gastoValor = Number(gastoValor);
-  gastoEtiquetas = gastoEtiquetas.split(",");
-
-  let gasto = libreriaGestionPresupuesto.CrearGasto(gastoDescripcion, gastoValor, gastoFecha, gastoEtiquetas);
+  let gasto = new libreriaGestionPresupuesto.CrearGasto(gastoDescripcion, gastoValor, gastoFecha, gastoEtiquetas);
   libreriaGestionPresupuesto.anyadirGasto(gasto);
   repintar();
 }
