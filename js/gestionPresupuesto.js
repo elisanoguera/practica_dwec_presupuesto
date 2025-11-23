@@ -34,12 +34,11 @@ function mostrarPresupuesto() {
 function CrearGasto(descripcion, valor, fecha, etiquetas) {
     // TODO
 
-    valor = Number(valor);
-if (isNaN(valor) || valor <= 0) {
+   if (isNaN(valor) || valor <= 0) {
     this.valor = 0;
-} else {
-    this.valor = valor;
-}
+    } else {
+        this.valor = valor;
+    }
 
 
     //Le añadimos las propiedades
@@ -68,12 +67,13 @@ if (isNaN(valor) || valor <= 0) {
     
     //Añadimos los nuevos archivos a la funcion.
     //Parametro para añadir la fecha en la que se ha registrado el gasto
-    var t = new Date(fecha);
-    if (t === t) {
+    var t = Date.parse(fecha);
+     if (!isNaN(t)) {
         this.fecha = t;
-    } else {
-        this.fecha = new Date(0);
+        } else {
+        this.fecha = Date.now(); // usar fecha actual como fallback
     }
+    
     //Propiedad para añadir varias etiquetas y categorizar un gasto
     this.etiquetas = [];
 
@@ -159,7 +159,7 @@ if (isNaN(valor) || valor <= 0) {
 
     this.obtenerPeriodoAgrupacion = function(periodo){
 
-        var fecha = this.fecha;
+        var fecha = new Date(this.fecha);
         var year = fecha.getFullYear();
         var month = (fecha.getMonth() + 1).toString().padStart(2, '0');
         var day = fecha.getDate().toString().padStart(2, '0');
