@@ -134,27 +134,6 @@ function nuevoGastoWeb(){
 
 document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
 
-/*
-La función EditarHandle será una función constructora que definirá exclusivamente un método llamado handleEvent. 
-Cuando creemos un objeto basado en su prototipo, asignaremos a dicho objeto una propiedad llamada gasto, que será 
-una referencia al gasto que estemos editando. El código de la función handleEvent podrá hacer referencia a dicho gasto 
-a través de this.gasto, ya que es una propiedad del objeto. Esta función realizará las siguientes tareas:
-
-    Pedir al usuario la información necesaria para editar el gasto mediante sucesivas preguntas con prompt. 
-     Por simplicidad, de momento no se comprobará la validez de dichos datos. 
-     La fecha vendrá dada en formato internacional (yyyy-mm-dd) y las etiquetas se introducirán 
-     en un único cuadro de texto como una lista separada por comas (por ejemplo, etiqueta1,etiqueta2,etiqueta3). 
-     Recuerda que prompt admite como segundo parámetro el valor por defecto del cuadro de diálogo, por lo que puedes 
-     proporcionar el valor actual de cada propiedad del gasto.
-    Convertir el valor a número (recuerda que prompt siempre devuelve un string).
-    Convertir la cadena de texto de etiquetas devuelta por prompt a un array.
-    Actualizar las propiedades del gasto (disponible mediante this.gasto), mediante las funciones actualizarValor, 
-    actualizarDescripcion, actualizarFecha y anyadirEtiquetas.
-    Llamar a la función repintar para que se muestre la lista de gastos con los datos actualizados de la edición.
-
-
-*/
-
 function EditarHandle(){
   this.handleEvent = function(e){
     let gastoDescripcion = prompt("Introduzca la nueva DESCRIPCIÓN del gasto:", this.gasto.descripcion);
@@ -166,6 +145,14 @@ function EditarHandle(){
     this.gasto.actualizarValor(gastoValor); 
     this.gasto.actualizarFecha(gastoFecha);
     this.gasto.anyadirEtiquetas(gastoEtiquetas);
+
+    repintar();
+  }
+}
+
+function BorrarHanlde(){
+  this.handleEvent = function(e){
+    this.gasto.borrarGasto(this.gasto.id);
 
     repintar();
   }
