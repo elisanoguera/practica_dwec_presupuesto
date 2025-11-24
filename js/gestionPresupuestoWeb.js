@@ -58,6 +58,29 @@ function mostrarGastoWeb(idElemento, gasto){
 
     div.appendChild(btnEditar);
 
+
+    /*
+    Botón borrar:
+
+    Crear un botón con texto Borrar de tipo button (<button type="button">) con clase gasto-borrar.
+    Crear un nuevo objeto a partir de la función constructora BorrarHandle.
+    Establecer la propiedad gasto del objeto creado al objeto gasto (recuerda que el objeto gasto es un parámetro pasado a la función mostrarGastoWeb).
+    Añadir el objeto recién creado como objeto manejador del evento click al botón Borrar recién creado.
+    Añadir el botón al DOM a continuación del botón Editar.
+  
+    */
+
+    let btnBorrar = document.createElement("button");
+    btnBorrar.setAttribute("type", "button");
+    btnBorrar.className = "gasto-borrar";
+    btnBorrar.textContent = "Borrar";
+
+    let objBorrar = new BorrarHanlde();
+    objBorrar.gasto = gasto;
+
+    btnBorrar.addEventListener("click", objBorrar);
+    div.appendChild(btnBorrar);
+
   //Espacio entre gastos
   div.appendChild(document.createElement("br"));
   div.appendChild(document.createElement("br"));
@@ -170,8 +193,7 @@ function EditarHandle(){
 
 function BorrarHanlde(){
   this.handleEvent = function(e){
-    this.gasto.borrarGasto(this.gasto.id);
-
+    confirm("¿Desea eliminar este gasto?")? libreriaGestionPresupuesto.borrarGasto(this.gasto.id) : null;
     repintar();
   }
 }
