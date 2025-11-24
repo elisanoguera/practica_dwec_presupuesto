@@ -42,7 +42,7 @@ function mostrarGastoWeb(idElemento, gasto){
     divEtiquetas.appendChild(spanEtiqueta);
   }
   div.appendChild(divEtiquetas);
-  div.appendChild(document.createElement("br"));
+  
 
   //Botón editar
     let btnEditar = document.createElement("button");
@@ -57,8 +57,12 @@ function mostrarGastoWeb(idElemento, gasto){
     btnEditar.addEventListener("click", objEditar);
 
     div.appendChild(btnEditar);
+
+  //Espacio entre gastos
+  div.appendChild(document.createElement("br"));
+  div.appendChild(document.createElement("br"));
   
-    //Insertar todo en el contenedor final
+  //Insertar todo en el contenedor final
   elemento.appendChild(div);
 }
 
@@ -152,10 +156,10 @@ function EditarHandle(){
   this.handleEvent = function(e){
     let gastoDescripcion = prompt("Introduzca la nueva DESCRIPCIÓN del gasto:", this.gasto.descripcion);
     let gastoValor = Number(prompt("Introduzca el VALOR del gasto:", this.gasto.valor));
-    let gastoFecha = prompt("Introduzca la FECHA del gasto (yyyy-mm-dd):", this.gasto.fecha);
-    let gastoEtiquetas = prompt("Introduzca las ETIQUETAS del gasto separadas por coma (etiqueta1,etiqueta2,etiqueta3):", this.gasto.etiquetas).split(",");
+    let gastoFecha = new Date(prompt("Introduzca la FECHA del gasto (yyyy-mm-dd):", new Date(this.gasto.fecha).toLocaleDateString())).toLocaleString;
+    let gastoEtiquetas = prompt("Introduzca las ETIQUETAS a añadir del gasto separadas por coma (etiqueta1,etiqueta2,etiqueta3):").split(",");
 
-    this.gasto.actualizarDescaripcion(gastoDescripcion);
+    this.gasto.actualizarDescripcion(gastoDescripcion);
     this.gasto.actualizarValor(gastoValor); 
     this.gasto.actualizarFecha(gastoFecha);
     this.gasto.anyadirEtiquetas(gastoEtiquetas);
