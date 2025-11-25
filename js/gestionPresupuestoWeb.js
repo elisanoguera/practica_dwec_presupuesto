@@ -35,12 +35,21 @@ function mostrarGastoWeb(idElemento, gasto){
     // 6. Etiquetas
   let divEtiquetas = document.createElement("div");
   divEtiquetas.className = "gasto-etiquetas";
+
   for (let etiqueta of gasto.etiquetas){
     let spanEtiqueta = document.createElement("span");
     spanEtiqueta.className = "gasto-etiquetas-etiqueta";
     spanEtiqueta.textContent = etiqueta + " ";
+
+    //Evento eliminar etiqueta
+    let objBorrarEtiquetas = new BorrarEtiquetasHandle();
+    objBorrarEtiquetas.gasto = gasto;
+    objBorrarEtiquetas.etiqueta = etiqueta;
+    spanEtiqueta.addEventListener("click", objBorrarEtiquetas);
+
     divEtiquetas.appendChild(spanEtiqueta);
   }
+
   div.appendChild(divEtiquetas);
   
 
@@ -59,17 +68,7 @@ function mostrarGastoWeb(idElemento, gasto){
     div.appendChild(btnEditar);
 
 
-    /*
-    Botón borrar:
-
-    Crear un botón con texto Borrar de tipo button (<button type="button">) con clase gasto-borrar.
-    Crear un nuevo objeto a partir de la función constructora BorrarHandle.
-    Establecer la propiedad gasto del objeto creado al objeto gasto (recuerda que el objeto gasto es un parámetro pasado a la función mostrarGastoWeb).
-    Añadir el objeto recién creado como objeto manejador del evento click al botón Borrar recién creado.
-    Añadir el botón al DOM a continuación del botón Editar.
-  
-    */
-
+  //Botón borrar
     let btnBorrar = document.createElement("button");
     btnBorrar.setAttribute("type", "button");
     btnBorrar.className = "gasto-borrar";
@@ -200,7 +199,7 @@ function BorrarHanlde(){
 
 function BorrarEtiquetasHandle(){
   this.handleEvent = function(e){
-    this.gasto.borrarEtiquetas(this.etiqueta); //etiqueta o etiquetas??
+    this.gasto.borrarEtiquetas(this.etiqueta);
 
     repintar();
   }
