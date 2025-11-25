@@ -20,7 +20,7 @@ function actualizarPresupuesto(valor) {
 
 function mostrarPresupuesto() {
     // TODO
-    return `Tu presupuesto actual es de ${presupuesto} €`
+    return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
@@ -106,8 +106,8 @@ function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto(id, gasto) {
-    this.id = idGasto;
+function anyadirGasto(gasto) {
+    gasto.id = idGasto;
     idGasto++;
     gastos.push(gasto); 
 }
@@ -127,9 +127,9 @@ function borrarGasto(id) {
 }
 
 function calcularTotalGastos() {
-    let totalGastos = 0;
+    let totalGastos = 0.0;
     for (let gasto of gastos) {
-        totalGastos += gasto.value;
+        totalGastos += Number(gasto.valor);
     }
     return totalGastos;
 }
