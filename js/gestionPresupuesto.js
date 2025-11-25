@@ -17,10 +17,12 @@ function actualizarPresupuesto(presup)
             presupuesto=valor;
             return presupuesto;
     }
-    function mostrarPresupuesto() {
-    
-    return `Tu presupuesto actual es de ${presupuesto} €`;
-}
+
+    function mostrarPresupuesto()
+    {
+        return `Tu presupuesto actual es de ${presupuesto} €`;
+    }
+
 function CrearGasto(descripcion,valor,fecha, ...etiquetas)
 {
     
@@ -43,32 +45,98 @@ this.descripcion=descripcion;
 this.valor=valor;
 this.etiquetas=[];
 //this.fecha=Date.now();//NO SE DEBE PONER AQUI PORQUE ÉCRASE LO QUE HE HECHO ANTES
-
+if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le constructeur, alors on exécute le bloc de code { ... }.”
+     {
+        etiquetas.forEach(e => {
+            if (!this.etiquetas.includes(e)) {
+                this.etiquetas.push(e);
+            }
+        });
+    }
+   
 //metodos
     this.mostrarGasto=function()
     {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     }
+
     this.actualizarDescripcion=function(nuevaDescripcion)
     {
         this.descripcion=nuevaDescripcion
         //return this.descripcion;
     }
+
     this.actualizarValor=function(nuevoValor)
     {
         if (typeof nuevoValor=="number" && nuevoValor>=0)
         this.valor=nuevoValor;
         //return this.valor;
     }
+
     this.anyadirEtiquetas=function(...neuvastiqueta)
     {
-        this.etiquetas.push(newtiqueta);// no se puede poner this.etiquetas.add(newtiqueta) estoy mezclando con c#
+        for (let i = 0; i < neuvastiqueta.length; i++)
+        {//verificar q etiqueta no existe ya
+            if(!this.etiquetas.includes(neuvastiqueta[i]))
+            {
+            this.etiquetas.push(neuvastiqueta[i]);
+            }// no se puede poner this.etiquetas.add(newtiqueta) estoy mezclando con c#
+        }
     }
 
+    this.mostrarGastoCompleto = function()
+    {
+        let texto = "Gasto correspondiente a " + this.descripcion +
+                " con valor " + this.valor + " €.\n";
+
+                texto += "Fecha: " + new Date(this.fecha).toLocaleString() + "\n";
+    texto += "Etiquetas:";
+   if (this.etiquetas.length === 0)
+        {
+        texto += "\n (No hay gasto)";
+        }
+    else
+        {
+        for (let i = 0; i < this.etiquetas.length; i++)
+            {
+            texto += "\n- " + this.etiquetas[i];
+            if (i < this.etiquetas.length - 1) {
+        // on ajoute rien ici → on évite la ligne vide finale !
+    }
+            }
+        }
+        return texto;
+    }
+
+    this.actualizarFecha = function(nuevaFecha)
+    {
+    let fechavalid = Date.parse(nuevaFecha);
+    if (!isNaN(fechavalid))
+        {
+        this.fecha = fechavalid;
+        }
+    }
+
+    this.borrarEtiquetas=function(...EtiqBorrar)
+    {
+    for(let i=0;i<EtiqBorrar.length;i++)
+        {
+         let Etiq=EtiqBorrar[i];   //etiqueta que quiero borrar [[i] position dans la liste]
+            
+                for(let j=this.etiquetas.length-1;j>=0;j--)//je parcoure les etiquette de dr a gche
+                {
+                    if (this.etiquetas[j] === Etiq)
+                        {
+                        this.etiquetas.splice(j, 1);//borrar
+                        }
+                }
+        }
+    }
+    
 }
 
 let gastos= []; // para mi no se puede usar new list[] como en c#
-let idGastos=0;
+let idGasto=0;
 
 function listarGastos()
 {
@@ -82,13 +150,26 @@ function anyadirGasto(gasto)
     gastos.push(gasto);
 }
 function borrarGasto(id)
-{gasto.delete;
-    idGasto--;
+{
+    for( let i=0;i<gastos.length;i++)
+    {
+    if(gastos[i].id===id)
+        {gastos.splice(i,1);//por supprimer (i,1) i=indice domnde se esta el gastp , 1= borra un elemento}
+    return;
+        }
+    }
 }
 function calcularTotalGastos()//en cours a teminar
-{}
-function calcularBalance()
-{}
+{
+  let total=0; //j initialise total avec  valeur 0
+  for(let g of gastos)//je parcours la liste gastos avec for...of
+    {total+=g.valor;}//la a chaque gasto represente par g on ajoute sa valeur
+    return total
+}
+function calcularBalance()//balance est ce qu il reste!! pas un moyenne
+{
+    return presupuesto-calcularTotalGastos();
+}
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
