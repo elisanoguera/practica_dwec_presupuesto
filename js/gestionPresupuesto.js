@@ -18,7 +18,7 @@ function actualizarPresupuesto(presup)
             return presupuesto;
     }
 
-    function mostrarPresupuesto()
+function mostrarPresupuesto()
     {
         return `Tu presupuesto actual es de ${presupuesto} €`;
     }
@@ -85,12 +85,12 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
     }
 
     this.mostrarGastoCompleto = function()
-    {
+   {
         let texto = "Gasto correspondiente a " + this.descripcion +
                 " con valor " + this.valor + " €.\n";
 
                 texto += "Fecha: " + new Date(this.fecha).toLocaleString() + "\n";
-    texto += "Etiquetas:";
+    texto += "Etiquetas:\n";
    if (this.etiquetas.length === 0)
         {
         texto += "\n (No hay gasto)";
@@ -99,14 +99,12 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         {
         for (let i = 0; i < this.etiquetas.length; i++)
             {
-            texto += "\n- " + this.etiquetas[i];
-            if (i < this.etiquetas.length - 1) {
-        // on ajoute rien ici → on évite la ligne vide finale !
-    }
-            }
+            texto += "- " + this.etiquetas[i]+"\n";
+                        }
         }
         return texto;
     }
+    
 
     this.actualizarFecha = function(nuevaFecha)
     {
@@ -123,7 +121,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         {
          let Etiq=EtiqBorrar[i];   //etiqueta que quiero borrar [[i] position dans la liste]
             
-                for(let j=this.etiquetas.length-1;j>=0;j--)//je parcoure les etiquette de dr a gche
+                for(let j=this.etiquetas.length-1;j>=0;j--)//je parcoure les etiquettes de dr a gche
                 {
                     if (this.etiquetas[j] === Etiq)
                         {
@@ -131,9 +129,10 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
                         }
                 }
         }
-    }
+    };
     
 }
+
 
 let gastos= []; // para mi no se puede usar new list[] como en c#
 let idGasto=0;
@@ -184,3 +183,4 @@ export   {
     calcularTotalGastos,
     calcularBalance
 }
+
