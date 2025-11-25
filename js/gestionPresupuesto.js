@@ -94,9 +94,8 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         for (let etiquetaParaBorrar of etiquetasParaBorrar) {
             for (let etiqueta of this.etiquetas) {
                 if (etiqueta == etiquetaParaBorrar) {
-                    indiceBorrar = this.etiquetas.indexOf(etiqueta);
+                    let indiceBorrar = this.etiquetas.indexOf(etiqueta);
                     this.etiquetas.splice(indiceBorrar, 1);
-                    break;
                 }
             }
         }
@@ -146,5 +145,10 @@ function calcularBalance() {
 export   {
     mostrarPresupuesto,
     actualizarPresupuesto,
-    CrearGasto
+    CrearGasto,
+    listarGastos,
+    anyadirGasto,
+    borrarGasto,
+    calcularTotalGastos,
+    calcularBalance
 }
