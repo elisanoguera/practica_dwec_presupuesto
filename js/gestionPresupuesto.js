@@ -33,19 +33,16 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     //Si ...etiquetas no se pasa a la función se crea un array vacío igual.
     this.etiquetas = [...etiquetas];
 
-    if (!isNaN(Date.parse(fecha))) {
-        this.fecha = new Date().getTime();
-    } else {
-        this.fecha = Date.parse(fecha);
-    }
+    //Si la fecha es correcta la guarda y si no, guarda la fecha actual.
+    this.fecha = (!isNaN(Date.parse(fecha))) ? Date.parse(fecha) : new Date().getTime();
 
     this.mostrarGasto = function() {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     }
 
     this.mostrarGastoCompleto = function() {
-        return `Gasto correspondiente a ${descripcion} con valor ${valor} €.
-        Fecha: ${date.toString()}
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+        Fecha: ${this.fecha.toString()}
         Etiquetas:
         ${this.listarEtiquetas()}`
     }
