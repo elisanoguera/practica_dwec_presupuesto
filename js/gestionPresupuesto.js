@@ -1,8 +1,10 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 
-//import eslintPluginCypress from "eslint-plugin-cypress";
+//import eslintPluginCypress from "eslint-plugin-cypress";(Lo he tenido que comentar por que me daba fallo al pasar los test)
 
 // TODO: Variable global
+
+//Importamos las funciones de la pagina gestion presupuesto web para poder utilizarlas
 
 let presupuesto = 0;
 let gastos = [];

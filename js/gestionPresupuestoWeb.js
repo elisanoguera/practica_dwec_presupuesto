@@ -1,5 +1,8 @@
 //import { createElement } from "react";
 
+//importamos gestion presupuesto para poder utilizar sus funciones
+import * as gpre from 'js/gestionPresupuesto.js';
+
 //Creamos la funcion de mostrar dato en id
 function mostrarDatoEnId(idElemento, valor){
 
@@ -135,6 +138,11 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
 
     cont.appendChild(agrupDiv);
 
+}
+
+function repintar(){
+    gpre.mostrarPresupuesto();
+    gpre.calcularTotalGastos();
 }
 
 //Generamos la salida de los componentes
