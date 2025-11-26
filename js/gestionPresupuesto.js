@@ -1,6 +1,6 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 
-import eslintPluginCypress from "eslint-plugin-cypress";
+//import eslintPluginCypress from "eslint-plugin-cypress";
 
 // TODO: Variable global
 
@@ -8,11 +8,11 @@ let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
 
-function actualizarPresupuesto(parametro) {
+function actualizarPresupuesto(valor) {
     // TODO
 
-    if(parametro >= 0){
-        presupuesto = parametro;
+    if(valor >= 0){
+        presupuesto = valor;
         return presupuesto;
     }
     else{
