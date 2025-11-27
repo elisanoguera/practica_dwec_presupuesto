@@ -141,13 +141,92 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
 }
 
 function repintar(){
-    gpre.mostrarPresupuesto();
-    gpre.calcularTotalGastos();
+
+    mostrarDatoEnId('presupuesto', gpre.mostrarPresupuesto());
+    const total = gpre.calcularTotalGastos().toFixed(2) + ' €';
+    mostrarDatoEnId('gastos-totales', total);
+
+
+    const balance = gpre.calcularBalance().toFixed(2) + ' €';
+    mostrarDatoEnId('balance-total', balance);
+
+    const cont = document.getElementById('listado-gastos-completo');
+    if(cont) cont.innerHTML = '';
+
+    const todos = gpre.listarGastos();
+    for(var i = 0; i < todos.length; i++){
+        mostrarGastoWeb('listado-gastos-completo', todos[i]);
+    }
 }
+
+function actualizarPresupuestoWeb(){
+    var valor = prompt("Introduce el valor del presupuesto: ");
+
+    if(valor === null){
+        return;
+    }
+
+    var numero = Number(valor);
+    if(isNaN(numero)){
+        alert("El valor introducido no es un numero valido.");
+    }
+
+    gpre.actualizarPresupuesto(numero);
+
+    repintar();
+}
+
+document.getElementById("actualizarpresupuesto")
+        .addEventListener("click", actualizarPresupuestoWeb);
+
+
+function nuevoGastoWeb(){
+
+    const desc = prompt("Introduce la descripcion del gasto");
+    if(desc === null){
+        return;
+    }
+
+    const StrinValor = prompt("Introduce el valor del nuevo gasto:");
+    if(StrinValor === null){
+        return;
+    }
+
+    const fecha = prompt("Introduce la fecha del gasto (yyyy-mm-dd):");
+    if(fecha === null){
+        return;
+    }
+
+    const etiquetasStr = prompt("Introduce la etiquetas separadas por comas:");
+    if(etiquetasStr === null){
+        return;
+    }
+
+    const valor = Number(StrinValor);
+
+    const etiquetas = etiquetasStr
+        .split(",")
+        .map(e => e.trim())
+        .filter(e => e.length > 0);
+
+
+    const gasto = new gpre.CrearGasto(des, valor, fecha, etiquetas);
+
+    gpre.anyadirGasto(gasto);
+
+    repintar();
+
+}
+
+document.getElementById('anyadirgasto').addEventListener("click", nuevoGastoWeb);
+
+
 
 //Generamos la salida de los componentes
 export{
     mostrarDatoEnId,
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
+    repintar,
+    actualizarPresupuestoWeb,
 }
