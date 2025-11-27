@@ -16,7 +16,11 @@ function mostrarDatoEnId(idElemento, valor) {
   }
   
 
+<<<<<<< HEAD
 //nueva prueba
+=======
+//probando
+>>>>>>> 9b840aca00e347a366ca795face41510fe282fb5
 
 // esta funcion recibe el id del elemento contenedor y un objeto gasto (recordemos que gasto tiene: descripcion, fecha, valor, etiquetas)
 function mostrarGastoWeb(idElemento, gasto) {
