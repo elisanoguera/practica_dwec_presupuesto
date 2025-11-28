@@ -74,6 +74,11 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrar.type = "button";
     botonBorrar.className = "gasto-borrar";
     botonBorrar.textContent = "Borrar";
+// NUEVO Boton EditarFormulario
+     let botonEditarFormulario = document.createElement("button");
+    botonEditarFormulario.type = "button";
+    botonEditarFormulario.className = "gasto-editar-formulario";
+    botonEditarFormulario.textContent = "Editar (formulario)";
 
     // Asignar manejadores de eventos a los botones
     let editarHandler = new EditarHandle();
@@ -316,7 +321,8 @@ BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
 
 
 function nuevoGastoWebFormulario() {
-    // Crear copia del formulario desde el template
+    // Hay una plantilla (<template>) en el HTML que no se muestra.
+    // Aquí hacemos una copia visible de esa plantilla para trabajar con ella.
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
     
     // Accedo al elemento <form> dentro del fragmento
@@ -327,23 +333,19 @@ function nuevoGastoWebFormulario() {
         // Prevenir el envío del formulario (comportamiento por defecto)
         event.preventDefault();
         
-        // Acceder a los campos del formulario
+        // Acceder a los campos del formulario y extraer sus valores 
         let descripcion = formulario.querySelector("#descripcion").value;
         let valor = parseFloat(formulario.querySelector("#valor").value);
         let fecha = formulario.querySelector("#fecha").value;
         let etiquetasTexto = formulario.querySelector("#etiquetas").value;
         
         // Convertir etiquetas a array
-        let etiquetas = etiquetasTexto.split(",").map(function(e) {
-            return e.trim();
-        }).filter(function(e) {
-            return e !== "";
-        });
+        let etiquetas = etiquetasTexto.split(",")
         
         // Creao el nuevo gasto
         let nuevoGasto = new gespre.CrearGasto(descripcion, valor, fecha, ...etiquetas);
         
-        // Añadio el gasto a la lista
+        // Añadio el gasto al array de gastos
         gespre.anyadirGasto(nuevoGasto);
         
         // Repintar la interfaz
