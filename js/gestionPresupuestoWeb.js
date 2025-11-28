@@ -436,7 +436,7 @@ function EditarHandleFormulario() {}
     formulario.querySelector("#fecha").value = fechaFormateada;
     
     formulario.querySelector("#etiquetas").value = this.gasto.etiquetas.join(", ");
-    
+
     // 4.Crear manejador para el evento submit del formulario (con objeto manejador)
     function SubmitHandle() {}
     
