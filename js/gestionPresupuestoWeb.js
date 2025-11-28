@@ -75,7 +75,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrar.className = "gasto-borrar";
     botonBorrar.textContent = "Borrar";
 // NUEVO Boton EditarFormulario
-     let botonEditarFormulario = document.createElement("button");
+    let botonEditarFormulario = document.createElement("button");
     botonEditarFormulario.type = "button";
     botonEditarFormulario.className = "gasto-editar-formulario";
     botonEditarFormulario.textContent = "Editar (formulario)";
@@ -92,6 +92,11 @@ function mostrarGastoWeb(idElemento, gasto) {
     // BOTÓN AÑADIR GASTO DESDE FORMULARIO
     let botonAnyadirFormulario = document.getElementById("anyadirgasto-formulario");
     botonAnyadirFormulario.addEventListener("click", nuevoGastoWebFormulario);
+
+    // NUEVO manejador para editar con formulario
+    let editarFormularioHandler = new EditarHandleFormulario();
+    editarFormularioHandler.gasto = gasto;
+    botonEditarFormulario.addEventListener("click", editarFormularioHandler);
     
     // Ensamblar todos los elementos
     divGasto.appendChild(divDescripcion);
