@@ -46,7 +46,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     }
 
     this.mostrarFechaLocal = function() {
-        this.fecha = new Date(this.fecha).toLocaleString('es-ES');
+        this.fecha = new Date(this.fecha).toLocaleString();
         return this.fecha;
     }
 
