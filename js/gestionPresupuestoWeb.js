@@ -1,6 +1,18 @@
 // importa libreria
 import * as gespre from './gestionPresupuesto.js';
 
+// 1. CancelarHandle - PARA FORMULARIOS
+function CancelarHandle() {}
+
+CancelarHandle.prototype.handleEvent = function(event) {
+    if (this.formulario) {
+        this.formulario.remove();
+    }
+    if (this.botonAnyadir) {
+        this.botonAnyadir.removeAttribute("disabled");
+    }
+};
+
 // Muestra un valor (texto o número) dentro de un elemento HTML por su id
 function mostrarDatoEnId(idElemento, valor) {
   // Busco en el documento el elemento con ese id
