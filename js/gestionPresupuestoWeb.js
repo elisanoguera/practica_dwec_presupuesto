@@ -1,7 +1,7 @@
 // importa libreria
 import * as gespre from './gestionPresupuesto.js';
 
-// 1. CancelarHandle - PARA FORMULARIOS
+// CancelarHandle - PARA FORMULARIOS
 function CancelarHandle() {}
 
 CancelarHandle.prototype.handleEvent = function(event) {
@@ -11,7 +11,8 @@ CancelarHandle.prototype.handleEvent = function(event) {
     if (this.botonAnyadir) {
         this.botonAnyadir.removeAttribute("disabled");
     }
-};
+}
+
 
 // Muestra un valor (texto o número) dentro de un elemento HTML por su id
 function mostrarDatoEnId(idElemento, valor) {
@@ -259,7 +260,7 @@ function nuevoGastoWeb() {
 
 
 
-  // Función constructora EditarHandle
+  // Función constructora EditarHandle para editar con prompts
 function EditarHandle(gasto) {
   // Asignamos la referencia al gasto que se va a editar
   this.gasto = gasto;
