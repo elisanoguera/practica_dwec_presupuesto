@@ -1,18 +1,17 @@
 // importa libreria
 import * as gespre from './gestionPresupuesto.js';
 
-// CancelarHandle - PARA FORMULARIOS
+// 1. CancelarHandle - PARA FORMULARIOS
 function CancelarHandle() {}
 
 CancelarHandle.prototype.handleEvent = function(event) {
     if (this.formulario) {
         this.formulario.remove();
     }
-    if (this.botonAnyadir) {
-        this.botonAnyadir.removeAttribute("disabled");
-    }
+    
+    
 }
-
+ 
 
 // Muestra un valor (texto o número) dentro de un elemento HTML por su id
 function mostrarDatoEnId(idElemento, valor) {
@@ -260,7 +259,7 @@ function nuevoGastoWeb() {
 
 
 
-  // Función constructora EditarHandle para editar con prompts
+  // Función constructora EditarHandle
 function EditarHandle(gasto) {
   // Asignamos la referencia al gasto que se va a editar
   this.gasto = gasto;
@@ -467,12 +466,14 @@ function EditarHandleFormulario() {}
         if (etiquetas.length > 0) {
             this.gasto.anyadirEtiquetas(...etiquetas);
         }
+
+         // Eliminar el formulario
+        this.formulario.remove();
         
         // Repintar la interfaz
         repintar();
         
-        // Eliminar el formulario
-        this.formulario.remove();
+        
     };
     
     let submitHandler = new SubmitHandle();
@@ -486,13 +487,12 @@ function EditarHandleFormulario() {}
     
     let cancelarHandler = new CancelarHandle();
     cancelarHandler.formulario = formulario;
-    cancelarHandler.botonAnyadir = this.botonEditar; // No necesitamos reactivar nada específico
+   
     
     botonCancelar.addEventListener("click", cancelarHandler);
-    
-    // 6. Añadir el formulario a la página
-    let contenedorControles = document.getElementById("controlesprincipales");
-    contenedorControles.appendChild(plantillaFormulario);
+   //  Añadir el formulario DEBAJO DEL GASTO ACTUAL 
+     let gastoDiv = event.currentTarget.closest('.gasto');
+    gastoDiv.parentNode.insertBefore(plantillaFormulario, gastoDiv.nextSibling);
 };
 
 
