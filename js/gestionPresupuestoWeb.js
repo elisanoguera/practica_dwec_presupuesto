@@ -84,6 +84,10 @@ function mostrarGastoWeb(idElemento, gasto) {
     borrarHandler.gasto = gasto;
     botonBorrar.addEventListener("click", borrarHandler);
     
+    // BOTÓN AÑADIR GASTO DESDE FORMULARIO
+    let botonAnyadirFormulario = document.getElementById("anyadirgasto-formulario");
+    botonAnyadirFormulario.addEventListener("click", nuevoGastoWebFormulario);
+    
     // Ensamblar todos los elementos
     divGasto.appendChild(divDescripcion);
     divGasto.appendChild(divFecha);
@@ -311,6 +315,79 @@ BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
 };
 
 
+function nuevoGastoWebFormulario() {
+    // Crear copia del formulario desde el template
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    
+    // Accedo al elemento <form> dentro del fragmento
+    let formulario = plantillaFormulario.querySelector("form");
+    
+    // Crear manejador para el evento submit del formulario
+    formulario.addEventListener("submit", function(event) {
+        // Prevenir el envío del formulario (comportamiento por defecto)
+        event.preventDefault();
+        
+        // Acceder a los campos del formulario
+        let descripcion = formulario.querySelector("#descripcion").value;
+        let valor = parseFloat(formulario.querySelector("#valor").value);
+        let fecha = formulario.querySelector("#fecha").value;
+        let etiquetasTexto = formulario.querySelector("#etiquetas").value;
+        
+        // Convertir etiquetas a array
+        let etiquetas = etiquetasTexto.split(",").map(function(e) {
+            return e.trim();
+        }).filter(function(e) {
+            return e !== "";
+        });
+        
+        // Creao el nuevo gasto
+        let nuevoGasto = new gespre.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+        
+        // Añadio el gasto a la lista
+        gespre.anyadirGasto(nuevoGasto);
+        
+        // Repintar la interfaz
+        repintar();
+        
+        // Activo el botón anyadirgasto-formulario
+        let botonAnyadir = document.getElementById("anyadirgasto-formulario");
+        botonAnyadir.removeAttribute("disabled");
+        
+        // Eliminar el formulario
+        formulario.remove();
+    });
+    
+    // Crear manejador para el botón Cancelar
+    let botonCancelar = formulario.querySelector("button.cancelar");
+    
+    // Función constructora para el manejador de cancelar
+    function CancelarHandle() {}
+    
+    CancelarHandle.prototype.handleEvent = function(event) {
+        // Eliminar el formulario
+        this.formulario.remove();
+        
+        // Activar el botón anyadirgasto-formulario
+        this.botonAnyadir.removeAttribute("disabled");
+    };
+    
+    let cancelarHandler = new CancelarHandle();
+    cancelarHandler.formulario = formulario;
+    cancelarHandler.botonAnyadir = document.getElementById("anyadirgasto-formulario");
+    
+    botonCancelar.addEventListener("click", cancelarHandler);
+    
+    // Desactiva el botón anyadirgasto-formulario
+    let botonAnyadir = document.getElementById("anyadirgasto-formulario");
+    botonAnyadir.setAttribute("disabled", "disabled");
+    
+    // Añade el formulario a la página
+    let contenedorControles = document.getElementById("controlesprincipales");
+    contenedorControles.appendChild(plantillaFormulario);
+}
+
+
+
 
 export {
     mostrarDatoEnId,
@@ -321,5 +398,6 @@ export {
     nuevoGastoWeb,
     EditarHandle,
     BorrarHandle,
-    BorrarEtiquetasHandle
+    BorrarEtiquetasHandle,
+    nuevoGastoWebFormulario
 }
