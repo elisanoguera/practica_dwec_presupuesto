@@ -310,6 +310,33 @@ BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
   }
 };
 
+// Función manejadora para crear el manejador del formulario, recibe el evento submit
+function crearHandleFormulario(event) {
+
+}
+
+
+function nuevoGastoWebFormulario(event) {
+  let plantillaFormulario = document.getElementById("formulario-template").contentEditable.cloneNode(true);
+  let formulario = plantillaFormulario.querySelector("form");
+
+  // Añadir el evento al botón y llamar a esta función
+  formulario.addEventListener("sumit", crearHandleFormulario);
+
+  // Evento para botón cancelar el formulario
+  let cancelarHandler = Object.create(FormuClose);
+  cancelarHandler.formulario = formulario;
+  cancelarHandler.botonEditar = event.currentTarget;
+  formulario.querySelector("button.cancelar").addEventListener("click", cancelarHandler);
+
+  // desactivar el botón de añadir mientras el formulario está abierto
+  event.currentTarget.disabled = true;  
+
+  // Añadir el formulario al documento
+  event.target.parentNode.append(plantillaFormulario);
+}
+document.getElementById("anyadirgasto-formulario").addEventListener("click", nuevoGastoWebFormulario);
+
 
 
 export {
@@ -321,5 +348,6 @@ export {
     nuevoGastoWeb,
     EditarHandle,
     BorrarHandle,
-    BorrarEtiquetasHandle
+    BorrarEtiquetasHandle,
+    nuevoGastoWebFormulario
 }
