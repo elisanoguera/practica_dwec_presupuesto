@@ -312,7 +312,27 @@ BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
 
 // Función manejadora para crear el manejador del formulario, recibe el evento submit
 function crearHandleFormulario(event) {
+  event.preventDefault(); // Evitar el envío del formulario
 
+  // Vamos leyendo los campos del formulario
+  // Podemos acceder a la propiedad currentTarget del evento ya que lo hemos recibido como parámetro
+  let descripcion =event.currentTarget.descripcion.value;
+  let valor = Number(event.currentTarget.valor.value);
+  let fecha = event.currentTarget.fecha.value;
+  let etiquetas = event.currentTarget.etiquetas.value;
+
+  // Llamamos a la función para crear el gasto
+  let gasto = new gespre.CrearGasto(descripcion, valor, fecha, ...etiquetas.split(","));
+
+  // Lo añadimos al array de gastos
+  gespre.anyadirGasto(gasto);
+  // Repintamos la interfaz
+  repintar();
+  // Cerramos el formulario
+  document.querySelector("form").remove(); 
+
+  // Volvemos a activar el botón de añadir gasto
+  document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
 }
 
 
