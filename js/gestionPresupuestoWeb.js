@@ -20,18 +20,15 @@ function mostrarDatoEnId(idElemento, valor) {
 
 // esta funcion recibe el id del elemento contenedor y un objeto gasto (recordemos que gasto tiene: descripcion, fecha, valor, etiquetas)
 function mostrarGastoWeb(idElemento, gasto) {
-    // Busco el elemento contenedor
     let elementoContenedor = document.getElementById(idElemento);
     
-    
-    //Creo la estructura HTML del gasto
     let divGasto = document.createElement("div");
-    divGasto.className = "gasto";                       // <div class="gasto">
+    divGasto.className = "gasto";
     
     // Creo elemento para la descripción
     let divDescripcion = document.createElement("div");
     divDescripcion.className = "gasto-descripcion";
-    divDescripcion.textContent = gasto.descripcion;     // <div class="gasto-descripcion">compra mercado</div>
+    divDescripcion.textContent = gasto.descripcion;
     
     // Creo elemento para la fecha
     let divFecha = document.createElement("div");
@@ -43,7 +40,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     divValor.className = "gasto-valor";
     divValor.textContent = gasto.valor;
     
-    // Creo contenedor para etiquetas (etiquetas es un array dentro del objeto gasto)
+    // Creo contenedor para etiquetas
     let divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
     
@@ -57,23 +54,29 @@ function mostrarGastoWeb(idElemento, gasto) {
             // CREAR MANEJADOR PARA BORRAR ETIQUETA
             let borrarEtiquetaHandler = new BorrarEtiquetasHandle();
             borrarEtiquetaHandler.gasto = gasto;
-            borrarEtiquetaHandler.etiqueta = gasto.etiquetas[i]; // La etiqueta actual del bucle
+            borrarEtiquetaHandler.etiqueta = gasto.etiquetas[i];
             spanEtiqueta.addEventListener("click", borrarEtiquetaHandler);
             divEtiquetas.appendChild(spanEtiqueta);
         }
     }
 
-    //BOTÓN EDITAR 
+    // BOTÓN EDITAR (prompts)
     let botonEditar = document.createElement("button");
     botonEditar.type = "button";
     botonEditar.className = "gasto-editar";
     botonEditar.textContent = "Editar";
     
-    //BOTÓN BORRAR  
+    // BOTÓN BORRAR
     let botonBorrar = document.createElement("button");
     botonBorrar.type = "button";
     botonBorrar.className = "gasto-borrar";
     botonBorrar.textContent = "Borrar";
+
+    // ✅ NUEVO: BOTÓN EDITAR CON FORMULARIO
+    let botonEditarFormulario = document.createElement("button");
+    botonEditarFormulario.type = "button";
+    botonEditarFormulario.className = "gasto-editar-formulario";
+    botonEditarFormulario.textContent = "Editar (formulario)";
 
     // Asignar manejadores de eventos a los botones
     let editarHandler = new EditarHandle();
@@ -84,17 +87,118 @@ function mostrarGastoWeb(idElemento, gasto) {
     borrarHandler.gasto = gasto;
     botonBorrar.addEventListener("click", borrarHandler);
     
+    // ✅ NUEVO: Manejador para editar con formulario
+    let editarFormularioHandler = new EditarHandleFormulario();
+    editarFormularioHandler.gasto = gasto;
+    botonEditarFormulario.addEventListener("click", editarFormularioHandler);
+    
     // Ensamblar todos los elementos
     divGasto.appendChild(divDescripcion);
     divGasto.appendChild(divFecha);
     divGasto.appendChild(divValor);
     divGasto.appendChild(divEtiquetas);
     divGasto.appendChild(botonEditar);
-    divGasto.appendChild(botonBorrar);  
+    divGasto.appendChild(botonBorrar);
+    divGasto.appendChild(botonEditarFormulario); // ✅ Añadir nuevo botón
     
     // Añadir el gasto al contenedor
     elementoContenedor.appendChild(divGasto);
 }
+
+// ✅ NUEVO: Función constructora para editar con formulario
+function EditarHandleFormulario() {}
+
+EditarHandleFormulario.prototype.handleEvent = function(event) {
+    // 1. Crear copia del formulario desde el template
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    
+    // 2. Acceder al elemento <form> dentro del fragmento
+    let formulario = plantillaFormulario.querySelector("form");
+    
+    // 3. RELLENAR FORMULARIO CON DATOS DEL GASTO
+    formulario.querySelector("#descripcion").value = this.gasto.descripcion;
+    formulario.querySelector("#valor").value = this.gasto.valor;
+    
+    let fechaFormateada = new Date(this.gasto.fecha).toISOString().slice(0, 10);
+    formulario.querySelector("#fecha").value = fechaFormateada;
+    
+    formulario.querySelector("#etiquetas").value = this.gasto.etiquetas.join(", ");
+    
+    // 4. CREAR MANEJADOR PARA SUBMIT
+    function SubmitHandle() {}
+    
+    SubmitHandle.prototype.handleEvent = function(event) {
+        event.preventDefault();
+        
+        // Acceder a los campos del formulario
+        let descripcion = this.formulario.querySelector("#descripcion").value;
+        let valor = parseFloat(this.formulario.querySelector("#valor").value);
+        let fecha = this.formulario.querySelector("#fecha").value;
+        let etiquetasTexto = this.formulario.querySelector("#etiquetas").value;
+        
+        // Convertir etiquetas a array
+        let etiquetas = etiquetasTexto.split(",").map(function(e) {
+            return e.trim();
+        }).filter(function(e) {
+            return e !== "";
+        });
+        
+        // ACTUALIZAR EL GASTO EXISTENTE
+        this.gasto.actualizarDescripcion(descripcion);
+        this.gasto.actualizarValor(valor);
+        this.gasto.actualizarFecha(fecha);
+        
+        // Actualizar etiquetas
+        this.gasto.borrarEtiquetas(...this.gasto.etiquetas);
+        if (etiquetas.length > 0) {
+            this.gasto.anyadirEtiquetas(...etiquetas);
+        }
+        
+        // Eliminar formulario
+        this.formulario.remove();
+        
+        // Repintar para mostrar datos actualizados
+        repintar();
+    };
+    
+    let submitHandler = new SubmitHandle();
+    submitHandler.formulario = formulario;
+    submitHandler.gasto = this.gasto;
+    
+    formulario.addEventListener("submit", submitHandler);
+    
+    // 5. CREAR MANEJADOR PARA CANCELAR
+    let botonCancelar = formulario.querySelector("button.cancelar");
+    
+    function CancelarEditHandle() {}
+    
+    CancelarEditHandle.prototype.handleEvent = function(event) {
+        // Eliminar formulario
+        this.formulario.remove();
+        
+    };
+    
+    let cancelarHandler = new CancelarEditHandle();
+    cancelarHandler.formulario = formulario;
+    
+    
+    botonCancelar.addEventListener("click", cancelarHandler);
+    
+    // 6. AÑADIR FORMULARIO DENTRO DEL GASTO
+    let gastoDiv = event.currentTarget.closest('.gasto');
+    
+    // OCULTAR el contenido actual del gasto
+    let elementosOcultar = gastoDiv.querySelectorAll('.gasto-descripcion, .gasto-fecha, .gasto-valor, .gasto-etiquetas, .gasto-editar, .gasto-borrar, .gasto-editar-formulario');
+    elementosOcultar.forEach(function(elemento) {
+        elemento.style.display = 'none';
+    });
+
+     let botonQueAbrioFormulario = event.currentTarget;
+    botonQueAbrioFormulario.setAttribute("disabled", "disabled");
+    
+    // AÑADIR FORMULARIO dentro del gasto
+    gastoDiv.appendChild(formulario);
+};
 
 
 
@@ -382,5 +486,5 @@ export {
     BorrarHandle,
     BorrarEtiquetasHandle,
     nuevoGastoWebFormulario,
-    crearHandleFormulario
+    crearHandleFormulario,
 }
