@@ -1,18 +1,6 @@
 // importa libreria
 import * as gespre from './gestionPresupuesto.js';
 
-// 1. CancelarHandle - PARA FORMULARIOS
-function CancelarHandle() {}
-
-CancelarHandle.prototype.handleEvent = function(event) {
-    if (this.formulario) {
-        this.formulario.remove();
-    }
-    
-    
-}
- 
-
 // Muestra un valor (texto o número) dentro de un elemento HTML por su id
 function mostrarDatoEnId(idElemento, valor) {
   // Busco en el documento el elemento con ese id
@@ -28,7 +16,7 @@ function mostrarDatoEnId(idElemento, valor) {
   }
   
 
-
+//nueva prueba
 
 // esta funcion recibe el id del elemento contenedor y un objeto gasto (recordemos que gasto tiene: descripcion, fecha, valor, etiquetas)
 function mostrarGastoWeb(idElemento, gasto) {
@@ -49,7 +37,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     let divFecha = document.createElement("div");
     divFecha.className = "gasto-fecha";
     divFecha.textContent = new Date(gasto.fecha).toLocaleDateString();
-    //fgghhjj
+    
     // Creo elemento para el valor
     let divValor = document.createElement("div");
     divValor.className = "gasto-valor";
@@ -86,11 +74,6 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrar.type = "button";
     botonBorrar.className = "gasto-borrar";
     botonBorrar.textContent = "Borrar";
-// NUEVO Boton EditarFormulario
-    let botonEditarFormulario = document.createElement("button");
-    botonEditarFormulario.type = "button";
-    botonEditarFormulario.className = "gasto-editar-formulario";
-    botonEditarFormulario.textContent = "Editar (formulario)";
 
     // Asignar manejadores de eventos a los botones
     let editarHandler = new EditarHandle();
@@ -101,23 +84,13 @@ function mostrarGastoWeb(idElemento, gasto) {
     borrarHandler.gasto = gasto;
     botonBorrar.addEventListener("click", borrarHandler);
     
-    // BOTÓN AÑADIR GASTO DESDE FORMULARIO
-    let botonAnyadirFormulario = document.getElementById("anyadirgasto-formulario");
-    botonAnyadirFormulario.addEventListener("click", nuevoGastoWebFormulario);
-
-    // NUEVO manejador para editar con formulario
-    let editarFormularioHandler = new EditarHandleFormulario();
-    editarFormularioHandler.gasto = gasto;
-    botonEditarFormulario.addEventListener("click", editarFormularioHandler);
-    
     // Ensamblar todos los elementos
     divGasto.appendChild(divDescripcion);
     divGasto.appendChild(divFecha);
     divGasto.appendChild(divValor);
     divGasto.appendChild(divEtiquetas);
     divGasto.appendChild(botonEditar);
-    divGasto.appendChild(botonBorrar);
-    divGasto.appendChild(botonEditarFormulario);
+    divGasto.appendChild(botonBorrar);  
     
     // Añadir el gasto al contenedor
     elementoContenedor.appendChild(divGasto);
@@ -338,165 +311,6 @@ BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
 };
 
 
-function nuevoGastoWebFormulario() {
-    // Hay una plantilla (<template>) en el HTML que no se muestra.
-    // Aquí hacemos una copia visible de esa plantilla para trabajar con ella.
-      // 1. Crear copia del formulario desde el template
-    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
-    
-    // 2. Acceder al elemento <form> dentro del fragmento
-    let formulario = plantillaFormulario.querySelector("form");
-    
-    // 3. Crear manejador para el evento submit del formulario
-    formulario.addEventListener("submit", function(event) {
-        // Prevenir el envío del formulario (comportamiento por defecto)
-        event.preventDefault();
-        
-        // Acceder a los campos del formulario
-        let descripcion = formulario.querySelector("#descripcion").value;
-        let valor = parseFloat(formulario.querySelector("#valor").value);
-        let fecha = formulario.querySelector("#fecha").value;
-        let etiquetasTexto = formulario.querySelector("#etiquetas").value;
-        
-        // Convertir etiquetas a array
-        let etiquetas = etiquetasTexto.split(",").map(function(e) {
-            return e.trim();
-        }).filter(function(e) {
-            return e !== "";
-        });
-        
-        // Crear nuevo gasto
-        let nuevoGasto = new gespre.CrearGasto(descripcion, valor, fecha, ...etiquetas);
-        
-        // Añadir el gasto a la lista
-        gespre.anyadirGasto(nuevoGasto);
-        
-        // Repintar la interfaz
-        repintar();
-        
-        // Activar el botón anyadirgasto-formulario
-        let botonAnyadir = document.getElementById("anyadirgasto-formulario");
-        botonAnyadir.removeAttribute("disabled");
-        
-        // Eliminar el formulario
-        formulario.remove();
-    });
-    
-    // 4. Crear manejador para el botón Cancelar
-    let botonCancelar = formulario.querySelector("button.cancelar");
-    
-    // Función constructora para el manejador de cancelar
-    function CancelarHandle() {}
-    
-    CancelarHandle.prototype.handleEvent = function(event) {
-         // Eliminar el formulario
-    if (this.formulario) {
-        this.formulario.remove();
-    }
-        // Reactivar botón si se proporcionó
-    if (this.botonAnyadir) {
-        this.botonAnyadir.removeAttribute("disabled");
-    }
-        
-    };
-    
-    let cancelarHandler = new CancelarHandle();
-    cancelarHandler.formulario = formulario;
-    cancelarHandler.botonAnyadir = document.getElementById("anyadirgasto-formulario");
-    
-    botonCancelar.addEventListener("click", cancelarHandler);
-    
-    // 5. Desactivar el botón anyadirgasto-formulario
-    let botonAnyadir = document.getElementById("anyadirgasto-formulario");
-    botonAnyadir.setAttribute("disabled", "disabled");
-    
-    // 6. Añadir el formulario a la página
-    let contenedorControles = document.getElementById("controlesprincipales");
-    contenedorControles.appendChild(plantillaFormulario);
-
-}
-
-
-// Función constructora para editar con formulario
-function EditarHandleFormulario() {}
-
-  EditarHandleFormulario.prototype.handleEvent = function(event) {
-    // 1. Creo copia del formulario desde el template
-    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
-    
-    // 2. Accedo al elemento <form> dentro del fragmento
-    let formulario = plantillaFormulario.querySelector("form");
-    
-    // 3.RELLENAR FORMULARIO CON DATOS DEL GASTO ACTUAL
-    formulario.querySelector("#descripcion").value = this.gasto.descripcion;
-    formulario.querySelector("#valor").value = this.gasto.valor;
-    
-    // Convertir fecha a formato YYYY-MM-DD
-    let fechaFormateada = new Date(this.gasto.fecha).toISOString().slice(0, 10);
-    formulario.querySelector("#fecha").value = fechaFormateada;
-    
-    formulario.querySelector("#etiquetas").value = this.gasto.etiquetas.join(", ");
-
-    // 4.Crear manejador para el evento submit del formulario (con objeto manejador)
-    function SubmitHandle() {}
-    
-    SubmitHandle.prototype.handleEvent = function(event) {
-        event.preventDefault();
-        
-        // Acceder a los campos del formulario
-        let descripcion = this.formulario.querySelector("#descripcion").value;
-        let valor = parseFloat(this.formulario.querySelector("#valor").value);
-        let fecha = this.formulario.querySelector("#fecha").value;
-        let etiquetasTexto = this.formulario.querySelector("#etiquetas").value;
-        
-        // Convertir etiquetas a array
-        let etiquetas = etiquetasTexto.split(",").map(function(e) {
-            return e.trim();
-        }).filter(function(e) {
-            return e !== "";
-        });
-        
-        //ACTUALIZAR EL GASTO EXISTENTE (no crear uno nuevo)
-        this.gasto.actualizarDescripcion(descripcion);
-        this.gasto.actualizarValor(valor);
-        this.gasto.actualizarFecha(fecha);
-        
-        // Actualizar etiquetas
-        this.gasto.borrarEtiquetas(...this.gasto.etiquetas);
-        if (etiquetas.length > 0) {
-            this.gasto.anyadirEtiquetas(...etiquetas);
-        }
-
-         // Eliminar el formulario
-        this.formulario.remove();
-        
-        // Repintar la interfaz
-        repintar();
-        
-        
-    };
-    
-    let submitHandler = new SubmitHandle();
-    submitHandler.formulario = formulario;
-    submitHandler.gasto = this.gasto; // Pasar el gasto a actualizar
-    
-    formulario.addEventListener("submit", submitHandler);
-    
-    // 5.Crear manejador para el botón Cancelar (reutilizo el mismo)
-    let botonCancelar = formulario.querySelector("button.cancelar");
-    
-    let cancelarHandler = new CancelarHandle();
-    cancelarHandler.formulario = formulario;
-   
-    
-    botonCancelar.addEventListener("click", cancelarHandler);
-   //  Añadir el formulario DEBAJO DEL GASTO ACTUAL 
-     let gastoDiv = event.currentTarget.closest('.gasto');
-    gastoDiv.parentNode.insertBefore(plantillaFormulario, gastoDiv.nextSibling);
-};
-
-
-
 
 export {
     mostrarDatoEnId,
@@ -507,7 +321,5 @@ export {
     nuevoGastoWeb,
     EditarHandle,
     BorrarHandle,
-    BorrarEtiquetasHandle,
-    nuevoGastoWebFormulario,
-    EditarHandleFormulario
+    BorrarEtiquetasHandle
 }
