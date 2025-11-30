@@ -348,11 +348,11 @@ function crearHandleFormulario(event) {
 
 
 function nuevoGastoWebFormulario(event) {
-  let plantillaFormulario = document.getElementById("formulario-template").contentEditable.cloneNode(true);
+  let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
   let formulario = plantillaFormulario.querySelector("form");
 
   // Añadir el evento al botón y llamar a esta función
-  formulario.addEventListener("sumit", crearHandleFormulario);
+  formulario.addEventListener("submit", crearHandleFormulario);
 
   // Evento para botón cancelar el formulario
   let cancelarHandler = Object.create(FormuClose);
@@ -366,6 +366,7 @@ function nuevoGastoWebFormulario(event) {
   // Añadir el formulario al documento
   event.target.parentNode.append(plantillaFormulario);
 }
+// Asignar el evento al botón de añadir gasto mediante formulario
 document.getElementById("anyadirgasto-formulario").addEventListener("click", nuevoGastoWebFormulario);
 
 
@@ -380,5 +381,6 @@ export {
     EditarHandle,
     BorrarHandle,
     BorrarEtiquetasHandle,
-    nuevoGastoWebFormulario
+    nuevoGastoWebFormulario,
+    crearHandleFormulario
 }
