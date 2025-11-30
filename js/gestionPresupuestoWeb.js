@@ -310,6 +310,17 @@ BorrarEtiquetasHandle.prototype.handleEvent = function (event) {
   }
 };
 
+
+// objeto para boton cancelar formulario
+let FormuClose = {
+  handleEvent: function(e){
+    this.formulario.remove(); // eliminar el formulario
+    this.botonEditar.removeAttribute("disabled"); // reactivar el botón editar
+
+  }
+}
+  
+
 // Función manejadora para crear el manejador del formulario, recibe el evento submit
 function crearHandleFormulario(event) {
   event.preventDefault(); // Evitar el envío del formulario
