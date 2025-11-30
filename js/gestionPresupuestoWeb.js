@@ -109,6 +109,10 @@ function mostrarGastoWeb(idElemento, gasto) {
 function EditarHandleFormulario() {}
 
 EditarHandleFormulario.prototype.handleEvent = function(event) {
+   // ✅ DESHABILITAR EL BOTÓN que abrió el formulario
+    let botonQueAbrioFormulario = event.currentTarget;
+    botonQueAbrioFormulario.setAttribute("disabled", "disabled");
+    
     // 1. Crear copia del formulario desde el template
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
     
@@ -157,7 +161,7 @@ EditarHandleFormulario.prototype.handleEvent = function(event) {
         // Eliminar formulario
         this.formulario.remove();
         
-        // Repintar para mostrar datos actualizados
+        // NO necesitamos reactivar el botón - repintar() creará uno nuevo
         repintar();
     };
     
@@ -173,33 +177,40 @@ EditarHandleFormulario.prototype.handleEvent = function(event) {
     function CancelarEditHandle() {}
     
     CancelarEditHandle.prototype.handleEvent = function(event) {
+        // ✅ RESTAURAR VISIBILIDAD de los elementos del gasto
+        let gastoDiv = this.formulario.closest('.gasto');
+        let elementosMostrar = gastoDiv.querySelectorAll('.gasto-descripcion, .gasto-fecha, .gasto-valor, .gasto-etiquetas, .gasto-editar, .gasto-borrar, .gasto-editar-formulario');
+        elementosMostrar.forEach(function(elemento) {
+            elemento.style.display = '';
+        });
+        
         // Eliminar formulario
         this.formulario.remove();
         
+        // ✅ REACTIVAR EL BOTÓN al cancelar
+        this.botonEditarFormulario.removeAttribute("disabled");
     };
     
     let cancelarHandler = new CancelarEditHandle();
     cancelarHandler.formulario = formulario;
-    
+    cancelarHandler.botonEditarFormulario = botonQueAbrioFormulario;
     
     botonCancelar.addEventListener("click", cancelarHandler);
     
     // 6. AÑADIR FORMULARIO DENTRO DEL GASTO
     let gastoDiv = event.currentTarget.closest('.gasto');
     
-    // OCULTAR el contenido actual del gasto
+    // ✅ OCULTAR SOLO los elementos originales (antes de añadir el formulario)
     let elementosOcultar = gastoDiv.querySelectorAll('.gasto-descripcion, .gasto-fecha, .gasto-valor, .gasto-etiquetas, .gasto-editar, .gasto-borrar, .gasto-editar-formulario');
     elementosOcultar.forEach(function(elemento) {
         elemento.style.display = 'none';
     });
-
-     let botonQueAbrioFormulario = event.currentTarget;
-    botonQueAbrioFormulario.setAttribute("disabled", "disabled");
     
-    // AÑADIR FORMULARIO dentro del gasto
+    // ✅ AÑADIR FORMULARIO dentro del gasto (después de ocultar)
     gastoDiv.appendChild(formulario);
+    
+    console.log("Formulario añadido. ¿Visible?", formulario.offsetParent !== null);
 };
-
 
 
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
