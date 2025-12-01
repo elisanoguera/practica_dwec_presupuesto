@@ -1,7 +1,7 @@
 //import { createElement } from "react";
 
 //importamos gestion presupuesto para poder utilizar sus funciones
-import * as gpre from 'js/gestionPresupuesto.js';
+import * as gpre from './gestionPresupuesto.js';
 
 //Creamos la funcion de mostrar dato en id
 function mostrarDatoEnId(idElemento, valor){
@@ -65,13 +65,21 @@ function mostrarGastoWeb(idElemento, gasto){
     var EtiqDiv = document.createElement('div');
     EtiqDiv.className = 'gasto-etiquetas';
 
-    if(Array.isArray(gasto.etiquetas) && gasto.etiquetas.length > 0){
-        for (var i = 0; i < gasto.etiquetas.length; i++){
-            var span = document.createElement('span');
-            span.className = 'gasto-etiquetas-etiqueta';
-            span.textContent = gasto.etiquetas[i];
-            EtiqDiv.appendChild(span);
-        }
+   if (Array.isArray(gasto.etiquetas) && gasto.etiquetas.length > 0) {
+
+    gasto.etiquetas.forEach(et => {
+        const span = document.createElement("span");
+        span.className = "gasto-etiquetas-etiqueta";
+        span.textContent = et;
+
+        // Manejador borrar etiqueta
+        const manejadorEtiqueta = new BorrarEtiquetasHandle();
+        manejadorEtiqueta.gasto = gasto;
+        manejadorEtiqueta.etiqueta = et;
+
+        span.addEventListener("click", manejadorEtiqueta);
+        EtiqDiv.appendChild(span);
+        });
         
     }else{
         var spanNone = document.createElement('span');
@@ -85,6 +93,31 @@ function mostrarGastoWeb(idElemento, gasto){
 
     //Añadimos todo el gasto completo al bloque
     aux.appendChild(gastoDiv);
+
+    const btnEditar = document.createElement("button");
+    btnEditar.type = "button";
+    btnEditar.className = "gasto-editar";
+    btnEditar.textContent = "Editar";
+
+    const manejadorEditar = new EditarHandle();
+    manejadorEditar.gasto = gasto;
+
+    btnEditar.addEventListener("click", manejadorEditar);
+    gastoDiv.appendChild(btnEditar);
+
+    // --- Botón Borrar ---
+    const btnBorrar = document.createElement("button");
+    btnBorrar.type = "button";
+    btnBorrar.className = "gasto-borrar";
+    btnBorrar.textContent = "Borrar";
+
+    const manejadorBorrar = new BorrarHandle();
+    manejadorBorrar.gasto = gasto;
+
+    btnBorrar.addEventListener("click", manejadorBorrar);
+    gastoDiv.appendChild(btnBorrar);
+
+    
 
 }
 
@@ -140,6 +173,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
 
 }
 
+//Generamos la funcion para que cambie los textos del html cuando los modifiquemos
 function repintar(){
 
     mostrarDatoEnId('presupuesto', gpre.mostrarPresupuesto());
@@ -176,8 +210,7 @@ function actualizarPresupuestoWeb(){
     repintar();
 }
 
-document.getElementById("actualizarpresupuesto")
-        .addEventListener("click", actualizarPresupuestoWeb);
+document.getElementById("actualizarpresupuesto").addEventListener("click", actualizarPresupuestoWeb);
 
 
 function nuevoGastoWeb(){
@@ -210,7 +243,7 @@ function nuevoGastoWeb(){
         .filter(e => e.length > 0);
 
 
-    const gasto = new gpre.CrearGasto(des, valor, fecha, etiquetas);
+    const gasto = new gpre.CrearGasto(desc, valor, fecha, etiquetas);
 
     gpre.anyadirGasto(gasto);
 
@@ -221,12 +254,78 @@ function nuevoGastoWeb(){
 document.getElementById('anyadirgasto').addEventListener("click", nuevoGastoWeb);
 
 
+//Creamos la funcion constructoro vacia
+function EditarHandle(){
+
+}
+
+//Llamamos a la funcion constructoro con el prototipo donde se generan todos los cambios
+EditarHandle.prototype.handleEvent = function(){
+
+    var nuevaDescripcion = prompt("Introduce la nueva descripción del gasto:", this.gasto.descripcion);
+    if(nuevaDescripcion === null){
+        return;
+    }
+
+    var nuevoValorTexto = prompt("Introduce el nuevo valor del gasto:", this.gasto.valor);
+    if(nuevoValorTexto === null){
+        return;
+    }
+
+    var nuevaFecha = prompt("Introduce la fecha del nuevo gasto(yyyy-mm-dd):", this.gasto.fecha);
+    if(nuevaFecha === null){
+        return;
+    }
+
+    var nuevasEtiquetasTexto = prompt("Introduce las etiquetas separadas por comas:", this.gasto.etiquetas);
+    if(nuevasEtiquetasTexto === null){
+        return;
+    }
+
+    var nuevoValor = Number(nuevoValorTexto);
+
+    var nuevasEtiquetas = nuevasEtiquetasTexto.split(",").map(function(et){
+        return et.trim();
+    });
+
+
+    this.gasto.actualizarDescripcion(nuevaDescripcion);
+    this.gasto.actualizarValor(nuevoValor);
+    this.gasto.actualizarFecha(nuevaFecha);
+    this.gasto.anyadirEtiquetas(nuevasEtiquetas);
+
+    repintar();
+}
+
+function BorrarHandle() {}
+
+BorrarHandle.prototype.handleEvent = function(){
+    gpre.borrarGasto(this.gasto.id);
+
+    repintar();
+}
+
+function BorrarEtiquetasHandle(){}
+
+BorrarEtiquetasHandle.prototype.handleEvent = function() {
+    this.gasto.borrarEtiquetas(this.etiqueta);
+
+    repintar();
+}
+
+
+
+
 
 //Generamos la salida de los componentes
 export{
+    EditarHandle,
+    BorrarHandle,
+    BorrarEtiquetasHandle,
     mostrarDatoEnId,
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
     repintar,
     actualizarPresupuestoWeb,
+    nuevoGastoWeb,
 }
