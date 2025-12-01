@@ -37,8 +37,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     divEtiquetas.className = "gasto-etiquetas";
     
     // Creo elementos para cada etiqueta
-    if (gasto.etiquetas && gasto.etiquetas.length > 0) {
-        for (let i = 0; i < gasto.etiquetas.length; i++) {
+    for (let i = 0; i < gasto.etiquetas.length; i++) {
             let spanEtiqueta = document.createElement("span");
             spanEtiqueta.className = "gasto-etiquetas-etiqueta";
             spanEtiqueta.textContent = gasto.etiquetas[i];
@@ -49,8 +48,8 @@ function mostrarGastoWeb(idElemento, gasto) {
             borrarEtiquetaHandler.etiqueta = gasto.etiquetas[i];
             spanEtiqueta.addEventListener("click", borrarEtiquetaHandler);
             divEtiquetas.appendChild(spanEtiqueta);
-        }
     }
+   
 
     // BOTÓN EDITAR (prompts)
     let botonEditar = document.createElement("button");
