@@ -5,18 +5,10 @@ import * as gespre from './gestionPresupuesto.js';
 function mostrarDatoEnId(idElemento, valor) {
   // Busco en el documento el elemento con ese id
   let elemento = document.getElementById(idElemento);
-
-  // Si existe el elemento 
-  if (elemento) {
-    // Le colocamos el valor que queremos mostrar
-    elemento.textContent = valor;
-    } else {
-        console.error(`Elemento con id "${idElemento}" no encontrado`);
-    }
+  elemento.textContent = valor;
   }
   
 
-//nueva prueba
 
 // esta funcion recibe el id del elemento contenedor y un objeto gasto (recordemos que gasto tiene: descripcion, fecha, valor, etiquetas)
 function mostrarGastoWeb(idElemento, gasto) {
@@ -165,6 +157,7 @@ EditarHandleFormulario.prototype.handleEvent = function(event) {
         repintar();
     };
     
+    
     let submitHandler = new SubmitHandle();
     submitHandler.formulario = formulario;
     submitHandler.gasto = this.gasto;
@@ -174,6 +167,9 @@ EditarHandleFormulario.prototype.handleEvent = function(event) {
     // 5. CREAR MANEJADOR PARA CANCELAR
     let botonCancelar = formulario.querySelector("button.cancelar");
     
+
+
+
     function CancelarEditHandle() {}
     
     CancelarEditHandle.prototype.handleEvent = function(event) {
