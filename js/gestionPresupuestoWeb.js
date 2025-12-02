@@ -117,7 +117,7 @@ function mostrarGastoWeb(idElemento, gasto){
     const btnEditarFormulario = document.createElement("button");
     btnEditarFormulario.type ="button";
     btnEditarFormulario.className ="gasto-editar-formulario";
-    btnEditarFormulario.textContent = "Editar Formulario";
+    btnEditarFormulario.textContent = "Editar (formulario)";
 
     const manejadorFormulario = new EditarHandleFormulario();
     manejadorFormulario.gasto = gasto;
@@ -343,6 +343,7 @@ function nuevoGastoWebFormulario(){
     manejadorCancelar.boton = btnAñadir;
     btnCancelar.addEventListener("click", manejadorCancelar);
 
+    //me faltaba la d en disabled y por eso no me estaba pasando el test, he cambiado 4 veces el codigo. 
     btnAñadir.setAttribute("disabled", true);
 
     document.getElementById("controlesprincipales").appendChild(plantillaFormulario);
@@ -368,9 +369,9 @@ SubmitHandle.prototype.handleEvent = function(evento){
 
     form.remove();
 
-    repintar();
-
     document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+
+    repintar();
 }
 
 
@@ -437,11 +438,14 @@ EditarHandleFormulario.prototype.handleEvent = function(evento){
     let manejadorCancelar = new CancelarHandle();
     manejadorCancelar.formulario = formulario;
 
-    btnCancelar.addEventListener("click", manejadorCancelar);
-
-    contenedorGasto.innerHTML = '';
+    btnCancelar.addEventListener("click", () =>{
+        formulario.remove();
+        repintar();
+    });
 
     contenedorGasto.appendChild(plantilla);
+
+    botonEditarFormulario.setAttribute("disabled", true);
 
 }
 
