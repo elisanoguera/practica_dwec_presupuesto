@@ -53,7 +53,7 @@ function mostrarGastoWeb(idElemento, gasto){
 
     var num = Number(gasto.valor);
     if(!isNaN(num)){
-        valorDiv.textContent = num.toFixed(2) + ' €';
+        valorDiv.textContent = num.toFixed(2);
     }else{
         valorDiv.textContent = '0,00 €';
     }
@@ -177,7 +177,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
 function repintar(){
 
     mostrarDatoEnId('presupuesto', gpre.mostrarPresupuesto());
-    const total = gpre.calcularTotalGastos().toFixed(2) + ' €';
+    const total = gpre.calcularTotalGastos().toFixed(2);
     mostrarDatoEnId('gastos-totales', total);
 
 
