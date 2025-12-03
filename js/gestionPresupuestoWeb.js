@@ -214,19 +214,42 @@ function nuevoGastoWebFormulario(){
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
     let formulario = plantillaFormulario.querySelector("form");  
     
+    //Añadir el fragmento de documento para que se muestre en la página
+    let contenedor = document.getElementById("controlesprincipales");
+    contenedor.appendChild(plantillaFormulario);
+    
+    //Desactivar el botón anyadirgasto-formulario.
+    document.getElementById("anyadirgasto-formulario").disabled = true;
+
+    //Manejador de evento para el evento "submit" del formulario (botón "Enviar")
     formulario.addEventListener("submit", function(event){
       event.preventDefault();
       let descripcion = event.currentTarget.elements.descripcion.value; //event.currentTarget --> formulario
-      let valor = event.currentTarget.elements.valor.value;
+      let valor = Number(event.currentTarget.elements.valor.value);
       let fecha = event.currentTarget.elements.fecha.value;
       let etiquetas = event.currentTarget.elements.etiquetas.value;
       let gasto = new libreriaGestionPresupuesto.CrearGasto(descripcion, valor, fecha, etiquetas);
       libreriaGestionPresupuesto.anyadirGasto(gasto);
+      
       repintar();
+
+      //Reactivar el botón anyadirgasto-formulario
       document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
-    })
+    });
+
+    //Manejador de evento el botón Cancelar
+    let objCancelar = new ManejadorCancelar();    
+    formulario.querySelector("button.cancelar").addEventListener("click", objCancelar);
   }
 
+  //Función constructora de objeto para manejador de evento del botón "Cancelar"
+  function ManejadorCancelar(){
+    this.handleEvent = function(e){
+      e.currentTarget.form.remove();
+      document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+    }
+ }
+ 
     let botonAnyadirgastoFormulario = document.getElementById("anyadirgasto-formulario");
     botonAnyadirgastoFormulario.addEventListener("click", nuevoGastoWebFormulario);
 
