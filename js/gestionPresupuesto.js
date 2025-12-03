@@ -338,6 +338,17 @@ function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta){
 
 }
 
+function transformarListadoEtiquetas(texto){
+    if(!texto) return [];
+
+    const separador = /[,\.\:\;\s]+/g;
+
+    const partes = texto.split(separador);
+
+    return partes.map(e => e.trim()).filter(e => e.length > 0);
+
+}
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
@@ -352,6 +363,7 @@ export   {
     calcularBalance,
     mostrarPresupuesto,
     actualizarPresupuesto,
+    transformarListadoEtiquetas,
     CrearGasto
     
 }

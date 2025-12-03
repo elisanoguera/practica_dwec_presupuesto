@@ -449,8 +449,56 @@ EditarHandleFormulario.prototype.handleEvent = function(evento){
 
 }
 
+function filtrargastoWeb(event){
+    event.preventDefault();
 
+    let form = event.currentTarget();
 
+    let descripcion = form("formulario-filtrado-descripcion").value.trim();
+    let valorMinimo = form("formulario-filtrado-valor-minimo").value;
+    let valorMaximo = form("formulario-filtrado-valor-maximo").value;
+    let fechaDesde = form("formulario-filtrado-fecha-desde").value;
+    let fechaHasta = form("formulario-filtrado-fecha-hasta").value;
+    let etiquetasTexto = form("formulario-filtrado-etiquetas-tiene").value;
+
+    let etiquetasTiene = null;
+    if(etiquetasTexto.trim() !== ""){
+        etiquetasTiene = gpre.transformarListadoEtiquetas(etiquetasTexto);
+    }
+
+    const opciones = {};
+    if(descripcion !== ""){
+        opciones.descripcion = descripcion;
+    }
+
+    if(valorMinimo !== ""){
+        opciones.valorMinimo = valorMinimo;
+    }
+
+    if(valorMaximo !== ""){
+        opciones.valorMaximo = valorMaximo;
+    }
+
+    if(fechaDesde !== ""){
+        opciones.fechaDesde = fechaDesde;
+    }
+    if(fechaHasta !== ""){
+        opciones.fechaHasta = fechaHasta;
+    }
+    if(etiquetasTiene !== ""){
+        opciones.etiquetasTiene = etiquetasTiene;
+    }
+
+    const filtrados = gpre.filtrarGastos(opciones);
+
+    const cont = document.getElementById("listado-gastos-completo");
+    if(cont) cont.innerHTML = "";
+
+    filtrados.forEach(g => mostrarGastoWeb("listasdo-gastos-completo", g));
+
+}
+
+document.getElementById("formulario-filtrado").addEventListener("submit", filtrargastoWeb);
 
 //Generamos la salida de los componentes
 export{
@@ -467,4 +515,5 @@ export{
     actualizarPresupuestoWeb,
     nuevoGastoWeb,
     nuevoGastoWebFormulario,
+    filtrargastoWeb,
 }
