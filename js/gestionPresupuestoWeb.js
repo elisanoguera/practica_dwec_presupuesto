@@ -77,6 +77,17 @@ function mostrarGastoWeb(idElemento, gasto) {
   btnBorrar.addEventListener("click", objBorrar);
   div.appendChild(btnBorrar);
 
+  //Botón editar-formulario
+  let btnEditarConFormulario = document.createElement("button");
+  btnEditarConFormulario.setAttribute("type", "button");
+  btnEditarConFormulario.className = "gasto-editar-formulario";
+  btnEditarConFormulario.textContent = "Editar (formulario)";
+
+  let objEditarForm = new EditarHandleFormulario();
+  btnEditarConFormulario.addEventListener("click", objEditarForm);
+  div.appendChild(btnEditarConFormulario);
+
+
   //Espacio entre gastos
   div.appendChild(document.createElement("br"));
   div.appendChild(document.createElement("br"));
@@ -206,6 +217,12 @@ function BorrarEtiquetasHandle() {
     this.gasto.borrarEtiquetas(this.etiqueta);
 
     repintar();
+  }
+}
+
+function EditarHandleFormulario(){
+  this.handleEvent = function(e){
+
   }
 }
 
