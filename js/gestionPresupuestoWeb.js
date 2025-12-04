@@ -219,7 +219,7 @@ function nuevoGastoWebFormulario() {
   });
 
   //Manejador de evento el botón Cancelar
-  let objCancelar = new ManejadorCancelar();
+  let objCancelar = new ManejadorCancelarAnyadirGastoForm();
   formulario.querySelector("button.cancelar").addEventListener("click", objCancelar);
 }
 
@@ -264,7 +264,7 @@ function BorrarEtiquetasHandle() {
 
 
 //Función constructora de objeto para manejador de evento del botón "Cancelar" del boton "Añadir gasto (formulario)"
-function ManejadorCancelar() {
+function ManejadorCancelarAnyadirGastoForm() {
   this.handleEvent = function (e) {
     e.currentTarget.form.remove();
     document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
@@ -278,7 +278,8 @@ function EditarHandleFormulario() {
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
     let formulario = plantillaFormulario.querySelector("form");
     //Desactivar el botón Editar (formulario)
-    e.currentTarget.setAttribute("disabled", "true");
+    let btnEditarConFormulario = e.currentTarget;
+    btnEditarConFormulario.setAttribute("disabled", "true");
     //Rellenar formulario con datos del gasto
     formulario.elements.descripcion.value = this.gasto.descripcion;
     formulario.elements.valor.value = this.gasto.valor;
@@ -289,7 +290,8 @@ function EditarHandleFormulario() {
     objManejadorEditarGastoForm.gasto = this.gasto;
     formulario.addEventListener("submit", objManejadorEditarGastoForm);
     //Manejador "cancelar"
-    let objManejadorCancelarGastoForm = new ManejadorCancelar();
+    let objManejadorCancelarGastoForm = new ManejadorCancelarEditarGastoForm();
+    objManejadorCancelarGastoForm.botonEditarForm = btnEditarConFormulario;
     formulario.querySelector("button.cancelar").addEventListener("click", objManejadorCancelarGastoForm);
     //Insertar formulario debajo del gasto
     let contenedor = e.currentTarget.parentNode;
@@ -310,12 +312,19 @@ function ManejadorEditarGastoForm() {
     this.gasto.actualizarDescripcion(descripcion);
     this.gasto.actualizarValor(valor);
     this.gasto.actualizarFecha(fecha);
-    this.gasto.anyadirEtiquetas(etiquetas.split(","));
+    this.gasto.anyadirEtiquetas(etiquetas);
 
     repintar();
   }
 }
 
+
+function ManejadorCancelarEditarGastoForm() {
+  this.handleEvent = function(e){
+    e.currentTarget.form.remove();
+    repintar(); //para reestablecer el botón "Editar (formulario)". No he podido seleccionar el botón para eliminarle el atributo "disabled".
+  }
+}
 
 
 export {
