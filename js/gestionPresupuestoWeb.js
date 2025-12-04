@@ -322,7 +322,7 @@ function ManejadorEditarGastoForm() {
 function ManejadorCancelarEditarGastoForm() {
   this.handleEvent = function(e){
     e.currentTarget.form.remove();
-    repintar(); //para reestablecer el botón "Editar (formulario)". No he podido seleccionar el botón para eliminarle el atributo "disabled".
+    this.botonEditarForm.removeAttribute("disabled");
   }
 }
 
