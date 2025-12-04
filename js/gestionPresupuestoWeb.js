@@ -5,6 +5,7 @@ function mostrarDatoEnId(idElemento, valor) {
   elemento.textContent = valor;
 }
 
+
 function mostrarGastoWeb(idElemento, gasto) {
   // 1. Buscar el elemento donde se añadirá el gasto
   let elemento = document.getElementById(idElemento);
@@ -160,6 +161,7 @@ function repintar() {
 }
 
 
+//FUNCIONALIDAD BOTÓN "Actualizar presupuesto"
 function actualizarPresupuestoWeb() {
   let nuevoPresupuesto = prompt("Introduzca un presupuesto:");
   nuevoPresupuesto = Number(nuevoPresupuesto);
@@ -173,6 +175,7 @@ let botonActualizarPresupuesto = document.getElementById("actualizarpresupuesto"
 botonActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 
 
+//FUNCIONALIDAD BOTÓN "Añadir gasto"
 function nuevoGastoWeb() {
   let gastoDescripcion = prompt("Introduzca la DESCRIPCIÓN del gasto:");
   let gastoValor = Number(prompt("Introduzca el VALOR del gasto:"));
@@ -185,6 +188,44 @@ function nuevoGastoWeb() {
 }
 
 document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb);
+
+
+//FUNCIONALIDAD BOTÓN "Añadir gasto (formulario)"
+function nuevoGastoWebFormulario() {
+  let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+  let formulario = plantillaFormulario.querySelector("form");
+
+  //Añadir el fragmento de documento para que se muestre en la página
+  let contenedor = document.getElementById("controlesprincipales");
+  contenedor.appendChild(plantillaFormulario);
+
+  //Desactivar el botón anyadirgasto-formulario.
+  document.getElementById("anyadirgasto-formulario").disabled = true;
+
+  //Manejador de evento para el evento "submit" del formulario (botón "Enviar")
+  formulario.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let descripcion = event.currentTarget.elements.descripcion.value; //event.currentTarget --> formulario
+    let valor = Number(event.currentTarget.elements.valor.value);
+    let fecha = event.currentTarget.elements.fecha.value;
+    let etiquetas = event.currentTarget.elements.etiquetas.value;
+    let gasto = new libreriaGestionPresupuesto.CrearGasto(descripcion, valor, fecha, etiquetas);
+    libreriaGestionPresupuesto.anyadirGasto(gasto);
+
+    repintar();
+
+    //Reactivar el botón anyadirgasto-formulario
+    document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+  });
+
+  //Manejador de evento el botón Cancelar
+  let objCancelar = new ManejadorCancelar();
+  formulario.querySelector("button.cancelar").addEventListener("click", objCancelar);
+}
+
+let botonAnyadirgastoFormulario = document.getElementById("anyadirgasto-formulario");
+botonAnyadirgastoFormulario.addEventListener("click", nuevoGastoWebFormulario);
+
 
 
 // FUNCIONES CONSTRUCTORAS DE OBJETOS MANEJADORES DE EVENTOS
@@ -221,93 +262,61 @@ function BorrarEtiquetasHandle() {
   }
 }
 
-  //Función constructora de objeto para manejador de evento del botón "Cancelar"
-  function ManejadorCancelar(){
-    this.handleEvent = function(e){
-      e.currentTarget.form.remove();
-      document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
-    }
- }
 
-function EditarHandleFormulario(){
-  this.handleEvent = function(e){
+//Función constructora de objeto para manejador de evento del botón "Cancelar" del boton "Añadir gasto (formulario)"
+function ManejadorCancelar() {
+  this.handleEvent = function (e) {
+    e.currentTarget.form.remove();
+    document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+  }
+}
+
+
+function EditarHandleFormulario() {
+  this.handleEvent = function (e) {
     //Crear formulario con plantilla
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
     let formulario = plantillaFormulario.querySelector("form");
+    //Desactivar el botón Editar (formulario)
+    e.currentTarget.setAttribute("disabled", "true");
     //Rellenar formulario con datos del gasto
     formulario.elements.descripcion.value = this.gasto.descripcion;
     formulario.elements.valor.value = this.gasto.valor;
     formulario.elements.fecha.value = this.gasto.fecha;
     formulario.elements.etiquetas.value = this.gasto.etiquetas;
-    //Insertar formulario debajo del gasto
-    let contenedor = e.currentTarget.parentNode;
-    contenedor.appendChild(plantillaFormulario);
-    contenedor.appendChild(document.createElement("br"));
     //Manejador "submit"
     let objManejadorEditarGastoForm = new ManejadorEditarGastoForm();
     objManejadorEditarGastoForm.gasto = this.gasto;
     formulario.addEventListener("submit", objManejadorEditarGastoForm);
     //Manejador "cancelar"
-    objManejadorCancelarGastoForm = new ManejadorCancelar();
-    objManejadorCancelarGastoForm.gasto = this.gasto;
+    let objManejadorCancelarGastoForm = new ManejadorCancelar();
     formulario.querySelector("button.cancelar").addEventListener("click", objManejadorCancelarGastoForm);
-  }
-}
-
-function ManejadorEditarGastoForm(){
-  this.handleEvent = function(event){
-      event.preventDefault();
-      let descripcion = event.target.elements.descripcion.value;
-      let valor = Number(event.currentTarget.elements.valor.value);
-      let fecha = new Date(event.currentTarget.elements.fecha.value).toDateString();
-      let etiquetas = event.currentTarget.elements.etiquetas.value;
-
-      this.gasto.actualizarDescripcion(descripcion);
-      this.gasto.actualizarValor(valor);
-      this.gasto.actualizarFecha(fecha);
-      this.gasto.anyadirEtiquetas(etiquetas.split(","));
-      
-      repintar();
-  }
-}
-
-//FORMULARIOS
-function nuevoGastoWebFormulario(){
-    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
-    let formulario = plantillaFormulario.querySelector("form");  
-    
-    //Añadir el fragmento de documento para que se muestre en la página
-    let contenedor = document.getElementById("controlesprincipales");
+    //Insertar formulario debajo del gasto
+    let contenedor = e.currentTarget.parentNode;
     contenedor.appendChild(plantillaFormulario);
-    
-    //Desactivar el botón anyadirgasto-formulario.
-    document.getElementById("anyadirgasto-formulario").disabled = true;
-
-    //Manejador de evento para el evento "submit" del formulario (botón "Enviar")
-    formulario.addEventListener("submit", function(event){
-      event.preventDefault();
-      let descripcion = event.currentTarget.elements.descripcion.value; //event.currentTarget --> formulario
-      let valor = Number(event.currentTarget.elements.valor.value);
-      let fecha = event.currentTarget.elements.fecha.value;
-      let etiquetas = event.currentTarget.elements.etiquetas.value;
-      let gasto = new libreriaGestionPresupuesto.CrearGasto(descripcion, valor, fecha, etiquetas);
-      libreriaGestionPresupuesto.anyadirGasto(gasto);
-      
-      repintar();
-
-      //Reactivar el botón anyadirgasto-formulario
-      document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
-    });
-
-    //Manejador de evento el botón Cancelar
-    let objCancelar = new ManejadorCancelar();    
-    formulario.querySelector("button.cancelar").addEventListener("click", objCancelar);
   }
+}
 
 
- 
-    let botonAnyadirgastoFormulario = document.getElementById("anyadirgasto-formulario");
-    botonAnyadirgastoFormulario.addEventListener("click", nuevoGastoWebFormulario);
+function ManejadorEditarGastoForm() {
+  this.handleEvent = function (event) {
+    event.preventDefault();
+
+    let descripcion = event.currentTarget.elements.descripcion.value;
+    let valor = Number(event.currentTarget.elements.valor.value);
+    let fecha = new Date(event.currentTarget.elements.fecha.value).toDateString();
+    let etiquetas = event.currentTarget.elements.etiquetas.value;
+
+    this.gasto.actualizarDescripcion(descripcion);
+    this.gasto.actualizarValor(valor);
+    this.gasto.actualizarFecha(fecha);
+    this.gasto.anyadirEtiquetas(etiquetas.split(","));
+
+    repintar();
+  }
+}
+
+
 
 export {
   mostrarDatoEnId,
