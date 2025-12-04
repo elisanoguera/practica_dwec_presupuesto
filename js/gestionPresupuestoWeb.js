@@ -452,14 +452,17 @@ EditarHandleFormulario.prototype.handleEvent = function(evento){
 function filtrargastoWeb(event){
     event.preventDefault();
 
-    let form = event.currentTarget();
+    //este trozo me salta el fallo del test, No era el codigo, le he quitado () del final para que no llamara a una funcion.
+    let form = event.currentTarget;
 
-    let descripcion = form("formulario-filtrado-descripcion").value.trim();
-    let valorMinimo = form("formulario-filtrado-valor-minimo").value;
-    let valorMaximo = form("formulario-filtrado-valor-maximo").value;
-    let fechaDesde = form("formulario-filtrado-fecha-desde").value;
-    let fechaHasta = form("formulario-filtrado-fecha-hasta").value;
-    let etiquetasTexto = form("formulario-filtrado-etiquetas-tiene").value;
+    //solo con el form no es suficiente por que lo trata como funcion, asique primero apunto a document.elementByID pero falla
+    //Lo hago con form.querySelector para que apunte directamente a id y funciona
+    let descripcion = form.querySelector("#formulario-filtrado-descripcion").value.trim();
+    let valorMinimo = form.querySelector("#formulario-filtrado-valor-minimo").value;
+    let valorMaximo = form.querySelector("#formulario-filtrado-valor-maximo").value;
+    let fechaDesde = form.querySelector("#formulario-filtrado-fecha-desde").value;
+    let fechaHasta = form.querySelector("#formulario-filtrado-fecha-hasta").value;
+    let etiquetasTexto = form.querySelector("#formulario-filtrado-etiquetas-tiene").value;
 
     let etiquetasTiene = null;
     if(etiquetasTexto.trim() !== ""){
@@ -468,7 +471,9 @@ function filtrargastoWeb(event){
 
     const opciones = {};
     if(descripcion !== ""){
-        opciones.descripcion = descripcion;
+        //descripcion me da fallo por que contiene 6 en lugar de 2 que espera la prueba y es por que en el filtrado de gestiopresupuesto
+        //la palaba no es descripcion sino descripcionContiene, lo cambio y ya funciona.
+        opciones.descripcionContiene = descripcion;
     }
 
     if(valorMinimo !== ""){
@@ -494,7 +499,7 @@ function filtrargastoWeb(event){
     const cont = document.getElementById("listado-gastos-completo");
     if(cont) cont.innerHTML = "";
 
-    filtrados.forEach(g => mostrarGastoWeb("listasdo-gastos-completo", g));
+    filtrados.forEach(g => mostrarGastoWeb("listado-gastos-completo", g));
 
 }
 
