@@ -283,7 +283,7 @@ function EditarHandleFormulario() {
     //Rellenar formulario con datos del gasto
     formulario.elements.descripcion.value = this.gasto.descripcion;
     formulario.elements.valor.value = this.gasto.valor;
-    formulario.elements.fecha.value = this.gasto.fecha;
+    formulario.elements.fecha.value = new Date(this.gasto.fecha).toISOString().split("T")[0];
     formulario.elements.etiquetas.value = this.gasto.etiquetas;
     //Manejador "submit"
     let objManejadorEditarGastoForm = new ManejadorEditarGastoForm();
@@ -307,12 +307,12 @@ function ManejadorEditarGastoForm() {
     let descripcion = event.currentTarget.elements.descripcion.value;
     let valor = Number(event.currentTarget.elements.valor.value);
     let fecha = new Date(event.currentTarget.elements.fecha.value).toDateString();
-    let etiquetas = event.currentTarget.elements.etiquetas.value;
+    let etiquetas = event.currentTarget.elements.etiquetas.value.split(",");
 
     this.gasto.actualizarDescripcion(descripcion);
     this.gasto.actualizarValor(valor);
     this.gasto.actualizarFecha(fecha);
-    this.gasto.anyadirEtiquetas(etiquetas);
+    this.gasto.etiquetas = etiquetas;
 
     repintar();
   }
