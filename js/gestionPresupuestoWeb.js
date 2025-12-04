@@ -84,6 +84,7 @@ function mostrarGastoWeb(idElemento, gasto) {
   btnEditarConFormulario.textContent = "Editar (formulario)";
 
   let objEditarForm = new EditarHandleFormulario();
+  objEditarForm.gasto = gasto;
   btnEditarConFormulario.addEventListener("click", objEditarForm);
   div.appendChild(btnEditarConFormulario);
 
@@ -220,9 +221,53 @@ function BorrarEtiquetasHandle() {
   }
 }
 
+  //Función constructora de objeto para manejador de evento del botón "Cancelar"
+  function ManejadorCancelar(){
+    this.handleEvent = function(e){
+      e.currentTarget.form.remove();
+      document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+    }
+ }
+
 function EditarHandleFormulario(){
   this.handleEvent = function(e){
+    //Crear formulario con plantilla
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    let formulario = plantillaFormulario.querySelector("form");
+    //Rellenar formulario con datos del gasto
+    formulario.elements.descripcion.value = this.gasto.descripcion;
+    formulario.elements.valor.value = this.gasto.valor;
+    formulario.elements.fecha.value = this.gasto.fecha;
+    formulario.elements.etiquetas.value = this.gasto.etiquetas;
+    //Insertar formulario debajo del gasto
+    let contenedor = e.currentTarget.parentNode;
+    contenedor.appendChild(plantillaFormulario);
+    contenedor.appendChild(document.createElement("br"));
+    //Manejador "submit"
+    let objManejadorEditarGastoForm = new ManejadorEditarGastoForm();
+    objManejadorEditarGastoForm.gasto = this.gasto;
+    formulario.addEventListener("submit", objManejadorEditarGastoForm);
+    //Manejador "cancelar"
+    objManejadorCancelarGastoForm = new ManejadorCancelar();
+    objManejadorCancelarGastoForm.gasto = this.gasto;
+    formulario.querySelector("button.cancelar").addEventListener("click", objManejadorCancelarGastoForm);
+  }
+}
 
+function ManejadorEditarGastoForm(){
+  this.handleEvent = function(event){
+      event.preventDefault();
+      let descripcion = event.target.elements.descripcion.value;
+      let valor = Number(event.currentTarget.elements.valor.value);
+      let fecha = new Date(event.currentTarget.elements.fecha.value).toDateString();
+      let etiquetas = event.currentTarget.elements.etiquetas.value;
+
+      this.gasto.actualizarDescripcion(descripcion);
+      this.gasto.actualizarValor(valor);
+      this.gasto.actualizarFecha(fecha);
+      this.gasto.anyadirEtiquetas(etiquetas.split(","));
+      
+      repintar();
   }
 }
 
@@ -259,13 +304,7 @@ function nuevoGastoWebFormulario(){
     formulario.querySelector("button.cancelar").addEventListener("click", objCancelar);
   }
 
-  //Función constructora de objeto para manejador de evento del botón "Cancelar"
-  function ManejadorCancelar(){
-    this.handleEvent = function(e){
-      e.currentTarget.form.remove();
-      document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
-    }
- }
+
  
     let botonAnyadirgastoFormulario = document.getElementById("anyadirgasto-formulario");
     botonAnyadirgastoFormulario.addEventListener("click", nuevoGastoWebFormulario);
