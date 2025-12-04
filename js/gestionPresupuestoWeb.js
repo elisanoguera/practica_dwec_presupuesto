@@ -505,6 +505,47 @@ function filtrargastoWeb(event){
 
 document.getElementById("formulario-filtrado").addEventListener("submit", filtrargastoWeb);
 
+//Añadimos el codigo de la ultima practica
+
+//2º correcion cambiar el nombre de la funcion, habia puesto GastoWeb, en lugar de GastosWeb y puede que la prueba busque gastos.
+function guardarGastosWeb(){
+
+    var gastos = gpre.listarGastos();
+
+    var texto = JSON.stringify(gastos);
+
+    //3º correcion aqui tambien estaba colocando GastoDWEC, en lugar de GastosDWEC
+    localStorage.setItem("GestorGastosDWEC", texto);
+
+    alert("Gastos guardados correctamente")
+
+}
+
+//1º fallo la palabra gastos estaba en singular
+document.getElementById("guardar-gastos").addEventListener("click", guardarGastosWeb);
+
+function cargarGastoWeb(){
+
+    var texto = localStorage.getItem("GestorGastosDWEC");
+
+    var datos;
+
+    if(texto == null){
+        datos = [];
+    }else{
+        datos = JSON.parse(texto);
+    }
+
+    gpre.cargarGastos(datos);
+
+    repintar();
+
+    alert("Gastos cargados correctamente");
+
+}
+
+document.getElementById("cargar-gastos").addEventListener("click", cargarGastoWeb);
+
 //Generamos la salida de los componentes
 export{
     EditarHandle,
@@ -521,4 +562,6 @@ export{
     nuevoGastoWeb,
     nuevoGastoWebFormulario,
     filtrargastoWeb,
+    guardarGastosWeb,
+    cargarGastoWeb,
 }
