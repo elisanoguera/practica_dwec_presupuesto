@@ -306,7 +306,7 @@ function ManejadorEditarGastoForm() {
 
     let descripcion = event.currentTarget.elements.descripcion.value;
     let valor = Number(event.currentTarget.elements.valor.value);
-    let fecha = new Date(event.currentTarget.elements.fecha.value).toDateString();
+    let fecha = new Date(event.currentTarget.elements.fecha.value);
     let etiquetas = event.currentTarget.elements.etiquetas.value.split(",");
 
     this.gasto.actualizarDescripcion(descripcion);
