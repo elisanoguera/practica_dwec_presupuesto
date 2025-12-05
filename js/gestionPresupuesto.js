@@ -256,10 +256,11 @@ return gastos.filter(g =>// funcion g
                     {
                         return false
                     }
+                }
 
     
-            return true
-    })
+            return true;
+    });
 } 
 
 
