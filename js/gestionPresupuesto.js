@@ -251,13 +251,30 @@ return gastos.filter(g =>// funcion g
                 }
             if(etiquetasTiene)
                 {
+                     if (typeof etiquetasTiene === "string")// Normaliser: si c'est une chaîne → convertir en tableau
+                        {
+                         etiquetasTiene = [etiquetasTiene];
+                        }
+                    let etiquetasGastotoLower=g.etiquetas.map(eti=>eti.toLowerCase())// Étiquettes du gasto en minuscules
+
+                    let coincide = false;// Variable pour savoir si AU MOINS UNE étiquette correspond
+
                     for(let etiqueta of etiquetasTiene)
                     {// c est bun tableau on ne peut utliser tolower q sur une methode
-                    if(!g.etiquetas.includes(etiqueta))
+                        let etiLower=etiqueta.toLowerCase();
+                   // if(!g.etiquetas.includes(etiqueta))
+                   if(etiquetasGastotoLower.includes(etiLower))
                         {
-                            return false
+                            coincide=true;
+                            break;
                         }
+                 
                     }
+
+                    if (!coincide)
+                        {
+                            return false;
+                        }
                 }
 
     
