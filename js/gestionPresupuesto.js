@@ -185,13 +185,13 @@ function borrarGasto(id)
         }
     }
 }
-function calcularTotalGastos()//en cours a teminar
+function calcularTotalGastos()
 {
   let total=0; //j initialise total avec  valeur 0
   for(let g of gastos)//je parcours la liste gastos avec for...of
     {
         total+=g.valor;
-    }//la a chaque gasto represente par g on ajoute sa valeur
+    }//là a chaque gasto represente par g on ajoute sa valeur
     return total
 }
 function calcularBalance()//balance est ce qu il reste!! pas un moyenne
@@ -201,7 +201,7 @@ function calcularBalance()//balance est ce qu il reste!! pas un moyenne
 
 //JS3
 //function filtrarGastos(filtre)
-function filtrarGastos(filtre = {})//Pourquoi on met filtre = {} ?Parce que ça donne une valeur par défaut si aucun objet n'est passé.
+function filtrarGastos(filtre = {})// on met filtre = {} :Parce que ça donne une valeur par défaut si aucun objet n'est passé.
 {  
     let fechaDesde=filtre.fechaDesde;
     let fechaHasta=filtre.fechaHasta;
@@ -251,16 +251,16 @@ return gastos.filter(g =>// funcion g
                 }
             if(etiquetasTiene)
                 {
-                     if (typeof etiquetasTiene === "string")// Normaliser: si c'est une chaîne → convertir en tableau
+                     if (typeof etiquetasTiene === "string")
                         {
-                         etiquetasTiene = [etiquetasTiene];
+                         etiquetasTiene = [etiquetasTiene];// je sois le normaliser: si c'est une chaîne → je dois le convertir en tableau
                         }
                     let etiquetasGastotoLower=g.etiquetas.map(eti=>eti.toLowerCase())// Étiquettes du gasto en minuscules
 
-                    let coincide = false;// Variable pour savoir si AU MOINS UNE étiquette correspond
+                    let coincide = false;// Variable pour savoir si AU - 1 étiquette correspond
 
                     for(let etiqueta of etiquetasTiene)
-                    {// c est bun tableau on ne peut utliser tolower q sur une methode
+                    {// c est un tableau on ne peut utliser tolower q sur une methode
                         let etiLower=etiqueta.toLowerCase();
                    // if(!g.etiquetas.includes(etiqueta))
                    if(etiquetasGastotoLower.includes(etiLower))
@@ -283,9 +283,42 @@ return gastos.filter(g =>// funcion g
 } 
 
 
-function agruparGastos()
+function agruparGastos(periodo="mes", etiquetas=[],fechaDesde, fechaHasta=Date.now())
 {
-  return {};
+    let filtros={};
+    if(fechaDesde)//si existe
+    {
+        filtros.fechaDesde=fechaDesde;
+    }
+    if(fechaHasta)//si existe sino date du jour
+    {
+        filtros.fechaHasta=fechaHasta;
+    }
+    else
+    {
+        filtros.fechaHasta=new Date().toISOString();//para no devolver cadena de caracteres
+    }
+    if(etiquetas&&etiquetas.length>0)
+    {
+        filtros.etiquetasTiene=etiquetas;
+    }
+    let gastosFiltrados = filtrarGastos(filtros);
+
+let res = gastosFiltrados.reduce((acc, gasto) => {
+
+    
+    let clave = gasto.obtenerPeriodoAgrupacion(periodo);// je dois Obtenir la clé de regroupement (exemple: "2021-10") l enoince me dit periodo
+
+    //il faut Ajouter la valeur du gasto dans la bonne catégorie
+    acc[clave] = (acc[clave] || 0) + gasto.valor;//   - Si acc[clave] existe → on ajoute /acc accumule//   - Sinon acc[clave] vaut 0 → on initialise et on ajoute
+    
+   
+
+    return acc; // On return  l’accumulateur qui s est modifié à chaque étape (un peut comme un count)
+
+}, {}); // 4. L’accumulateur debe siempre commence comme un objet vide  !! important ne plus l oublier
+
+  return res;//ne pas oublier le resultat que l on veut renvoyer!! y no confundir con acc
 }
 
 
