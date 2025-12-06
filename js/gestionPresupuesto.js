@@ -251,10 +251,12 @@ return gastos.filter(g =>// funcion g
                 }
             if(etiquetasTiene)
                 {
-                    let tiene= filtre.etiquetasTiene.toLowerCase();// c est bun tableau on ne peut utliser tolower q sur une methode
-                    if(!g.etiquetas.toLowerCase().includes())
-                    {
-                        return false
+                    for(let etiqueta of etiquetasTiene)
+                    {// c est bun tableau on ne peut utliser tolower q sur une methode
+                    if(!g.etiquetas.includes(etiqueta))
+                        {
+                            return false
+                        }
                     }
                 }
 
