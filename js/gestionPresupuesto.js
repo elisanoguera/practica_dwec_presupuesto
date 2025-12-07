@@ -260,7 +260,7 @@ return gastos.filter(g =>// funcion g
                     let coincide = false;// Variable pour savoir si AU - 1 étiquette correspond
 
                     for(let etiqueta of etiquetasTiene)
-                    {// c est un tableau on ne peut utliser tolower q sur une methode
+                    {// j ai du tout remodifier c est un tableau on ne peut utliser tolower q sur une methode
                         let etiLower=etiqueta.toLowerCase();
                    // if(!g.etiquetas.includes(etiqueta))
                    if(etiquetasGastotoLower.includes(etiLower))
