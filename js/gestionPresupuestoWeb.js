@@ -1,9 +1,70 @@
-console.log("gestionPresupuestoWeb.js cargado correctamente");
 import*as logica from "./gestionPresupuesto.js";
 
+//hay que definir Editarhandle  antes de crera el boton!
 
 
+//  HANDLER EDITAR
+export function EditarHandle(gasto)// funcion constructora
+    {
+this.gasto = gasto;// chaque handler a son propio gasto
+    }
+/*prototype sert à :
+définir les méthodes partagées par toutes les instances créées avec new EditarHandle(...)
+éviter dupliquer des fonctions dans chaque objet
+définir le “comportement” commun du type EditarHandle*/
+    EditarHandle.prototype.handleEvent = function(event)//def su metodo
+    {
+    let nuevaDesc = prompt("Descripción:", this.gasto.descripcion);
+    let nuevoValor = Number(prompt("Valor:", this.gasto.valor));
+    let nuevaFecha = prompt("Fecha:", this.gasto.fecha);
+
+    let nuevasEtiquetas = prompt("Etiquetas:", this.gasto.etiquetas.join(",")).split(",").map(e => e.trim());
+    //split(",") : découpe la string en tableau
+// map(...) : nettoie chaque élément
+// résultat final : un array propre d’étiquettes
+
+    this.gasto.actualizarDescripcion(nuevaDesc);
+    this.gasto.actualizarValor(nuevoValor);
+    this.gasto.actualizarFecha(nuevaFecha);
+
+    this.gasto.etiquetas = [];
+    nuevasEtiquetas.forEach(etiq => this.gasto.anyadirEtiquetas(etiq));
+
+        repintar();
+    }
+
+
+/*HANDLER borrar*/
+export function BorrarHandle(gasto)
+    {
+        this.gasto = gasto; // hase referencia al gasto a borrar
+    }
+    BorrarHandle.prototype.handleEvent = function(event)
+    {
+    // Borrar el gasto usando su id
+    logica.borrarGasto(this.gasto.id);
+
+    // Repintar la página para actualizar la lista
+    repintar();
+    };
+
+//HANDLER BORRAR ETIQUETAS
+
+
+export function BorrarEtiquetasHandle(gasto, etiqueta)
+{
+    this.gasto = gasto;
+    this.etiqueta = etiqueta;
+}
+
+BorrarEtiquetasHandle.prototype.handleEvent = function(event)
+{
+    this.gasto.borrarEtiquetas(this.etiqueta);
+    repintar();
+};
+//*fin de borraretiqeutas
 export function mostrarDatoEnId(idElemento, valor)
+
     {
         // TODO
         let element=document.getElementById(idElemento);
@@ -46,6 +107,10 @@ export function mostrarGastoWeb(idElemento, gasto)
             let spanGetiqueta=document.createElement("span")
              spanGetiqueta.className="gasto-etiquetas-etiqueta";
              spanGetiqueta.textContent = etiqueta;
+             //Habia olvidado el manejador para borrar etiqueta
+             let handlerBorrarEtiqueta = new BorrarEtiquetasHandle(gasto, etiqueta);
+                 spanGetiqueta.addEventListener("click", handlerBorrarEtiqueta);
+
              divGetiquetas.appendChild(spanGetiqueta)});
 
     divGasto.appendChild(divGDescripcion);
@@ -53,9 +118,32 @@ export function mostrarGastoWeb(idElemento, gasto)
     divGasto.appendChild(divGValor);
     divGasto.appendChild(divGetiquetas);
 
-    gastobyid.appendChild(divGasto);
 
-        
+//Boton editar
+let btnEditar = document.createElement("button");//tiene que venir aqui y no fuera
+btnEditar.textContent = "Editar";
+btnEditar.className = "gasto-editar";
+
+// Crear objeto manejador con el gasto asociado
+let handlerEditar = new EditarHandle(gasto);
+
+// lo asocio el evento
+btnEditar.addEventListener("click", handlerEditar);
+
+// Añado el botón al div principal
+divGasto.appendChild(btnEditar);
+
+// ----- BOTÓN BORRAR -----
+let btnBorrar = document.createElement("button");
+btnBorrar.textContent = "Borrar";
+btnBorrar.className = "gasto-borrar";
+
+let handlerBorrar = new BorrarHandle(gasto);
+btnBorrar.addEventListener("click", handlerBorrar);
+
+divGasto.appendChild(btnBorrar);
+
+    gastobyid.appendChild(divGasto);
     }
 
 // Mostrar los gastos agrupados (resultado de agruparGastos)
@@ -145,13 +233,19 @@ export function nuevoGastoWeb()
     {
         //let aprietar=prompt("Introduce el nuevo gasto:");
         let descripcion= prompt("Descripción del gasto:");
-        let valor=prompt("Valor del gasto:");
+        let valorString=prompt("Valor del gasto:");
+        if (isNaN(valorString)) {
+    valor = 0;  // o lanzar un error, pero 0 evita romper el test
+}
         let fecha=prompt("Fecha (yyyy-mm-dd):");
-        let etiquetascomas=prompt("Etiquetas (tiene que ser separadas por comas):")
-        let valornum=Number(valor);
+        let etiquetasString=prompt("Etiquetas (tiene que ser separadas por comas):")
+        let valor=Number(valorString);
 
         let etiquetas=[];
         //if(etiquetascomas)
+        if (etiquetasString && etiquetasString.trim() !== "") {
+        etiquetas = etiquetasString.split(",").map(e => e.trim());
+    }
 
         let nuevoGasto=logica.CrearGasto(descripcion,valor,fecha, ...etiquetas)
 
@@ -162,3 +256,7 @@ export function nuevoGastoWeb()
 
 let bontoNuevoGasto=document.getElementById("anyadirgasto");
 bontoNuevoGasto.addEventListener("click",nuevoGastoWeb);
+
+
+
+
