@@ -98,10 +98,11 @@ function filtrarGastos(filtros) {
 function agruparGastos() {
 
 }
+7
 
 //uso de filter
 function filtrarGastos(filtros) {
-    if (!filtros || typeof filtros !== object) {
+    if (!filtros || typeof filtros !== "object") {
         return gastos;      //global
     }
 
@@ -144,11 +145,12 @@ function filtrarGastos(filtros) {
             return false;
         }
 
-        if (tieneValorMinimo !== null && gasto.valor < filtros.valorMinimo) {
+
+        if (tieneValorMinimo && gasto.valor < filtros.valorMinimo) {
             return false;
         }
 
-        if (tieneValorMaximo !== null && gasto.valor > filtros.valorMaximo) {
+        if (tieneValorMaximo && gasto.valor > filtros.valorMaximo) {
             return false;
         }
 
