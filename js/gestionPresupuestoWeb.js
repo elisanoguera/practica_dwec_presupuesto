@@ -1,3 +1,8 @@
+console.log("gestionPresupuestoWeb.js cargado correctamente");
+import*as logica from "./gestionPresupuesto.js";
+
+
+
 export function mostrarDatoEnId(idElemento, valor)
     {
         // TODO
@@ -5,7 +10,6 @@ export function mostrarDatoEnId(idElemento, valor)
         element.textContent=valor;
     }
 
-// Mostrar un gasto completo dentro de un contenedor
 export function mostrarGastoWeb(idElemento, gasto)
     {
         let gastobyid=document.getElementById(idElemento);//pour le rattacher lors de  l appel dans generarDatosEstatico
@@ -94,3 +98,67 @@ agrupById.appendChild(divGagrup);//no olvidar lo ni poner lo dentro del foreach
     }
 
 
+export function repintar()//!! cuidadado si la pongo primera en el archivo= NO RECONOCE LAS QUE USA
+{
+//debemos mostrar el resultado en la página HTML. Recordemos que la aplicación debe mostrar:
+
+// El presupuesto
+    mostrarDatoEnId("presupuesto", logica.mostrarPresupuesto());
+//  El total de gastos
+    mostrarDatoEnId("gastos-totales", logica.calcularTotalGastos());
+//  El balance actual
+    mostrarDatoEnId("balance-total", logica.calcularBalance());
+  //  El listado con los gastos y sus datos
+   // Otra información (agrupaciones de gastos, etc.)
+
+    //antes de l afficher = lo tengo q vaciar
+
+    document.getElementById("listado-gastos-completo").innerHTML="";
+    // -->afficher de nuevo
+    logica.listarGastos().forEach(g =>
+        mostrarGastoWeb("listado-gastos-completo", g)
+    )
+
+}
+
+export function actualizarPresupuestoWeb()
+    {
+        let aprietar=prompt("Introduce el nuevo presupesto:");
+        //if
+        let valor=Number(aprietar);
+
+        logica.actualizarPresupuesto(valor);
+
+        repintar();//para actualizar el print
+    }
+
+
+//el bonton lo tengo q hacer aqui no en el HTML
+//no se carga
+//lo intento en una funcion
+//export function
+/*window.addEventListener("DOMContentLoaded", () => {*/
+let botonActualizar=document.getElementById("actualizarpresupuesto");
+botonActualizar.addEventListener("click", actualizarPresupuestoWeb);//no poner () a actualisar porq sino de lanza directamente});
+
+export function nuevoGastoWeb()
+    {
+        //let aprietar=prompt("Introduce el nuevo gasto:");
+        let descripcion= prompt("Descripción del gasto:");
+        let valor=prompt("Valor del gasto:");
+        let fecha=prompt("Fecha (yyyy-mm-dd):");
+        let etiquetascomas=prompt("Etiquetas (tiene que ser separadas por comas):")
+        let valornum=Number(valor);
+
+        let etiquetas=[];
+        //if(etiquetascomas)
+
+        let nuevoGasto=logica.CrearGasto(descripcion,valor,fecha, ...etiquetas)
+
+        logica.anyadirGasto(nuevoGasto);
+
+        repintar();
+    }
+
+let bontoNuevoGasto=document.getElementById("anyadirgasto");
+bontoNuevoGasto.addEventListener("click",nuevoGastoWeb);
