@@ -34,12 +34,15 @@ function CrearGasto(descripcion,valor,fecha, ...etiquetas)
     let fechaok=Date.parse(fecha);
     if( isNaN(fechaok))
     {
-        this.fecha=Date.now();//define en timestamp
+        fechaok=Date.now();//define en timestamp
     }
-    else 
+
+
+    /*else 
         {
         this.fecha=fechaok;
-    }
+    }*/
+/*    
     //propriedades
 this.descripcion=descripcion;
 this.valor=valor;
@@ -52,28 +55,46 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
                 this.etiquetas.push(e);
             }
         });
+    }*/
+    let listaEtiquetas = [];
+    if (etiquetas.length > 0) {
+        etiquetas.forEach(e => {
+            if (!listaEtiquetas.includes(e)) {
+                listaEtiquetas.push(e);
+            }
+        });
     }
+
+    return {
+        descripcion,
+        valor,
+        fecha: fechaok,
+        etiquetas: listaEtiquetas,
    
 //metodos
-    this.mostrarGasto=function()
+    /*this.mostrarGasto=function()*/
+    mostrarGasto()
     {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
-    }
+    },
 
-    this.actualizarDescripcion=function(nuevaDescripcion)
+    /*is.actualizarDescripcion=function(nuevaDescripcion)*/
+    actualizarDescripcion(nuevaDescripcion)
     {
-        this.descripcion=nuevaDescripcion
+        this.descripcion=nuevaDescripcion;
         //return this.descripcion;
-    }
+    },
 
-    this.actualizarValor=function(nuevoValor)
+   /*his.actualizarValor=function(nuevoValor)*/
+   actualizarValor(nuevoValor)
     {
         if (typeof nuevoValor=="number" && nuevoValor>=0)
         this.valor=nuevoValor;
         //return this.valor;
-    }
+    },
 
-    this.anyadirEtiquetas=function(...neuvastiqueta)
+    /*this.anyadirEtiquetas=function(...neuvastiqueta)*/
+    anyadirEtiquetas(...neuvastiqueta)
     {
         for (let i = 0; i < neuvastiqueta.length; i++)
         {//verificar q etiqueta no existe ya
@@ -82,9 +103,10 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
             this.etiquetas.push(neuvastiqueta[i]);
             }// no se puede poner this.etiquetas.add(newtiqueta) estoy mezclando con c#
         }
-    }
+    },
 
-    this.mostrarGastoCompleto = function()
+    /*this.mostrarGastoCompleto = function()*/
+    mostrarGastoCompleto()
    {
         let texto = "Gasto correspondiente a " + this.descripcion +
                 " con valor " + this.valor + " €.\n";
@@ -103,19 +125,21 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
                         }
         }
         return texto;
-    }
+    },
     
 
-    this.actualizarFecha = function(nuevaFecha)
+    /*this.actualizarFecha = function(nuevaFecha)*/
+    actualizarFecha(nuevaFecha)
     {
     let fechavalid = Date.parse(nuevaFecha);
     if (!isNaN(fechavalid))
         {
         this.fecha = fechavalid;
         }
-    }
+    },
 
-    this.borrarEtiquetas=function(...EtiqBorrar)
+    /*this.borrarEtiquetas=function(...EtiqBorrar)*/
+    borrarEtiquetas(...EtiqBorrar)
     {
     for(let i=0;i<EtiqBorrar.length;i++)
         {
@@ -129,9 +153,10 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
                         }
                 }
         }
-    };
+    },
 
-    this.obtenerPeriodoAgrupacion=function(periodo)//comand para probar: node js/gestionPresupuesto.js
+    /*this.obtenerPeriodoAgrupacion=function(periodo)//comand para probar: node js/gestionPresupuesto.js*/
+    obtenerPeriodoAgrupacion(periodo)
     {
         let d= new Date(this.fecha)
         let annee=d.getFullYear();
@@ -155,6 +180,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
             {
                 return null;
             }
+    }
 
     }
     
@@ -323,7 +349,7 @@ let res = gastosFiltrados.reduce((acc, gasto) => {
 
 
 
-let testGasto = new CrearGasto("Test", 50, "2024-04-05");
+let testGasto = CrearGasto("Test", 50, "2024-04-05");
 
 console.log("DIA:", testGasto.obtenerPeriodoAgrupacion("dia"));
 console.log("MES:", testGasto.obtenerPeriodoAgrupacion("mes"));

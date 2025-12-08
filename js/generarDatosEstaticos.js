@@ -49,13 +49,13 @@ let filtro4=logica.filtrarGastos({valorMaximo:50,etiquetasTiene:["comida","trans
 filtro4.forEach(g=>web.mostrarGastoWeb("listado-gastos-filtrado-4", g));
 //Mostrar el total de gastos agrupados por día en div#agrupacion-dia (funciones agruparGastos y mostrarGastosAgrupadosWeb)
 let agruparporDia=logica.agruparGastos("dia")
-web.mostrarGastosAgrupadosWeb("agrupacion-dia",agruparporDia, "dia");//no ponia el ultimo dia
+web.mostrarGastosAgrupadosWeb("agrupacion-dia",agruparporDia, "día");//no ponia el ultimo dia
 
 //Mostrar el total de gastos agrupados por mes en div#agrupacion-mes (funciones agruparGastos y mostrarGastosAgrupadosWeb)
 let agruparporMes=logica.agruparGastos("mes")
 web.mostrarGastosAgrupadosWeb("agrupacion-mes",agruparporMes, "mes");
 //Mostrar el total de gastos agrupados por año en div#agrupacion-anyo (funciones agruparGastos y mostrarGastosAgrupadosWeb)
-let agruparporAnyo=logica.agruparGastos("Anyo")
-web.mostrarGastosAgrupadosWeb("agrupacion-anyo",agruparporAnyo, "anyo");
+let agruparporAnyo=logica.agruparGastos("anyo")
+web.mostrarGastosAgrupadosWeb("agrupacion-anyo",agruparporAnyo, "año");
 
 
