@@ -58,94 +58,46 @@ function calcularBalance() {
 }
 
 
-//funcion agruparGastos - obtiene los gastos creados en esas fechas y alguna de las etiquetas pasadas
-function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta) {
-  // Validar periodo
-  const periodosValidos = ["dia", "mes", "anyo"];
-  let per = "mes";
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde = null, fechaHasta = null) {
+    // 1. Preparar filtros para filtrarGastos
+    let filtros = {};
 
-  if (periodosValidos.includes(periodo)) {
-    per = periodo;
-  }
+    if (fechaDesde && !isNaN(Date.parse(fechaDesde))) {
+        filtros.fechaDesde = fechaDesde;
+    }
 
-  // Fechas
-  let fechaDesdeNum = null;
-  if (fechaDesde) {
-    fechaDesdeNum = Date.parse(fechaDesde);
-  }
+    if (fechaHasta && !isNaN(Date.parse(fechaHasta))) {
+        filtros.fechaHasta = fechaHasta;
+    } else {
+        // si no se indica fechaHasta, se usa la fecha actual
+        filtros.fechaHasta = new Date().toISOString().split("T")[0];
+    }
 
-  let fechaHastaNum;
-  if (fechaHasta) {
-    fechaHastaNum = Date.parse(fechaHasta);
-  } else {
-    fechaHastaNum = Date.now();
-  }
+    if (Array.isArray(etiquetas) && etiquetas.length > 0) {
+        filtros.etiquetasTiene = etiquetas;
+    }
 
-  // 1. Filtrar gastos
-  const gastosFiltrados = gastos.filter(function (gasto) {
-    // FILTRO POR ETIQUETAS
-    if (etiquetas && etiquetas.length > 0) {
-      // Si el gasto NO tiene etiquetas, fuera
-      if (!gasto.etiquetas || gasto.etiquetas.length === 0) {
-        return false;
-      }
+    // 2. Obtener subconjunto de gastos filtrados
+    let gastosFiltrados = filtrarGastos(filtros);
 
-      let coinciden = false;
+    // 3. Reducir para agrupar por período
+    let resultado = gastosFiltrados.reduce((acc, gasto) => {
+        // obtener clave de agrupación usando método del gasto
+        let clave = gasto.obtenerPeriodoAgrupacion(periodo);
 
-      // Buscar si alguna etiqueta coincide
-      for (let i = 0; i < gasto.etiquetas.length; i++) {
-        if (etiquetas.includes(gasto.etiquetas[i])) {
-          coinciden = true;
+        // inicializar acumulador si no existe
+        if (!acc[clave]) {
+            acc[clave] = 0;
         }
-      }
 
-      // Si ninguna etiqueta coincide → no pasa el filtro
-      if (!coinciden) {
-        return false;
-      }
-    }
+        // sumar el valor del gasto
+        acc[clave] += gasto.valor;
 
-    // FILTRO POR FECHAS
-    const fechaGastoNum = Date.parse(gasto.fecha);
+        return acc;
+    }, {});
 
-    if (isNaN(fechaGastoNum)) {
-      return false;
-    }
-
-    if (fechaDesdeNum !== null) {
-      if (fechaGastoNum < fechaDesdeNum) {
-        return false;
-      }
-    }
-
-    if (fechaHastaNum !== null) {
-      if (fechaGastoNum > fechaHastaNum) {
-        return false;
-      }
-    }
-
-    return true;
-  });
-
-  // 2. AGRUPACIÓN
-  const resultado = {};
-
-  gastosFiltrados.forEach(function (gasto) {
-    const clave = gasto.obtenerPeriodoAgrupacion(per);
-    let valor = Number(gasto.valor);
-
-    if (isNaN(valor)) {
-      valor = 0;
-    }
-
-    if (!resultado[clave]) {
-      resultado[clave] = 0;
-    }
-
-    resultado[clave] = resultado[clave] + valor;
-  });
-
-  return resultado;
+    // 4. Devolver objeto con agrupación
+    return resultado;
 }
 
 
