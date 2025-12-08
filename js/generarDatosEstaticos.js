@@ -40,13 +40,13 @@ let filtro2=logica.filtrarGastos({valorMinimo:50});//no poener 50 entre "" dino 
 filtro2.forEach(g=>web.mostrarGastoWeb("listado-gastos-filtrado-2", g));
 
 //Mostrar el listado de gastos de más de 200€ con etiqueta seguros en div#listado-gastos-filtrado-3 (funciones filtrarGastos y mostrarGastoWeb)
-let filtro3=logica.filtrarGastos({valorMinimo:200, etiquetasTiene:["seguro"]});
+let filtro3=logica.filtrarGastos({valorMinimo:200, etiquetasTiene:["seguros"]});
 filtro3.forEach(g=>web.mostrarGastoWeb("listado-gastos-filtrado-3",g));
 
 
 //Mostrar el listado de gastos que tengan las etiquetas comida o transporte de menos de 50€ en div#listado-gastos-filtrado-4 (funciones filtrarGastos y mostrarGastoWeb)
-let filto4=logica.filtrarGastos({valarMaximo:50,etiquetasTiene:["comida","transporte"]});
-filtro3.forEach(g=>web.mostrarGastoWeb("listado-gastos-filtrado-4", g));
+let filto4=logica.filtrarGastos({valorMaximo:50,etiquetasTiene:["comida","transporte"]});
+filtro4.forEach(g=>web.mostrarGastoWeb("listado-gastos-filtrado-4", g));
 //Mostrar el total de gastos agrupados por día en div#agrupacion-dia (funciones agruparGastos y mostrarGastosAgrupadosWeb)
 let agruparporDia=logica.agruparGastos("dia")
 web.mostrarGastosAgrupadosWeb("agrupacion-dia",agruparporDia, "dia");//no ponia el ultimo dia
@@ -56,6 +56,6 @@ let agruparporMes=logica.agruparGastos("mes")
 web.mostrarGastosAgrupadosWeb("agrupacion-mes",agruparporMes, "mes");
 //Mostrar el total de gastos agrupados por año en div#agrupacion-anyo (funciones agruparGastos y mostrarGastosAgrupadosWeb)
 let agruparporAnyo=logica.agruparGastos("Anyo")
-web.mostrarGastosAgrupadosWeb("agrupacion-anyo",agruparporAnyo, "Anyo");
+web.mostrarGastosAgrupadosWeb("agrupacion-anyo",agruparporAnyo, "anyo");
 
 
