@@ -58,30 +58,96 @@ function calcularBalance() {
 }
 
 
-//funcion agruparGastos
-// Agrupa por "dia" | "mes" | "anyo" y suma los valores de los gastos
-// Filtros opcionales: etiquetas, fechaDesde, fechaHasta
-function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesde, fechaHasta) {
-  const periodosValidos = new Set(['dia', 'mes', 'anyo']);
-  const per = periodosValidos.has(periodo) ? periodo : 'mes';
+//funcion agruparGastos - obtiene los gastos creados en esas fechas y alguna de las etiquetas pasadas
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta) {
+  // Validar periodo
+  const periodosValidos = ["dia", "mes", "anyo"];
+  let per = "mes";
 
-  // Se asume que filtrarGastos aplica: etiquetas (OR), fechaDesde (>=) y fechaHasta (<=, por defecto hoy)
-  const gastosFiltrados = filtrarGastos(etiquetas, fechaDesde, fechaHasta);
+  if (periodosValidos.includes(periodo)) {
+    per = periodo;
+  }
 
-  // Acumulamos en un objeto con claves del periodo (p. ej., "2021-11" para mes)
-  const resultado = gastosFiltrados.reduce((acc, gasto) => {
-    // obtenerPeriodoAgrupacion debe devolver la clave adecuada según "per"
+  // Fechas
+  let fechaDesdeNum = null;
+  if (fechaDesde) {
+    fechaDesdeNum = Date.parse(fechaDesde);
+  }
+
+  let fechaHastaNum;
+  if (fechaHasta) {
+    fechaHastaNum = Date.parse(fechaHasta);
+  } else {
+    fechaHastaNum = Date.now();
+  }
+
+  // 1. Filtrar gastos
+  const gastosFiltrados = gastos.filter(function (gasto) {
+    // FILTRO POR ETIQUETAS
+    if (etiquetas && etiquetas.length > 0) {
+      // Si el gasto NO tiene etiquetas, fuera
+      if (!gasto.etiquetas || gasto.etiquetas.length === 0) {
+        return false;
+      }
+
+      let coinciden = false;
+
+      // Buscar si alguna etiqueta coincide
+      for (let i = 0; i < gasto.etiquetas.length; i++) {
+        if (etiquetas.includes(gasto.etiquetas[i])) {
+          coinciden = true;
+        }
+      }
+
+      // Si ninguna etiqueta coincide → no pasa el filtro
+      if (!coinciden) {
+        return false;
+      }
+    }
+
+    // FILTRO POR FECHAS
+    const fechaGastoNum = Date.parse(gasto.fecha);
+
+    if (isNaN(fechaGastoNum)) {
+      return false;
+    }
+
+    if (fechaDesdeNum !== null) {
+      if (fechaGastoNum < fechaDesdeNum) {
+        return false;
+      }
+    }
+
+    if (fechaHastaNum !== null) {
+      if (fechaGastoNum > fechaHastaNum) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // 2. AGRUPACIÓN
+  const resultado = {};
+
+  gastosFiltrados.forEach(function (gasto) {
     const clave = gasto.obtenerPeriodoAgrupacion(per);
+    let valor = Number(gasto.valor);
 
-    // Suma robusta: convierte a número y evita NaN
-    const valor = Number(gasto.valor) || 0;
+    if (isNaN(valor)) {
+      valor = 0;
+    }
 
-    acc[clave] = (acc[clave] || 0) + valor;
-    return acc;
-  }, {});
+    if (!resultado[clave]) {
+      resultado[clave] = 0;
+    }
+
+    resultado[clave] = resultado[clave] + valor;
+  });
 
   return resultado;
 }
+
 
 
 //uso de filter
