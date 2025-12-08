@@ -17,6 +17,7 @@ function actualizarPresupuesto(valor) {
     }
 }
 
+//funcion que devuelve presupuesto
 function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`; //corregido el texto
 }
@@ -28,7 +29,7 @@ function listarGastos() {
 }
 
 function anyadirGasto(gasto) {
-    gasto.id = idGasto;        //añado id a gastoy su valor sera idGasto
+    gasto.id = idGasto;        //añado id a gasto y su valor sera idGasto
     idGasto++;                 //incremento valor
     gastos.push(gasto);        //añado a gastos el gasto
 }
@@ -56,11 +57,12 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
+
 //funcion agruparGastos
 function agruparGastos() {
 
 }
-7
+
 
 //uso de filter
 function filtrarGastos(filtros) {
