@@ -59,8 +59,28 @@ function calcularBalance() {
 
 
 //funcion agruparGastos
-function agruparGastos() {
+// Agrupa por "dia" | "mes" | "anyo" y suma los valores de los gastos
+// Filtros opcionales: etiquetas, fechaDesde, fechaHasta
+function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesde, fechaHasta) {
+  const periodosValidos = new Set(['dia', 'mes', 'anyo']);
+  const per = periodosValidos.has(periodo) ? periodo : 'mes';
 
+  // Se asume que filtrarGastos aplica: etiquetas (OR), fechaDesde (>=) y fechaHasta (<=, por defecto hoy)
+  const gastosFiltrados = filtrarGastos(etiquetas, fechaDesde, fechaHasta);
+
+  // Acumulamos en un objeto con claves del periodo (p. ej., "2021-11" para mes)
+  const resultado = gastosFiltrados.reduce((acc, gasto) => {
+    // obtenerPeriodoAgrupacion debe devolver la clave adecuada según "per"
+    const clave = gasto.obtenerPeriodoAgrupacion(per);
+
+    // Suma robusta: convierte a número y evita NaN
+    const valor = Number(gasto.valor) || 0;
+
+    acc[clave] = (acc[clave] || 0) + valor;
+    return acc;
+  }, {});
+
+  return resultado;
 }
 
 
