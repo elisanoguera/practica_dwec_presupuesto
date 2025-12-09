@@ -57,6 +57,26 @@ function CrearGasto(descripcion, valor) {
             console.error('El valor del gasto debe ser un número positivo.');
         }
     }
+
+    // Método listarGastos
+    this.listarGastos = function() {
+    }
+
+    // Método anyadirGasto
+    this.anyadirGasto = function() {
+    }
+
+    // Método borrarGasto
+    this.borrarGasto = function() {
+    }
+
+    // Método calcularTotalGastos
+    this.calcularTotalGastos = function() {
+    }
+
+    // Método calcularBalance
+    this.calcularBalance = function() {
+    }
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
