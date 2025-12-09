@@ -103,6 +103,12 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
             }
         }
     }
+
+    // Método borrarEtiquetas
+    this.borrarEtiquetas = function(...etiquetasABorrar) {
+        this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasABorrar.includes(etiqueta));
+    }
+    
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
