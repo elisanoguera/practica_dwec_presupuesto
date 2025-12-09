@@ -31,8 +31,10 @@ function listarGastos(){
 }
 
 // Función anyadirGasto
-function anyadirGasto() {
-    return 0;
+function anyadirGasto(gastoRecibido) {
+    gastoRecibido.id = idGasto;
+    idGasto++;
+    gastos.push(gastoRecibido);
 }
 
 // Función borrarGasto
