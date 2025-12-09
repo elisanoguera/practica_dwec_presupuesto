@@ -67,6 +67,13 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         this.etiquetas = [];
     }
 
+    // VAlidación de fecha
+    if (typeof fecha === 'string' && !isNaN(Date.parse(fecha))) {
+        this.fecha = Date.parse(fecha);
+    } else {
+        this.fecha = Date.now();
+    }
+
     // Método mostrarGasto
     this.mostrarGasto = function() {
         let mensaje = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
