@@ -25,6 +25,29 @@ function mostrarPresupuesto() {
     return mensaje;
 }
 
+// Función listarGastos
+function listarGastos(){
+    return gastos;
+}
+
+// Función anyadirGasto
+function anyadirGasto() {
+    return 0;
+}
+
+// Función borrarGasto
+function borrarGasto() {
+}
+
+// Función calcularTotalGastos
+function calcularTotalGastos() {
+}
+
+// Función calcularBalance
+function calcularBalance() {
+}
+
+
 // Función CrearGasto
 function CrearGasto(descripcion, valor) {
     this.descripcion = descripcion;
@@ -56,26 +79,6 @@ function CrearGasto(descripcion, valor) {
         } else {
             console.error('El valor del gasto debe ser un número positivo.');
         }
-    }
-
-    // Método listarGastos
-    this.listarGastos = function() {
-    }
-
-    // Método anyadirGasto
-    this.anyadirGasto = function() {
-    }
-
-    // Método borrarGasto
-    this.borrarGasto = function() {
-    }
-
-    // Método calcularTotalGastos
-    this.calcularTotalGastos = function() {
-    }
-
-    // Método calcularBalance
-    this.calcularBalance = function() {
     }
 }
 
