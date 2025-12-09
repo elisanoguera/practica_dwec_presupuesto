@@ -1,2 +1,2 @@
-nombreCompleto = "Javier Vázquez Gómez";
+let nombreCompleto = "Javier Vázquez Gómez";
 alert("Nombre completo: " + nombreCompleto);
