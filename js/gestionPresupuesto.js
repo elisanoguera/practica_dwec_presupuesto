@@ -53,6 +53,7 @@ function calcularTotalGastos() {
 
 // Función calcularBalance
 function calcularBalance() {
+    return presupuesto - calcularTotalGastos();
 }
 
 
