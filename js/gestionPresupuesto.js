@@ -4,8 +4,15 @@
 let presupuesto = 0;
 
 
-function actualizarPresupuesto() {
-    // TODO
+function actualizarPresupuesto(nuevoPresupuesto) {
+    if ((typeof nuevoPresupuesto === 'number') && (nuevoPresupuesto >= 0)) {
+        presupuesto = nuevoPresupuesto;
+        return presupuesto;
+    } else {
+        console.error('El presupuesto debe ser un número positivo.');
+        alert('El presupuesto debe ser un número positivo.');
+        return -1;
+    }
 }
 
 function mostrarPresupuesto() {
