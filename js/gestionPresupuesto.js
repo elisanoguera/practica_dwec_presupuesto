@@ -94,6 +94,15 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
             console.error('El valor del gasto debe ser un número positivo.');
         }
     }
+
+    // Método anyadirEtiquetas
+    this.anyadirEtiquetas = function(...nuevasEtiquetas) {
+        for (let etiqueta of nuevasEtiquetas) {
+            if (!this.etiquetas.includes(etiqueta)) {
+                this.etiquetas.push(etiqueta);
+            }
+        }
+    }
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
