@@ -116,6 +116,17 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasABorrar.includes(etiqueta));
     }
 
+    // Método mostrarGastoCompleto
+    this.mostrarGastoCompleto = function() {
+        let mensaje = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\n`;
+        mensaje += `Fecha: ${new Date(this.fecha).toLocaleString()}\n`;
+        mensaje += `Etiquetas:\n`;
+        for (let etiqueta of this.etiquetas) {
+            mensaje += `- ${etiqueta}\n`;
+        }
+        return mensaje;
+    }
+
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
