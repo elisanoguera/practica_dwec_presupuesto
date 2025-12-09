@@ -95,6 +95,13 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         }
     }
 
+    // Método actualizarFecha
+    this.actualizarFecha = function(nuevaFecha) {
+        if (typeof nuevaFecha === 'string' && !isNaN(Date.parse(nuevaFecha))) {
+            this.fecha = Date.parse(nuevaFecha);
+        }
+    }
+
     // Método anyadirEtiquetas
     this.anyadirEtiquetas = function(...nuevasEtiquetas) {
         for (let etiqueta of nuevasEtiquetas) {
@@ -108,7 +115,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.borrarEtiquetas = function(...etiquetasABorrar) {
         this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasABorrar.includes(etiqueta));
     }
-    
+
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
