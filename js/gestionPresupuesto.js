@@ -49,7 +49,7 @@ function calcularBalance() {
 
 
 // Función CrearGasto
-function CrearGasto(descripcion, valor) {
+function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.descripcion = descripcion;
 
     // Validación del valor
@@ -58,6 +58,13 @@ function CrearGasto(descripcion, valor) {
     } else {
         console.error('El valor del gasto debe ser un número positivo.');
         this.valor = 0;
+    }
+
+    //  Validación de etiquetas
+    if (etiquetas.length > 0) {
+        this.etiquetas = etiquetas;
+    } else {
+        this.etiquetas = [];
     }
 
     // Método mostrarGasto
