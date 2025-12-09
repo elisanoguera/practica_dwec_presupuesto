@@ -38,7 +38,8 @@ function anyadirGasto(gastoRecibido) {
 }
 
 // Función borrarGasto
-function borrarGasto() {
+function borrarGasto(idGasto) {
+    gastos = gastos.filter(gasto => gasto.id !== idGasto);
 }
 
 // Función calcularTotalGastos
