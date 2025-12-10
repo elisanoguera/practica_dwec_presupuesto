@@ -374,6 +374,26 @@ export function EditarHandleFormulario(gasto) {
     this.gasto = gasto;
 }
 
+export function guardarGastosWeb() {
+    let datos = JSON.stringify(logica.listarGastos());
+    localStorage.setItem("GestorGastosDWEC", datos);
+}
+
+export function cargarGastosWeb() {
+    let datos = localStorage.getItem("GestorGastosDWEC");
+
+    if (!datos) {
+        logica.cargarGastos([]);  // rien stocké → lista vide
+    } else {
+        let array = JSON.parse(datos);
+        logica.cargarGastos(array);  // rehídratar
+    }
+
+    repintar();
+}
+
+
+
 EditarHandleFormulario.prototype.handleEvent = function(event) {
     event.currentTarget.disabled = true;
     let botonEditarFormulario = event.currentTarget;
@@ -446,5 +466,9 @@ document.getElementById("formulario-filtrado")//practica 7: Ajouter le LISTENER 
         .addEventListener("submit", filtrarGastosWeb);
 
 
+document.getElementById("guardar-gastos")
+    .addEventListener("click", guardarGastosWeb);
 
+document.getElementById("cargar-gastos")
+    .addEventListener("click", cargarGastosWeb);
 

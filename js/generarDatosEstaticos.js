@@ -8,12 +8,12 @@ web.mostrarDatoEnId("presupuesto", logica.mostrarPresupuesto());
 
 //Crear los siguientes gastos (función crearGasto):
 let gastosEjemplo = [
-    logica.CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida"),
-    logica.CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida"),
-    logica.CrearGasto("Bonobús", 18.60, "2020-05-26", "transporte"),
-    logica.CrearGasto("Gasolina", 60.42, "2021-10-08", "transporte", "gasolina"),
-    logica.CrearGasto("Seguro hogar", 206.45, "2021-09-26", "casa", "seguros"),
-    logica.CrearGasto("Seguro coche", 195.78, "2021-10-06", "transporte", "seguros")
+    new logica.CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida"),
+    new logica.CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida"),
+    new logica.CrearGasto("Bonobús", 18.60, "2020-05-26", "transporte"),
+    new logica.CrearGasto("Gasolina", 60.42, "2021-10-08", "transporte", "gasolina"),
+    new logica.CrearGasto("Seguro hogar", 206.45, "2021-09-26", "casa", "seguros"),
+    new logica.CrearGasto("Seguro coche", 195.78, "2021-10-06", "transporte", "seguros")
 ];
 //Añadir los gastos creados (función anyadirGasto)
 for (let g of gastosEjemplo)

@@ -23,7 +23,24 @@ function mostrarPresupuesto()
         return `Tu presupuesto actual es de ${presupuesto} €`;
     }
 
-function CrearGasto(descripcion,valor,fecha, ...etiquetas)
+function CrearGasto(descripcion, valor, fecha, ...etiquetas)
+{
+    if (typeof valor !== "number" || valor < 0) valor = 0;
+
+    let fechaOk = Date.parse(fecha);
+    if (isNaN(fechaOk)) fechaOk = Date.now();
+
+    this.descripcion = descripcion;
+    this.valor = valor;
+    this.fecha = fechaOk;
+
+    this.etiquetas = [];
+    etiquetas.forEach(e => {
+        if (!this.etiquetas.includes(e)) this.etiquetas.push(e);
+    });
+}
+
+/*function CrearGasto(descripcion,valor,fecha, ...etiquetas)
 {
     
 
@@ -56,7 +73,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
             }
         });
     }*/
-    let listaEtiquetas = [];
+/*    let listaEtiquetas = [];
     if (etiquetas.length > 0) {
         etiquetas.forEach(e => {
             if (!listaEtiquetas.includes(e)) {
@@ -73,19 +90,19 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
    
 //metodos
     /*this.mostrarGasto=function()*/
-    mostrarGasto()
+ /*   mostrarGasto()
     {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     },
 
     /*this.actualizarDescripcion=function(nuevaDescripcion)*/
-    actualizarDescripcion(nuevaDescripcion)
+/*    actualizarDescripcion(nuevaDescripcion)
     {
         this.descripcion=nuevaDescripcion;
         //return this.descripcion;
     },
 
-   /*this.actualizarValor=function(nuevoValor)*/
+   /*this.actualizarValor=function(nuevoValor)
    actualizarValor(nuevoValor)
     {
         if (typeof nuevoValor=="number" && nuevoValor>=0)
@@ -93,7 +110,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         //return this.valor;
     },
 
-    /*this.anyadirEtiquetas=function(...neuvastiqueta)*/
+    /*this.anyadirEtiquetas=function(...neuvastiqueta)
     anyadirEtiquetas(...neuvastiqueta)
     {
         for (let i = 0; i < neuvastiqueta.length; i++)
@@ -105,7 +122,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         }
     },
 
-    /*this.mostrarGastoCompleto = function()*/
+    /*this.mostrarGastoCompleto = function()
     mostrarGastoCompleto()
    {
         let texto = "Gasto correspondiente a " + this.descripcion +
@@ -128,7 +145,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
     },
     
 
-    /*this.actualizarFecha = function(nuevaFecha)*/
+    /*this.actualizarFecha = function(nuevaFecha)
     actualizarFecha(nuevaFecha)
     {
     let fechavalid = Date.parse(nuevaFecha);
@@ -138,7 +155,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         }
     },
 
-    /*this.borrarEtiquetas=function(...EtiqBorrar)*/
+    /*this.borrarEtiquetas=function(...EtiqBorrar)
     borrarEtiquetas(...EtiqBorrar)
     {
     for(let i=0;i<EtiqBorrar.length;i++)
@@ -155,7 +172,7 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         }
     },
 
-    /*this.obtenerPeriodoAgrupacion=function(periodo)//comand para probar: node js/gestionPresupuesto.js*/
+    /*this.obtenerPeriodoAgrupacion=function(periodo)//comand para probar: node js/gestionPresupuesto.js
     obtenerPeriodoAgrupacion(periodo)
     {
         let d= new Date(this.fecha)
@@ -184,8 +201,67 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
 
     }
     
-}
+}*/
+CrearGasto.prototype.mostrarGasto = function() {
+    return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+};
 
+CrearGasto.prototype.actualizarDescripcion = function(nuevaDescripcion) {
+    this.descripcion = nuevaDescripcion;
+};
+
+CrearGasto.prototype.actualizarValor = function(nuevoValor) {
+    if (typeof nuevoValor === "number" && nuevoValor >= 0)
+        this.valor = nuevoValor;
+};
+
+CrearGasto.prototype.anyadirEtiquetas = function(...nuevasEtiquetas) {
+    nuevasEtiquetas.forEach(e => {
+        if (!this.etiquetas.includes(e)) {
+            this.etiquetas.push(e);
+        }
+    });
+};
+
+CrearGasto.prototype.mostrarGastoCompleto = function() {
+    let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\n`;
+    texto += "Fecha: " + new Date(this.fecha).toLocaleString() + "\n";
+    texto += "Etiquetas:\n";
+
+    if (this.etiquetas.length === 0) {
+        texto += "(No hay gasto)\n";
+    } else {
+        this.etiquetas.forEach(e => texto += "- " + e + "\n");
+    }
+
+    return texto;
+};
+
+CrearGasto.prototype.actualizarFecha = function(nuevaFecha) {
+    let f = Date.parse(nuevaFecha);
+    if (!isNaN(f)) {
+        this.fecha = f;
+    }
+};
+
+CrearGasto.prototype.borrarEtiquetas = function(...etiquetasBorrar) {
+    etiquetasBorrar.forEach(etiq => {
+        this.etiquetas = this.etiquetas.filter(e => e !== etiq);
+    });
+};
+
+CrearGasto.prototype.obtenerPeriodoAgrupacion = function(periodo) {
+    let d = new Date(this.fecha);
+    let an = d.getFullYear();
+    let mes = String(d.getMonth() + 1).padStart(2, "0");
+    let dia = String(d.getDate()).padStart(2, "0");
+
+    if (periodo === "dia") return `${an}-${mes}-${dia}`;
+    if (periodo === "mes") return `${an}-${mes}`;
+    if (periodo === "anyo") return `${an}`;
+
+    return null;
+};
 
         let gastos= []; // para mi no se puede usar new list[] como en c#
         let idGasto=0;
@@ -364,8 +440,39 @@ export function transformarListadoEtiquetas(texto)
     return partecadena.filter(parte=>parte.length>0);
 }
 
+/*function cargarGastos(gastosAlmacenamiento)
+{
+// Reseteart la lista global
+    gastos = [];
+for(let g of gastosAlmacenamiento)
 
-let testGasto = CrearGasto("Test", 50, "2024-04-05");
+    //// Créer un objet CrearGasto vide
+    {
+        let gastosRehidratado=new CrearGasto("",0,Date.now());
+
+        Object.assign(gastosRehidratado, g);
+        gastos.push(gastosRehidratado);
+    }
+};*/
+
+function cargarGastos(gastosAlmacenamiento) {
+    gastos = [];  
+
+    for (let g of gastosAlmacenamiento) {
+
+        // 1) Créer un CrearGasto vide pour avoir le bon proto
+        let gastoRehidratado = new CrearGasto("", 0, Date.now());
+
+        // 2) Copier TOUTES les propriétés du JSON
+        Object.assign(gastoRehidratado, g);
+
+        gastos.push(gastoRehidratado);
+    }
+}
+
+
+
+let testGasto =new CrearGasto("Test", 50, "2024-04-05");
 
 console.log("DIA:", testGasto.obtenerPeriodoAgrupacion("dia"));
 console.log("MES:", testGasto.obtenerPeriodoAgrupacion("mes"));
@@ -383,5 +490,6 @@ export   {
     calcularTotalGastos,
     calcularBalance,
     filtrarGastos,
-    agruparGastos
+    agruparGastos,
+    cargarGastos
 }
