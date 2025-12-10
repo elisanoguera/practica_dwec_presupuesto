@@ -56,6 +56,14 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
+// Función filtrarGastos
+function filtrarGastos(etiqueta) {
+}
+
+// Función agruparGastos
+function agruparGastos() {
+}
+
 
 // Función CrearGasto
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
@@ -149,5 +157,7 @@ export   {
     anyadirGasto,
     borrarGasto,
     calcularTotalGastos,
-    calcularBalance
+    calcularBalance,
+    filtrarGastos,
+    agruparGastos
 }
