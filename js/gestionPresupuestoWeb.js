@@ -87,7 +87,7 @@ export function nuevoGastoWebFormulario(event)
         let fecha = form.fecha.value;
         let etiquetas = form.etiquetas.value.split(",").map(e => e.trim());
 
-        let nuevo = logica.CrearGasto(descripcion, valor, fecha, ...etiquetas);
+        let nuevo =new logica.CrearGasto(descripcion, valor, fecha, ...etiquetas);
         logica.anyadirGasto(nuevo);
 
 //mettre repintar() ici!
@@ -283,7 +283,7 @@ let etiquetasTexto=document.getElementById("formulario-filtrado-etiquetas-tiene"
 
 let filtros={};// Construire l’objet filtros (seulement les valeurs remplies)
 
-if(descri !=="")filtros.descripcion=descri;
+if(descri !=="")filtros.descripcionContiene=descri;
 if(valMin !=="")filtros.valorMinimo=Number(valMin);
 if(valMax !=="")filtros.valorMaximo=Number(valMax);
 if(fechaDesde !=="")filtros.fechaDesde=fechaDesde;
@@ -362,7 +362,7 @@ export function nuevoGastoWeb()
         etiquetas = etiquetasString.split(",").map(e => e.trim());
     }
 
-        let nuevoGasto=logica.CrearGasto(descripcion,valor,fecha, ...etiquetas)
+        let nuevoGasto=new logica.CrearGasto(descripcion,valor,fecha, ...etiquetas)
 
         logica.anyadirGasto(nuevoGasto);
 

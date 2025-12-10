@@ -303,19 +303,19 @@ function calcularBalance()//balance est ce qu il reste!! pas un moyenne
 
 //JS3
 //function filtrarGastos(filtre)
-function filtrarGastos(filtre = {})// on met filtre = {} :Parce que ça donne une valeur par défaut si aucun objet n'est passé.
+/*function filtrarGastos(filtro = {})// on met filtre = {} :Parce que ça donne une valeur par défaut si aucun objet n'est passé.
 {  
-    let fechaDesde=filtre.fechaDesde;
-    let fechaHasta=filtre.fechaHasta;
-    let valorMinimo=filtre.valorMinimo;
-    let valorMaximo=filtre.valorMaximo;
-    let descripcionContiene=filtre.descripcion;
-    let etiquetasTiene=filtre.etiquetasTiene;
+    let fechaDesde=filtro.fechaDesde;
+    let fechaHasta=filtro.fechaHasta;
+    let valorMinimo=filtro.valorMinimo;
+    let valorMaximo=filtro.valorMaximo;
+    let descripcionContiene=filtro.descripcion;
+    let etiquetasTiene=filtro.etiquetasTiene;
 return gastos.filter(g =>// funcion g 
         {
             if(fechaDesde)
                 {
-                    let dfd=Date.parse(filtre.fechaDesde);//dfd=date fecha desde
+                    let dfd=Date.parse(filtro.fechaDesde);//dfd=date fecha desde
                 if(g.fecha<dfd)
                     {
                         return false;
@@ -323,7 +323,7 @@ return gastos.filter(g =>// funcion g
                 }
             if(fechaHasta)
                 {
-                    let dfh=Date.parse(filtre.fechaHasta);//dfh=date fecha hasta
+                    let dfh=Date.parse(filtro.fechaHasta);//dfh=date fecha hasta
                     if(g.fecha>dfh)
                     {
                         return false;
@@ -349,7 +349,6 @@ return gastos.filter(g =>// funcion g
     if (!g.descripcion.toLowerCase().includes(buscado)) {
         return false;
     }
-}
 
             /*if(descripcionContiene)//pour la casse tolower comme en c#
                 {
@@ -358,7 +357,7 @@ return gastos.filter(g =>// funcion g
                     {
                         return false;
                     }           
-                }*/
+                }
             if(etiquetasTiene)
                 {
                      if (typeof etiquetasTiene === "string")
@@ -389,9 +388,69 @@ return gastos.filter(g =>// funcion g
 
     
             return true;
+                }
     });
-} 
+} */
 
+function filtrarGastos(filtro = {}) {
+
+    let fechaDesde          = filtro.fechaDesde;
+    let fechaHasta          = filtro.fechaHasta;
+    let valorMinimo         = filtro.valorMinimo;
+    let valorMaximo         = filtro.valorMaximo;
+    let descripcionContiene = filtro.descripcionContiene;
+    let etiquetasTiene      = filtro.etiquetasTiene;
+
+    return gastos.filter(g => {
+
+        // --- FECHAS ---
+        if (fechaDesde) {
+            let dfd = Date.parse(fechaDesde);
+            if (g.fecha < dfd) return false;
+        }
+
+        if (fechaHasta) {
+            let dfh = Date.parse(fechaHasta);
+            if (g.fecha > dfh) return false;
+        }
+
+        // --- VALOR MINIMO ---
+        if (valorMinimo !== undefined) {
+            if (g.valor < valorMinimo) return false;
+        }
+
+        // --- VALOR MAXIMO ---
+        if (valorMaximo !== undefined) {
+            if (g.valor > valorMaximo) return false;
+        }
+
+        // --- DESCRIPCIÓN ---
+        if (descripcionContiene) {
+            let buscado = descripcionContiene.toLowerCase();
+            if (!g.descripcion.toLowerCase().includes(buscado)) {
+                return false;
+            }
+        }
+
+        // --- ETIQUETAS ---
+        if (etiquetasTiene) {
+
+            if (typeof etiquetasTiene === "string") {
+                etiquetasTiene = [etiquetasTiene];
+            }
+
+            let etiquetasGastoLower = g.etiquetas.map(e => e.toLowerCase());
+
+            let coincide = etiquetasTiene.some(et =>
+                etiquetasGastoLower.includes(et.toLowerCase())
+            );
+
+            if (!coincide) return false;
+        }
+
+        return true;
+    });
+}
 
 function agruparGastos(periodo="mes", etiquetas=[],fechaDesde, fechaHasta=Date.now())
 {
