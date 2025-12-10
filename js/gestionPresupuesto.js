@@ -78,14 +78,14 @@ if (etiquetas.length > 0)//“Si on a reçu au moins une étiquette dans le cons
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     },
 
-    /*is.actualizarDescripcion=function(nuevaDescripcion)*/
+    /*this.actualizarDescripcion=function(nuevaDescripcion)*/
     actualizarDescripcion(nuevaDescripcion)
     {
         this.descripcion=nuevaDescripcion;
         //return this.descripcion;
     },
 
-   /*his.actualizarValor=function(nuevoValor)*/
+   /*this.actualizarValor=function(nuevoValor)*/
    actualizarValor(nuevoValor)
     {
         if (typeof nuevoValor=="number" && nuevoValor>=0)
@@ -233,7 +233,7 @@ function filtrarGastos(filtre = {})// on met filtre = {} :Parce que ça donne un
     let fechaHasta=filtre.fechaHasta;
     let valorMinimo=filtre.valorMinimo;
     let valorMaximo=filtre.valorMaximo;
-    let descripcionContiene=filtre.descripcionContiene;
+    let descripcionContiene=filtre.descripcion;
     let etiquetasTiene=filtre.etiquetasTiene;
 return gastos.filter(g =>// funcion g 
         {
@@ -267,14 +267,22 @@ return gastos.filter(g =>// funcion g
                         return false
                     }
                 }
-            if(descripcionContiene)//pour la casse tolower comme en c#
+
+                if (descripcionContiene) {
+    let buscado = descripcionContiene.toLowerCase();
+    if (!g.descripcion.toLowerCase().includes(buscado)) {
+        return false;
+    }
+}
+
+            /*if(descripcionContiene)//pour la casse tolower comme en c#
                 {
                     let text=filtre.descripcionContiene.toLowerCase();
                     if(!g.descripcion.toLowerCase().includes(text))
                     {
                         return false;
                     }           
-                }
+                }*/
             if(etiquetasTiene)
                 {
                      if (typeof etiquetasTiene === "string")
@@ -347,6 +355,14 @@ let res = gastosFiltrados.reduce((acc, gasto) => {
   return res;//ne pas oublier le resultat que l on veut renvoyer!! y no confundir con acc
 }
 
+export function transformarListadoEtiquetas(texto)
+{
+    if(!texto) return[];
+
+    let partecadena=texto.split(/[,\.;:\s]+/);
+
+    return partecadena.filter(parte=>parte.length>0);
+}
 
 
 let testGasto = CrearGasto("Test", 50, "2024-04-05");

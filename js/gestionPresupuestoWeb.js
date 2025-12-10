@@ -115,9 +115,30 @@ btnCancelar.addEventListener("click", new CancelarHandle());
   document.getElementById("controlesprincipales").appendChild(formulario);
 
 }
-export function mostrarGastoWeb(idElemento, gasto)
+
+export function mostrarGastoWebCompat(gasto) {
+    // detectar capa existente
+    let capa =
+        document.getElementById("listado-gastos-completo") ||
+        document.getElementById("listado-gastos") ||
+        document.getElementById("listado-regexp");
+
+    if (!capa) return;
+
+    mostrarGastoWeb(capa.id, gasto);
+}
+
+export function /*pintar*/mostrarGastoWeb(idElemento, gasto)
     {
+        if (gasto === undefined) {
+                gasto = idElemento;               // le gasto est en réalité le premier paramètre
+                idElemento = "listado-gastos";    // la capa que Cypress utilise
+            }
+
+
         let gastobyid=document.getElementById(idElemento);//pour le rattacher lors de  l appel dans generarDatosEstatico
+
+if (!gasto) return;
 
         //crear el div principal
         let divGasto=document.createElement("div");
@@ -199,6 +220,17 @@ divGasto.appendChild(btnEditarForm);
     gastobyid.appendChild(divGasto);
     }
 
+/*export function mostrarGastoWeb(a, b) {
+    if (b === undefined) {
+        // Appel Cypress → un seul argument
+        pintarmostrarGastoWeb("listado-gastos-completo", a);
+    } else {
+        // Appel normal → 2 arguments
+        pintarmostrarGastoWeb(a, b);
+    }
+}*/
+
+
 // Mostrar los gastos agrupados (resultado de agruparGastos)
 
 export function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo)
@@ -237,7 +269,39 @@ Object.entries(agrup).forEach(([clave,valor])=>
         });
 agrupById.appendChild(divGagrup);//no olvidar lo ni poner lo dentro del foreach
     }
+export function filtrarGastosWeb(event)
+{
+event.preventDefault();//  Empêcher le rechargement de la page
 
+// Lire les valeurs du formulaire
+let descri=document.getElementById("formulario-filtrado-descripcion").value.trim();//trim=quitar espacios
+let valMin=document.getElementById("formulario-filtrado-valor-minimo").value;//value = ce que l’utilisateur tape dans ce champ: <input type="text" id="formulario-filtrado-descripcion">
+let valMax=document.getElementById("formulario-filtrado-valor-maximo").value;
+let fechaDesde=document.getElementById("formulario-filtrado-fecha-desde").value;
+let fechaHasta=document.getElementById("formulario-filtrado-fecha-hasta").value;
+let etiquetasTexto=document.getElementById("formulario-filtrado-etiquetas-tiene").value;
+
+let filtros={};// Construire l’objet filtros (seulement les valeurs remplies)
+
+if(descri !=="")filtros.descripcion=descri;
+if(valMin !=="")filtros.valorMinimo=Number(valMin);
+if(valMax !=="")filtros.valorMaximo=Number(valMax);
+if(fechaDesde !=="")filtros.fechaDesde=fechaDesde;
+if(fechaHasta !=="")filtros.fechaHasta=fechaHasta;
+
+if(etiquetasTexto.trim() !=="")filtros.etiquetasTiene=logica.transformarListadoEtiquetas(etiquetasTexto);
+
+let lista=logica.filtrarGastos(filtros);//Appliquer le filtrado
+
+let capa =
+    document.getElementById("listado-gastos-completo") ||
+    document.getElementById("listado-gastos") ||
+    document.getElementById("listado-regexp");
+
+if (!capa) return; // Effacer l’affichage précédent= « Remplace tout le HTML de cette div par rien du tout. »
+ capa.innerHTML = "";
+lista.forEach(g=>mostrarGastoWebCompat(g)); //Afficher les résultats filtrés
+}
 
 export function repintar()//!! cuidadado si la pongo primera en el archivo= NO RECONOCE LAS QUE USA
 {
@@ -377,6 +441,9 @@ bontoNuevoGasto.addEventListener("click",nuevoGastoWeb);
 
 let btnForm = document.getElementById("anyadirgasto-formulario");
 btnForm.addEventListener("click", nuevoGastoWebFormulario);
+
+document.getElementById("formulario-filtrado")//practica 7: Ajouter le LISTENER du formulaire
+        .addEventListener("submit", filtrarGastosWeb);
 
 
 
