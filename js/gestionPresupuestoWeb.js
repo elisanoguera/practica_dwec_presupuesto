@@ -350,5 +350,32 @@ document.getElementById("anyadirgasto").addEventListener("click", nuevoGastoWeb)
 // Botón anyadirgasto-formulario
 document.getElementById("anyadirgasto-formulario").addEventListener("click", nuevoGastoWebFormulario);
 
+/* ----------------------------------------------------------------------------------------------- */
+/* Funciones de almacenamiento */
+
+function guardarGastosWeb() {
+	localStorage.GestorGastosDWEC = JSON.stringify(gestion.listarGastos());
+}
+
+function cargarGastosWeb() {
+	let gastosCargados = [];
+
+	// Al estar en el condicional, cualquier truthy ejecuta la carga
+	if (localStorage.GestorGastosDWEC) {
+		gastosCargados = JSON.parse(localStorage.GestorGastosDWEC);
+	}
+
+	gestion.cargarGastos(gastosCargados);
+
+	repintar();
+}
+
+// Asignación de manejadores
+// Botón guardar-gastos
+document.getElementById("guardar-gastos").addEventListener("click", guardarGastosWeb);
+
+// Botón cargar-gastos
+document.getElementById("cargar-gastos").addEventListener("click", cargarGastosWeb);
+
 /* Exportación */
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar };

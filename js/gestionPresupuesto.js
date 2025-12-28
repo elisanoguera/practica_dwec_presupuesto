@@ -155,6 +155,24 @@ function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
 
 	return resultado;
 }
+// El array de objetos que venga como parámetros ya deberá haber sido convertido mediante JSON.parse, y almcenará objetos, no strings.
+
+function cargarGastos(gastosAlmacenados) {
+	// Reset de la variable global gastos
+	gastos = [];
+
+	// Iteramso sobre los gastos almacenados en localStorage
+	for (let gasto of gastosAlmacenados) {
+		// Procederemos a la "rehidratación" de cada gasto guardado solo con sus propiedades como un string
+		let gastoRehidratado = new CrearGasto(); // Se crea con las propiedades sin asignar
+
+		// Object.assign fusiona dos objetos. Las propiedades coincidentes las actualiza. Primero se cologa el target y despues el source.
+		Object.assign(gastoRehidratado, gasto);
+
+		// Añadimos el gasto al array
+		gastos.push(gastoRehidratado);
+	}
+}
 
 // Función Constructora del objeto Gasto
 // Pasamos los parámetros a partir del tercero como un array a las etiquetas
@@ -285,4 +303,4 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
-export { mostrarPresupuesto, actualizarPresupuesto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance, filtrarGastos, agruparGastos, CrearGasto };
+export { mostrarPresupuesto, actualizarPresupuesto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance, filtrarGastos, agruparGastos, cargarGastos, CrearGasto };
