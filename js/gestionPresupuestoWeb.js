@@ -377,5 +377,45 @@ document.getElementById("guardar-gastos").addEventListener("click", guardarGasto
 // Botón cargar-gastos
 document.getElementById("cargar-gastos").addEventListener("click", cargarGastosWeb);
 
+/* ------------------------------------------------------------------------------------------ */
+/* Funciones de filtrado */
+
+function filtrarGastosWeb(evento) {
+	// Prevenir el envío del formulario por defecto
+	evento.preventDefault();
+
+	// Recogida de los datos del formulario de filtrado
+	let formulario = document.getElementById("formulario-filtrado");
+	let filtroDescripcion = formulario.elements["formulario-filtrado-descripcion"].value;
+	let filtroValorMinimo = parseFloat(formulario.elements["formulario-filtrado-valor-minimo"].value);
+	let filtroValorMaximo = parseFloat(formulario.elements["formulario-filtrado-valor-maximo"].value);
+	let filtroFechaDesde = formulario.elements["formulario-filtrado-fecha-desde"].value;
+	let filtroFechaHasta = formulario.elements["formulario-filtrado-fecha-hasta"].value;
+	let filtroEtiquetasTiene = [];
+
+	if (formulario.elements["formulario-filtrado-etiquetas-tiene"].value) {
+		filtroEtiquetasTiene = gestion.transformarListadoEtiquetas(formulario.elements["formulario-filtrado-etiquetas-tiene"].value);
+	}
+
+	let filtro = {
+		// Mediante los condicionales cortos escritos de este modo, nos aseguramos de que no se guarda un string vacío y en su lugar guardamos undefined.
+		descripcionContiene: filtroDescripcion ? filtroDescripcion : undefined,
+		valorMinimo: Number.isFinite(filtroValorMinimo) ? filtroValorMinimo : undefined,
+		valorMaximo: Number.isFinite(filtroValorMaximo) ? filtroValorMaximo : undefined,
+		fechaDesde: filtroFechaDesde ? filtroFechaDesde : undefined,
+		fechaHasta: filtroFechaHasta ? filtroFechaHasta : undefined,
+		etiquetasTiene: filtroEtiquetasTiene.length > 0 ? filtroEtiquetasTiene : undefined,
+	};
+
+	// Obtenemos el array de gastos filtrados y volvemos a mostrarlos
+	let gastosFiltrados = gestion.filtrarGastos(filtro);
+	// Debemos eliminar todo el contenido del div para no duplicar elementos.
+	document.getElementById("listado-gastos-completo").replaceChildren();
+	gastosFiltrados.forEach((gasto) => mostrarGastoWeb("listado-gastos-completo", gasto));
+}
+
+// Asignación del manejador de eventos al submit del formulario de filtrado
+document.getElementById("formulario-filtrado").addEventListener("submit", filtrarGastosWeb);
+
 /* Exportación */
 export { mostrarDatoEnId, mostrarGastoWeb, mostrarGastosAgrupadosWeb, repintar };

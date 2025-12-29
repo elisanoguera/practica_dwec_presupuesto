@@ -155,6 +155,17 @@ function agruparGastos(periodo = "mes", etiquetas, fechaDesde, fechaHasta) {
 
 	return resultado;
 }
+
+// Función transformarListadoEtiquetas
+function transformarListadoEtiquetas(listado) {
+	const regExpression = /\w+/gi;
+	// Lo importante es el "+", ya que obliga a tener al menos un caracter alfanumérico. Con el signo "*" se guardan los espacios y las comas como un string vacío al contar como coincidencia de 0.
+
+	let arrayEtiquetas = listado.match(regExpression);
+
+	return arrayEtiquetas || [];
+}
+
 // El array de objetos que venga como parámetros ya deberá haber sido convertido mediante JSON.parse, y almcenará objetos, no strings.
 
 function cargarGastos(gastosAlmacenados) {
@@ -303,4 +314,4 @@ function CrearGasto(descripcion, valor = 0, fecha, ...etiquetas) {
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
-export { mostrarPresupuesto, actualizarPresupuesto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance, filtrarGastos, agruparGastos, cargarGastos, CrearGasto };
+export { mostrarPresupuesto, actualizarPresupuesto, listarGastos, anyadirGasto, borrarGasto, calcularTotalGastos, calcularBalance, filtrarGastos, agruparGastos, cargarGastos, transformarListadoEtiquetas, CrearGasto };
