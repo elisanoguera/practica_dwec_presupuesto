@@ -14,7 +14,7 @@ Para poder realizar esta práctica será necesario *instalar el siguiente softwa
 ** Desarrollo guiado por test
    En esta práctica *no hay tests*. Se tendrá que comprobar el funcionamiento de manera manual. Para ver si se han creado los gastos se puede hacer una petición a la API introduciendo la URL en el navegador.
 
-** Preparación
+** Preparación 
 1. Instalar los requisitos de software indicados
 2. Abrir un terminal
 3. Situarse en la carpeta del repositorio personal de la práctica
